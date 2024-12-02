@@ -69,6 +69,8 @@
             $url = str_replace('*', '', $url); // Removes all *
             $url = str_replace(' ', '_', $url); // Removes all *
             $url = strtolower($url);
+            $url = str_replace(['../', './'], '', $url);
+            $url = preg_replace('/[^a-z0-9_\-]/', '', $url);
 
             return $url;
         }
