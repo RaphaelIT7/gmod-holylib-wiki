@@ -80,7 +80,7 @@
                 $title = $matches[1];
             }
 
-            if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                  $title = $matches[1];
             }
 
@@ -98,7 +98,7 @@
                 $title = $matches[1];
             }
 
-            if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                 if($matches[3] == 'classfunc') {
                     $title = $matches[2] . ':' . $matches[1];
                 } else {
@@ -112,10 +112,14 @@
         function GetTags($text)
         {
             $tags = '';
-            if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                 if (isset($matches[3]) && $matches[3] != '') {
                     if ($matches[3] == 'classfunc' || $matches[3] == 'libraryfunc') {
                         $tags .= 'cm f meth memb';
+                    }
+
+                    if ($matches[3] == 'hook') {
+                        $tags .= 'cm event f meth memb';
                     }
                 }
 
@@ -162,7 +166,7 @@
 
         function LableRealm($text) 
         {
-            if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                 if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches2)) {
                     $realm = $matches2[1];
 
@@ -189,7 +193,7 @@
 
         function FuncData($text) 
         {
-            if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                 $function = array();
                 $function['name'] = $matches[1];
                 $function['parent'] = $matches[2];
@@ -262,6 +266,8 @@
 
        		if (isset($func['type']) && $func['type'] == 'libraryfunc')
        			$outPut .= '.';
+       		else if (isset($func['type']) && $func['type'] == 'hook')
+       			$outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
        		else
        			$outPut .= $this->config['code_funcseparator'];
 
@@ -741,7 +747,6 @@
             }
 
             $text = implode("\n", $lines);
-            $text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
             $text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
 
             if (preg_match_all('/<note>(.*?)<\/note>/s', $text, $matches, PREG_SET_ORDER)) {
@@ -800,7 +805,7 @@
 
             if (preg_match_all('/<ambig\s+page="([^"]+)">(.*?)<\/ambig>/s', $text, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
-                    if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $_)) {
+                    if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $_)) {
                         $markup .= $this->buildAmbig($match[2], $match[1]);
                     }
                     $text = str_replace('<ambig page="' . $match[1] . '">' . $match[2] . '</ambig>', $this->buildAmbig($match[2], $match[1]), $text);
@@ -831,7 +836,7 @@
             }
 
             $special = false;
-            if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                 $special = true;
                 $function = array();
                 $function['name'] = $matches[1];
@@ -933,6 +938,8 @@
             {
                 $title = $matches[1];
             }
+
+            #$text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
 
             return $markup;
         }

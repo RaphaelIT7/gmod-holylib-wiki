@@ -1,6 +1,5 @@
 <function name="Reconnect" parent="HolyLib" type="libraryfunc">
 	<description>Reconnects the given player without him losing his slot</description>
-	<source>https://github.com/danielga/sourcesdk-minimal/blob/master/public/igameevents.h#L95</source>
 	<realm>Server</realm>
 	<args>
 		<arg name="ply" type="Player">the player to reconnect</arg>
