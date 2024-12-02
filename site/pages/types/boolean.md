@@ -1,0 +1,1 @@
+A value that is true or false.  

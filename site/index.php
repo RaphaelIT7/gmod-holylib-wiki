@@ -22,6 +22,11 @@
                     'name' => 'Installation',
                     'path' => 'installation',
                 ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Wiki',
+                    'path' => 'wiki',
+                ),
             ),
         ),
         array(

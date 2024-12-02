@@ -741,7 +741,8 @@
             }
 
             $text = implode("\n", $lines);
-            //$text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
+            $text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
+            $text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
 
             if (preg_match_all('/<note>(.*?)<\/note>/s', $text, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
