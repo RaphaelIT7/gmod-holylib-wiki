@@ -7,7 +7,7 @@
     class Extension extends Parsedown
     {
 
-        private $baseImagePath = 'https://wiki.facepunch.com/';
+        private $baseImagePath = '';
         public $config;
         public $categories;
         protected $lua_keywords = array('and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for', 'function', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat', 'return', 'then', 'true', 'until', 'while', 'continue');
@@ -114,8 +114,8 @@
             $tags = '';
             if (preg_match('/<function name="([^"]+)" parent="([^"]+)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
                 if (isset($matches[3]) && $matches[3] != '') {
-                    if ($matches[3] == 'classfunc') {
-                        $tags .= 'cm f method member';
+                    if ($matches[3] == 'classfunc' || $matches[3] == 'libraryfunc') {
+                        $tags .= 'cm f meth memb';
                     }
                 }
 
@@ -252,6 +252,24 @@
 
             return $Block;
         }
+
+        protected function getFunctionName($func)
+       	{
+       		if (!isset($func['parent']))
+       			return $func['name'];
+
+       		$outPut = $func['parent'];
+
+       		if (isset($func['type']) && $func['type'] == 'libraryfunc')
+       			$outPut .= '.';
+       		else
+       			$outPut .= $this->config['code_funcseparator'];
+
+       		$outPut .= $func['name'];
+
+       		return $outPut;
+       	}
+
         protected function buildFunction($func)
         {
             $html = '<div class="function ' . $func['type'] . ' ' . $func['realm'] . '">';
@@ -297,9 +315,9 @@
                             #}
                         }
 
-                        $html .= $rets . ' ' . (isset($func['parent']) ? $func['parent'] . $this->config['code_funcseparator'] : '') . $func['name'] . '(' . $args .' )';
+                        $html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
                     } else {
-                        $html .= ' ' . (isset($func['parent']) ? $func['parent'] . $this->config['code_funcseparator'] : '') .$func['name'] . "()";
+                        $html .= ' ' . $this->getFunctionName($func) . "()";
                     }
                 $html .= '</div>';
 
@@ -427,9 +445,9 @@
                                             $rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="/?page=' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
                                         }
 
-                                        $html .= $rets . ' ' . (isset($func['parent']) ? $func['parent'] . $this->config['code_funcseparator'] : '') . $func['name'] . '(' . $args .' )';
+                                        $html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
                                     } else {
-                                        $html .= (isset($func['parent']) ? $func['parent'] . $this->config['code_funcseparator'] : '') . $func['name'] . "()";
+                                        $html .= $this->getFunctionName($func) . "()";
                                     }
                                     $html .= '<div class="summary">';
                                         $html .= $func['desc'];
