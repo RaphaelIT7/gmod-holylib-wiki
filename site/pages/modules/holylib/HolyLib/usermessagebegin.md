@@ -6,10 +6,9 @@
 			If the bitbuf module is disabled, it will throw a lua error!
 		</note>
 	</description>
-	<source>https://github.com/danielga/sourcesdk-minimal/blob/master/public/igameevents.h#L95</source>
 	<realm>Server</realm>
 	<args>
 		<arg name="filter" type="IRecipentFilter">---</arg>
-		<arg name="usermsg" type="String">usermessage</arg>
+		<arg name="usermsg" type="string">usermessage</arg>
 	</args>
 </function>

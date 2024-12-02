@@ -5,6 +5,6 @@
 		<arg name="mapName" type="string">Map to validate</arg>
 	</args>
 	<rets>
-		<ret name="success" type="Boolean">`true` if map is valid</ret>
+		<ret name="success" type="boolean">`true` if map is valid</ret>
 	</rets>
 </function>
