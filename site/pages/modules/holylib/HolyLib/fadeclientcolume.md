@@ -6,7 +6,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="ply" type="player">player to target</arg>
+		<arg name="ply" type="Player">player to target</arg>
 		<arg name="fadePercent" type="number">Percentage of volume that decreases per second</arg>
 		<arg name="fadeOutSeconds" type="number">Time to fade out - in seconds</arg>
 		<arg name="holdTime" type="number">Time the volume is held - in seconds</arg>
