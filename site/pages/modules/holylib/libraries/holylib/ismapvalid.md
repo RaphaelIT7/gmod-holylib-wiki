@@ -1,5 +1,7 @@
 <function name="IsMapValid" parent="HolyLib" type="libraryfunc">
-	<description>Returns `true` if the given map is valid.</description>
+	<description>
+		Returns `true` if the given map is valid.
+	</description>
 	<realm>Server</realm>
 	<args>
 		<arg name="mapName" type="string">Map to validate</arg>
