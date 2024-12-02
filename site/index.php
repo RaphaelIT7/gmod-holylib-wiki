@@ -40,12 +40,18 @@
             ),
         ),
         array(
-            'name' => 'Modules', 
+            'name' => 'holylib', 
             'categories' => array(
                 array(
-                    'mdi' => 'mdi-code-array',
-                    'name' => 'holylib',
-                    'path' => 'modules/holylib',
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/holylib/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/holylib/hooks',
                     'tags' => 'true',
                 ),
             ),
