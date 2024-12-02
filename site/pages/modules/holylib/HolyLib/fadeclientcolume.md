@@ -1,5 +1,5 @@
 <function name="FadeClientVolume" parent="HolyLib" type="libraryfunc">
-	<description>Fades out the clients volume. Internally just runs soundfade with the given settings on the client. A direct engine bind to IVEngineServer::FadeClientVolume</description>
+	<description>Fades out the clients volume.<br>Internally just runs soundfade with the given settings on the client.<br>A direct engine bind to IVEngineServer::FadeClientVolume</description>
 	<source>https://github.com/danielga/sourcesdk-minimal/blob/master/public/igameevents.h#L95</source>
 	<realm>Server</realm>
 	<args>
