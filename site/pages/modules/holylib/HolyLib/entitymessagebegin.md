@@ -9,6 +9,6 @@
 	<realm>Server</realm>
 	<args>
 		<arg name="ent" type="Entity">entity to target</arg>
-		<arg name="reliable" type="boolean">---</arg>
+		<arg name="reliable" type="Boolean">---</arg>
 	</args>
 </function>

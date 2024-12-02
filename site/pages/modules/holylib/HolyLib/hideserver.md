@@ -5,6 +5,6 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="hide" type="boolean">hide - true to hide the server from the serverlist.</arg>
+		<arg name="hide" type="Boolean">hide - true to hide the server from the serverlist.</arg>
 	</args>
 </function>
