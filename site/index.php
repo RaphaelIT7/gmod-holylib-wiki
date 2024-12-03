@@ -165,7 +165,7 @@
                 array(
                     'mdi' => 'mdi-database',
                     'name' => 'ConVars',
-                    'path' => 'modules/pvs/convars',
+                    'path' => 'modules/surffix/convars',
                     'tags' => 'true',
                 ),
             ),
