@@ -1,12 +1,6 @@
 <?php
-	error_reporting(E_ALL);
-	ini_set('display_errors', 'On');
-
-    include('Extention.php');
-    include('mysql.php');
-
-    $MySQL = new MySQL();
-    $MySQL->Init();
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'On');
 
     $config = array(
         'name' => "HolyLib Wiki", 
@@ -15,6 +9,7 @@
         'pages_path' => 'pages/',
         'issues_url' => 'https://github.com/RaphaelIT7/gmod-holylib/issues/',
         'code_language' => 'lua', // lua or c++
+        'icon' => '',
     );
 
     $categories = array(
@@ -451,8 +446,8 @@
         ),
     );
 
-	# I hate this so much XD
-	$requestedFile = $_SERVER['REQUEST_URI'];
+    # I hate this so much XD
+    $requestedFile = $_SERVER['REQUEST_URI'];
     if (preg_match('/\.ttf.*$/', $requestedFile)) {
         $contentType = 'font/ttf';
     } elseif (preg_match('/\.eot.*$/', $requestedFile)) {
@@ -467,11 +462,11 @@
     {
         header("Content-Type: $contentType");
         if ($contentType == 'font/ttf')
-        	readfile("fonts/materialdesignicons-webfont.ttf");
+            readfile("fonts/materialdesignicons-webfont.ttf");
         else if ($contentType == 'font/woff')
-        	readfile("fonts/materialdesignicons-webfont.woff");
-       	else if ($contentType == 'font/woff2')
-        	readfile("fonts/materialdesignicons-webfont.woff2");
+            readfile("fonts/materialdesignicons-webfont.woff");
+           else if ($contentType == 'font/woff2')
+            readfile("fonts/materialdesignicons-webfont.woff2");
         exit(0);
     }
 
@@ -481,26 +476,32 @@
         $config['code_funcseparator'] = ':';
     }
 
+    include('Extention.php');
+    include('mysql.php');
+    include('Importer.php');
+
+    $MySQL = new MySQL();
+    $MySQL->Init();
+
     $Parsedown = new Extension();
     $Parsedown->config = $config;
     $Parsedown->categories = $categories;
 
-    $title = $config['name'];
-    if (isset($_GET["page"]))
-    {
-        $path = $Parsedown->FindFile($_GET["page"]);
+    $Importer = new Importer();
+    $Importer->Init($MySQL, $Parsedown);
+    $Importer->ImportEverything($categories, $config);
 
-        if (isset($path)) {
-            $file = file_get_contents($path);
-            $title = $Parsedown->PageTitle($file);  
-        } else {
-            $file = file_get_contents($config['pages_path'] . $config['missing_page']);
-            $title = $Parsedown->PageTitle($file); 
-        }
+    if (isset($_GET['url'])) {
+        $currentPage = $_GET['url'];
     } else {
-        $file = file_get_contents($config['pages_path'] . $config['front_page']);
-        $title = $Parsedown->PageTitle($file); 
+        $currentUrl = $_SERVER['REQUEST_URI'];
+        $currentPage = strtr(substr(parse_url($currentUrl, PHP_URL_PATH), 1), array("gmod/" => ""));
     }
+
+    //title = $config['name'];
+    $title = $MySQL->GetTitle($currentPage);
+    if (!isset($title))
+        $missing = True;
 ?>
 
 <?php if (!isset($_GET["format"])): ?>
@@ -520,9 +521,9 @@
         <meta name="theme-color" content="#0082ff">
 
         <meta property="og:title" name="og:title" content="<?php echo $config['name']; ?>">
-	    <meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
-	    <meta property="og:type" name="og:type" content="website">
-	    <meta property="og:description" name="og:description" content="Welcome to the HolyLib Wiki.&#xA;Here you will the documentation about HolyLib.&#xA;">
+        <meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
+        <meta property="og:type" name="og:type" content="website">
+        <meta property="og:description" name="og:description" content="Welcome to the HolyLib Wiki.&#xA;Here you will the documentation about HolyLib.&#xA;">
         <script>WikiRealm = "gmod";</script>
     </head>
     <style>
@@ -566,7 +567,7 @@
                         echo '<a href="';
                         if (isset($_GET["page"]))
                         {
-                            echo '/?page=' . $_GET["page"];
+                            echo '/' . $_GET["page"];
                         } else {
                             echo '/';
                         }
@@ -582,8 +583,24 @@
 
             <div class="content">
                 <div class="content">
+                    <h1 class="pagetitle" id="pagetitle"><?php echo $title; ?></h1>
+                    <div class="markdown" id="pagecontent">
+                        <?php
+                            if (isset($missing)) {
+                                echo '<a name="notfound" class="anchor_offset"></a>';
+                                echo '<h1>Not Found<a class"anchor" href="#notfound"><i class="mdi mdi-link-variant"></i></a></h1>This page is missing.';
+                            } else {
+                                echo $MySQL->GetHTML($currentPage);
+                            }   
+                        ?>
+                    </div>
+                </div>
+
+                <div class="footer" id="pagefooter">
                     <?php
-                        echo $Parsedown->ViewText($file);      
+                        echo 'Page views: ' . $MySQL->GetIncreasedViews($currentPage);
+                        echo '<br>';
+                        echo 'Updated: ' . $MySQL->GetLastUpdated($currentPage);
                     ?>
                 </div>
             </div>
@@ -593,25 +610,25 @@
         </div>
 
         <div id="sidebar">
-			<div>
-				<div id="ident">
-					<div class="icon">
-						<a href="/">
-							<img src="https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png" />
-						</a>
-					</div>
-					<h1 class="title">
-						<a href="/"><?php echo $config['name']; ?></a>
-					</h1>
-				</div>
+            <div>
+                <div id="ident">
+                    <div class="icon">
+                        <a href="/">
+                            <img src="https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png" />
+                        </a>
+                    </div>
+                    <h1 class="title">
+                        <a href="/"><?php echo $config['name']; ?></a>
+                    </h1>
+                </div>
 
-				<div id="topbar">
-					<div class="search">
-						<input autocomplete="off" id="search" type="search" placeholder="press / to quick search" />
-					</div>
-				</div>
+                <div id="topbar">
+                    <div class="search">
+                        <input autocomplete="off" id="search" type="search" placeholder="press / to quick search" />
+                    </div>
+                </div>
 
-				<div id="searchresults"></div>
+                <div id="searchresults"></div>
 
                 <div id="contents">
                     <?php
@@ -632,29 +649,27 @@
                                     if (is_dir($path . $page)) {
                                         echo '<details class="level2 cm type e">';
                                             echo '<summary>';
-                                                $categoryfile = file_get_contents($path . '/' . $page . '/' . $page . '.md');
-                                                echo '<a class="' . $Parsedown->GetTags($categoryfile) . '" href="/?page=' . $page . '">' . $Parsedown->PageTitle($categoryfile) . '</a>';
+                                                $sqlPage = $MySQL->GetFullPageByFile($path . '/' . $page . '/' . $page . '.md');
+                                                echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
                                             echo '</summary>';
                                             echo '<ul>';
                                                 $fullpath = $path . $page;
                                                 $files2 = array_diff(scandir($fullpath), array('..', '.', $page . '.md'));
                                                 foreach($files2 as &$page2) {
-                                                    $file = file_get_contents($fullpath . '/' . $page2);
-                                                    $pagetitle = $Parsedown->PageTitle($file); 
+                                                    $sqlPage = $MySQL->GetFullPageByFile($fullpath . '/' . $page2);
 
                                                     $page2 = substr($page2, 0, strripos($page2, '.'));
 
                                                     echo '<li>';
-                                                        echo '<a class="' . $Parsedown->GetTags($file) . '" href="/?page=' . $page2 . '" search="' . $pagetitle . '">' . $Parsedown->PageTitle($file) . '</a>';
+                                                        echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
                                                     echo '</li>';
                                                 }
                                             echo '</ul>';
                                         echo '</details>';
                                     } else {
-                                        $file = file_get_contents($path . '/' . $page);
-                                        $page = substr($page, 0, strripos($page, '.'));
+                                        $sqlPage = $MySQL->GetFullPageByFile($path . '/' . $page);
 
-                                        echo '<a class="' . (isset($chapter['tags']) ? $Parsedown->GetTags($file) : '') . '" href="/?page=' . $page . '" search="' . $page . '">' . $Parsedown->PageTitle($file) . '</a>';
+                                        echo '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
                                     }
 
                                     echo '</li>';
@@ -824,61 +839,63 @@
                 }
             }
 
-			var sidebar = document.getElementById( "sidebar" );
-			var active = sidebar.getElementsByClassName( "active" );
-			if ( active.length == 1 )
-			{
-				active[0].scrollIntoView( { smooth: true, block: "center" } );
-			}
+            var sidebar = document.getElementById( "sidebar" );
+            var active = sidebar.getElementsByClassName( "active" );
+            if ( active.length == 1 )
+            {
+                active[0].scrollIntoView( { smooth: true, block: "center" } );
+            }
 
-			InitSearch();
-		</script>
+            InitSearch();
+            Navigate.Install();
+        </script>
     </body>
 </html>
 <?php else:
     header('Content-Type:text/plain');
     if ($_GET["format"] === 'text') {
-        echo $MySQL->GetMarkup($current_page);
+        echo $MySQL->GetMarkup($currentPage);
     } elseif ($_GET["format"] === 'html') {
-        echo $MySQL->GetHTML($current_page);
+        echo $MySQL->GetHTML($currentPage);
     } elseif ($_GET["format"] === 'json') {
         function escapeForJson($string) {
             return json_encode(str_replace(array("\n", "\r", "\t"), '', $string));
         }
 
-        echo '{
-            "title":"' . $title .'",
-            "wikiName":"' . $config['name'] . '",
-            "wikiIcon":"' . $config['icon'] . '",
-            "wikiUrl":"gmod","address":"' . $current_page. '",
-            "createdTime":"2020-01-21T17:09:42.1+00:00",
-            "updateCount":"' . $MySQL->GetLastUpdated($current_page) . '",
-            "markup":' . json_encode($MySQL->GetMarkup($current_page)) . ',
-            "html":' . escapeForJson($MySQL->GetHTML($current_page)) . ',
-            "footer":
-                "Page views: ' . $MySQL->GetViews($current_page) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($current_page) . '",
-                "revisionId":0,
-                "pageLinks":[
-                    {
-                        "url":"' . (isset($_GET['url']) ? $_GET['url'] : $current_page) .'",
-                        "label":"View",
-                        "icon":"file",
-                        "description":""
-                    },
-                    {
-                        "url":"' . (isset($_GET['url']) ? $_GET['url'] : $current_page) .'~edit",
-                        "label":"Edit",
-                        "icon":"pencil",
-                        "description":""
-                    },
-                    {
-                        "url":"' . (isset($_GET['url']) ? $_GET['url'] : $current_page) .'~history",
-                        "label":"History",
-                        "icon":"history",
-                        "description":""
-                    }
-                ]
-            }';
+echo '{
+    "title": "' . $title .'",
+    "wikiName": "' . $config['name'] . '",
+    "wikiIcon": "' . $config['icon'] . '",
+    "wikiUrl": "gmod",
+    "tags": "' . $MySQL->GetSearchTags($currentPage) . '",
+    "address": ' . escapeForJson($currentPage) . ',
+    "createdTime": "2020-01-21T17:09:42.1+00:00",
+    "updateCount": ' . $MySQL->GetUpdateCount($currentPage) . ',
+    "markup":' . json_encode($MySQL->GetMarkup($currentPage)) . ',
+    "html":' . escapeForJson($MySQL->GetHTML($currentPage)) . ',
+    "footer": "Page views: ' . $MySQL->GetViews($currentPage) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($currentPage) . '",
+    "revisionId": ' . $MySQL->GetRevision($currentPage) . ',
+    "pageLinks":[
+        {
+            "url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'",
+            "label":"View",
+            "icon":"file",
+            "description":""
+        },
+        {
+            "url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'~edit",
+            "label":"Edit",
+            "icon":"pencil",
+            "description":""
+        },
+        {
+            "url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'~history",
+            "label":"History",
+            "icon":"history",
+            "description":""
+        }
+    ]
+}';
     }
 
     endif;

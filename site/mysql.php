@@ -1,7 +1,7 @@
 <?php
     class MySQL {
         private $servername = "localhost";
-        private $username = "holylib"; # XAMPP login :^
+        private $username = "holylib"; # locahost only user :^
         private $password = "holylibiscool";
         private $db = "holylib_wiki";
         private $conn;
@@ -79,17 +79,33 @@
             return rtrim($display);
         }
 
-        public function AddPageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $updateCount = 0) {
+        public function AddPageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $updateCount = 0) {
             $exists = $this->GetFullPage($address);
             if (!isset($exists)) {
-                $stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, views, updated, revisionId, category, display_tags) 
-                VALUES (?, ?, ?, ?, $updateCount, ?, ?, $views, ?, $revisionId, ?, ?)");
-                $stmt->bind_param("sssssssss", $title, $tags, $address, $createdTime, $markup, $html, $updated, $category, $this->TagsToDisplay($tags));
+                $stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, views, updated, revisionId, category, searchTags, fileTime, filePath) 
+                VALUES (?, ?, ?, ?, $updateCount, ?, ?, $views, ?, $revisionId, ?, ?, 0, '')");
+                $stmt->bind_param("sssssssss", $title, $tags, $address, $createdTime, $markup, $html, $updated, $category, $searchTags);
                 $stmt->execute();
                 $stmt->close();
             } else {
-                $stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=? category=?, display_tags=? WHERE address=?");
-                $stmt->bind_param("sssissisisss", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $address, $category, $this->TagsToDisplay($tags));
+                $stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=? category=?, searchTags=? WHERE address=?");
+                $stmt->bind_param("sssissisisss", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $address);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+
+        public function AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount = 0) {
+            $exists = $this->GetFullPage($address);
+            if (!isset($exists)) {
+                $stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, views, updated, revisionId, category, searchTags, fileTime, filePath) 
+                VALUES (?, ?, ?, ?, $updateCount, ?, ?, $views, ?, $revisionId, ?, ?, $fileTime, ?)");
+                $stmt->bind_param("ssssssssss", $title, $tags, $address, $createdTime, $markup, $html, $updated, $category, $searchTags, $filePath);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                $stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=? WHERE filePath=?");
+                $stmt->bind_param("sssissisissis", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath);
                 $stmt->execute();
                 $stmt->close();
             }
@@ -97,6 +113,24 @@
 
         public function GetFullPage($address) {
             $result = mysqli_query($this->conn, "SELECT * FROM pages WHERE address = '" . $this->SQLStr($address) . "' LIMIT 1");
+
+            if ($result) {
+                if (mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    mysqli_free_result($result);
+
+                    return $row;
+                } else {
+                    mysqli_free_result($result);
+                    return;
+                }
+            } else {
+                echo "Error: " . mysqli_error($this->conn);
+            }
+        }
+
+        public function GetFullPageByFile($path) {
+            $result = mysqli_query($this->conn, "SELECT * FROM pages WHERE filePath = '" . $this->SQLStr($path) . "' LIMIT 1");
 
             if ($result) {
                 if (mysqli_num_rows($result) > 0) {
@@ -140,6 +174,23 @@
             }
         }
 
+        public function GetIncreasedViews($address) {
+            $stmt = $this->conn->prepare("SELECT views FROM pages WHERE address = ? LIMIT 1");
+            $stmt->bind_param("s", $address);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+            	$newViews = $row['views'] + 1;
+                $stmt = $this->conn->prepare("UPDATE pages SET views = ? WHERE address = ? LIMIT 1");
+                $stmt->bind_param("is", $newViews, $address);
+                $stmt->execute();
+
+                return $newViews;
+            } else {
+                return null;
+            }
+        }
+
         public function GetCategory($address) {
             $stmt = $this->conn->prepare("SELECT category FROM pages WHERE address = ? LIMIT 1");
             $stmt->bind_param("s", $address);
@@ -161,6 +212,30 @@
                  return $row['updateCount'];
             } else {
                 return 0;
+            }
+        }
+
+        public function GetRevision($address) {
+            $stmt = $this->conn->prepare("SELECT revisionId FROM pages WHERE address = ? LIMIT 1");
+            $stmt->bind_param("s", $address);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                 return $row['revisionId'];
+            } else {
+                return 0;
+            }
+        }
+
+        public function GetSearchTags($address) {
+            $stmt = $this->conn->prepare("SELECT searchTags FROM pages WHERE address = ? LIMIT 1");
+            $stmt->bind_param("s", $address);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                 return $row['searchTags'];
+            } else {
+                return '';
             }
         }
 
@@ -259,10 +334,11 @@
                 html TEXT,
                 views BIGINT DEFAULT 0,
                 updated VARCHAR(32),
-                revisionId BIGINT UNIQUE,
+                revisionId BIGINT DEFAULT 0,
                 category VARCHAR(32),
-                display_tags VARCHAR(64),
+                searchTags VARCHAR(64),
                 fileTime BIGINT,
+                filePath VARCHAR(255),
                 INDEX idx_category (category)
             );");
         }
