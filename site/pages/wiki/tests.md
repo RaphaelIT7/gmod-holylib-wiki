@@ -1,3 +1,5 @@
+<title>Tests</title>
+
 # < ambig >
 <ambig page="Bug">You might be looking for the "Bug" function, which has the same name as this function on the case-insensitive wiki.</ambig>
 

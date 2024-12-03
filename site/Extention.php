@@ -75,7 +75,7 @@
             return $url;
         }
 
-        function PageTitle($text)
+        function PageTitle($text, $fullName = NULL)
         {
             $title = $this->config['name'];
             if (preg_match('/<title>(.*?)<\/title>/', $text, $matches)) {
@@ -83,29 +83,20 @@
             }
 
             if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
-                 $title = $matches[1];
+                if (isset($fullName))
+                {
+                    if($matches[3] == 'classfunc' && $this->config['code_language'] == 'lua') {
+                        $title = $matches[2] . ':' . $matches[1];
+                    } else {
+                        $title = $matches[2] . $this->config['code_funcseparator'] . $matches[1];
+                    }
+                } else {
+                       $title = $matches[1];
+                   }
             }
 
             if (preg_match('/<type name="([^"]+)" category="([^"]+)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
                 $title = $matches[1];
-            }
-
-            return $title;
-        }
-
-        function ClassPageTitle($text)
-        {
-            $title = $this->config['name'];
-            if (preg_match('/<title>(.*?)<\/title>/', $text, $matches)) {
-                $title = $matches[1];
-            }
-
-            if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
-                if($matches[3] == 'classfunc') {
-                    $title = $matches[2] . ':' . $matches[1];
-                } else {
-                    $title = $matches[1];
-                }
             }
 
             return $title;
@@ -260,23 +251,23 @@
         }
 
         protected function getFunctionName($func)
-       	{
-       		if (!isset($func['parent']))
-       			return $func['name'];
+           {
+               if (!isset($func['parent']))
+                   return $func['name'];
 
-       		$outPut = $func['parent'];
+               $outPut = $func['parent'];
 
-       		if (isset($func['type']) && $func['type'] == 'libraryfunc')
-       			$outPut .= '.';
-       		else if (isset($func['type']) && $func['type'] == 'hook')
-       			$outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
-       		else
-       			$outPut .= $this->config['code_funcseparator'];
+               if (isset($func['type']) && $func['type'] == 'libraryfunc')
+                   $outPut .= '.';
+               else if (isset($func['type']) && $func['type'] == 'hook')
+                   $outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
+               else
+                   $outPut .= $this->config['code_funcseparator'];
 
-       		$outPut .= $func['name'];
+               $outPut .= $func['name'];
 
-       		return $outPut;
-       	}
+               return $outPut;
+           }
 
         protected function buildFunction($func)
         {
@@ -591,7 +582,7 @@
             $html = '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="';
             $html .= "/?page=" . $page;
             $html .= '">';
-                $html .= isset($name) && $name != '' ? $name : $page;
+                $html .= isset($name) && $name != '' ? $name : $this->PageTitle(file_get_contents($file), true);
             $html .= '</a>';
 
             return $html;
@@ -603,7 +594,7 @@
 
             $html = '<div class="ambig">';
                 $html .= '<div class="target">';
-                    $html .= '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="/?page=' . $page . '">' . (isset($file) ? $this->ClassPageTitle(file_get_contents($file)) : $page) . '</a>';
+                    $html .= '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="/?page=' . $page . '">' . (isset($file) ? $this->PageTitle(file_get_contents($file), true) : $page) . '</a>';
                 $html .= '</div>';
                 $html .= '<div class="desc">';
                     $html .= $text;

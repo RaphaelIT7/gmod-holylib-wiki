@@ -5,9 +5,9 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="ply / userid" type="Player / Number">---</arg>
-		<arg name="signOnState" type="Number">---</arg>
-		<arg name="spawnCount" type="Number">---</arg>
+		<arg name="ply" type="Player">The player to set the SignOnState for. Can also be the userID</arg>
+		<arg name="signOnState" type="number"></arg>
+		<arg name="spawnCount" type="number"></arg>
 	</args>
 	<rets>
 		<ret name="success" type="boolean">returns `true` on success</ret>
