@@ -11,6 +11,7 @@
         public $config;
         public $categories;
         protected $lua_keywords = array('and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for', 'function', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat', 'return', 'then', 'true', 'until', 'while', 'continue');
+        protected $lua_operators = array('&&', '!=', '==', '>=', '<=', '||', '#', '+', '-', '*', '/', '%', '^', '~=', '<', '>', '..');
         protected $cpp_keywords = array(
             'alignas', 'alignof', 'and', 'and_eq', 'asm', 'auto',
             'bitand', 'bitor', 'bool', 'break', 'case', 'catch', 'char', 'char16_t', 'char32_t', 'class', 'compl', 'const', 'constexpr', 'const_cast', 'continue',
@@ -646,10 +647,18 @@
                     $code = $exam['code'];
 
                     if ($this->config['code_language'] == 'lua') {
+                        /*foreach($this->lua_operators as $operator)
+                        {
+                            $code = preg_replace('/(?<![<\w])' . preg_quote($operator, '/') . '(?![>\w])/', '<span class="operator">' . $operator . '</span>', $code);
+                        }*/
+
+                        $code = preg_replace('/"(.*?)"/', '<span class="string">"$1"</span>', $code);
+
                         foreach($this->lua_keywords as $keyword)
                         {
                             $code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
                         }
+
                         $code = preg_replace('/--(.*?)\n/', '<span class="comment">--$1</span>', $code);
                         $code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
                         $code = preg_replace('/--\[\[(.*?)\]\]/s', '<span class="multiline-comment">--[[$1]]</span>', $code);
