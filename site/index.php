@@ -19,8 +19,8 @@
             'categories' => array(
                 array(
                     'mdi' => 'mdi-book',
-                    'name' => 'Installation',
-                    'path' => 'installation',
+                    'name' => 'Basics',
+                    'path' => 'basics',
                 ),
                 array(
                     'mdi' => 'mdi-book',
