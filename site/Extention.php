@@ -98,7 +98,7 @@
                    }
             }
 
-            if (preg_match('/<type name="([^"]+)" category="([^"]+)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
+            if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
                 $title = $matches[1];
             }
 
@@ -399,6 +399,12 @@
                 #$html .= '<div class="section">';
                 #    $html .= $this->text($type['summ']);
                 #$html .= '</div>';
+                if ($type['is'] = 'convar')
+                {
+                	$html .= '</div>';
+                	return $html;
+                }
+
                 $html .= '<div class="members">';
                     $html .= '<h1>Methods</h1>';
                     $html .= '<div class="section">';
@@ -869,7 +875,7 @@
                 $markup .= $this->buildFunction($function);
             }
 
-            if (preg_match('/<type name="([^"]+)" category="([^"]+)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
+            if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
                 $special = true;
                 $type = array();
                 $type['name'] = $matches[1];
