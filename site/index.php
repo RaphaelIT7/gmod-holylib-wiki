@@ -3,6 +3,10 @@
 	ini_set('display_errors', 'On');
 
     include('Extention.php');
+    include('mysql.php');
+
+    $MySQL = new MySQL();
+    $MySQL->Init();
 
     $config = array(
         'name' => "HolyLib Wiki", 
@@ -447,6 +451,30 @@
         ),
     );
 
+	# I hate this so much XD
+	$requestedFile = $_SERVER['REQUEST_URI'];
+    if (preg_match('/\.ttf.*$/', $requestedFile)) {
+        $contentType = 'font/ttf';
+    } elseif (preg_match('/\.eot.*$/', $requestedFile)) {
+        $contentType = 'application/vnd.ms-fontobject';
+    } elseif (preg_match('/\.woff.*$/', $requestedFile)) {
+        $contentType = 'font/woff';
+    } elseif (preg_match('/\.woff2.*$/', $requestedFile)) {
+        $contentType = 'font/woff2';
+    }
+
+    if (isset($contentType))
+    {
+        header("Content-Type: $contentType");
+        if ($contentType == 'font/ttf')
+        	readfile("fonts/materialdesignicons-webfont.ttf");
+        else if ($contentType == 'font/woff')
+        	readfile("fonts/materialdesignicons-webfont.woff");
+       	else if ($contentType == 'font/woff2')
+        	readfile("fonts/materialdesignicons-webfont.woff2");
+        exit(0);
+    }
+
     if ($config['code_language'] == 'c++') {
         $config['code_funcseparator'] = '::';
     } elseif ($config['code_language'] == 'lua') {
@@ -810,11 +838,47 @@
 <?php else:
     header('Content-Type:text/plain');
     if ($_GET["format"] === 'text') {
-        echo $file;
+        echo $MySQL->GetMarkup($current_page);
     } elseif ($_GET["format"] === 'html') {
-        echo $Parsedown->text($file);
+        echo $MySQL->GetHTML($current_page);
     } elseif ($_GET["format"] === 'json') {
-        //echo '{"title":"' . $title .'","wikiName":"' . $config['name'] . '","wikiIcon":"https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png","wikiUrl":"gmod","address":"' . (isset($_GET["page"]) ? $_GET["page"] : '') . '","createdTime":"2020-01-21T17:09:42.1+00:00","updateCount":0,"markup":"' . $file . '","html":"' . $Parsedown->text($file) . '","footer":"","revisionId":0,"pageLinks":[{"url":"/gmod/Global.CreateSound","label":"View","icon":"file","description":""},{"url":"","label":"Edit","icon":"pencil","description":""},{"url":"","label":"History","icon":"history","description":""}]}';
+        function escapeForJson($string) {
+            return json_encode(str_replace(array("\n", "\r", "\t"), '', $string));
+        }
+
+        echo '{
+            "title":"' . $title .'",
+            "wikiName":"' . $config['name'] . '",
+            "wikiIcon":"' . $config['icon'] . '",
+            "wikiUrl":"gmod","address":"' . $current_page. '",
+            "createdTime":"2020-01-21T17:09:42.1+00:00",
+            "updateCount":"' . $MySQL->GetLastUpdated($current_page) . '",
+            "markup":' . json_encode($MySQL->GetMarkup($current_page)) . ',
+            "html":' . escapeForJson($MySQL->GetHTML($current_page)) . ',
+            "footer":
+                "Page views: ' . $MySQL->GetViews($current_page) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($current_page) . '",
+                "revisionId":0,
+                "pageLinks":[
+                    {
+                        "url":"' . (isset($_GET['url']) ? $_GET['url'] : $current_page) .'",
+                        "label":"View",
+                        "icon":"file",
+                        "description":""
+                    },
+                    {
+                        "url":"' . (isset($_GET['url']) ? $_GET['url'] : $current_page) .'~edit",
+                        "label":"Edit",
+                        "icon":"pencil",
+                        "description":""
+                    },
+                    {
+                        "url":"' . (isset($_GET['url']) ? $_GET['url'] : $current_page) .'~history",
+                        "label":"History",
+                        "icon":"history",
+                        "description":""
+                    }
+                ]
+            }';
     }
 
     endif;

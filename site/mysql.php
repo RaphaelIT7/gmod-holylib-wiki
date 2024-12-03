@@ -1,9 +1,9 @@
 <?php
     class MySQL {
         private $servername = "localhost";
-        private $username = "root"; # XAMPP login :^
-        private $password = "";
-        private $db = "gmod_wiki";
+        private $username = "holylib"; # XAMPP login :^
+        private $password = "holylibiscool";
+        private $db = "holylib_wiki";
         private $conn;
 
         private function Connect() {
@@ -79,7 +79,7 @@
             return rtrim($display);
         }
 
-        public function AddPageOrUpdate($title, $tags, $address, $createdTime, $updateCount = 0, $markup, $html, $views, $updated, $revisionId, $category) {
+        public function AddPageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $updateCount = 0) {
             $exists = $this->GetFullPage($address);
             if (!isset($exists)) {
                 $stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, views, updated, revisionId, category, display_tags) 
@@ -262,6 +262,7 @@
                 revisionId BIGINT UNIQUE,
                 category VARCHAR(32),
                 display_tags VARCHAR(64),
+                fileTime BIGINT,
                 INDEX idx_category (category)
             );");
         }
