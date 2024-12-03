@@ -5,7 +5,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="ply" type="Player">The player to set the SignOnState for. Can also be the userID</arg>
+		<arg name="ply" type="Player">The player to set the SignOnState for. Can also be the userID(number)</arg>
 		<arg name="signOnState" type="number"></arg>
 		<arg name="spawnCount" type="number"></arg>
 	</args>
