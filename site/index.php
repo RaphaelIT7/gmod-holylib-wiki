@@ -56,6 +56,395 @@
                 ),
             ),
         ),
+        array(
+            'name' => 'gameevent', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/gameevent/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/gameevent/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/gameevent/classes',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/gameevent/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'precachefix', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/precachefix/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/precachefix/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'stringtable', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/stringtable/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/stringtable/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/stringtable/classes',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-format-list-numbered',
+                    'name' => 'Enums',
+                    'path' => 'modules/stringtable/enums',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'pvs', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/pvs/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/pvs/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-format-list-numbered',
+                    'name' => 'Enums',
+                    'path' => 'modules/pvs/enums',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/pvs/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'surffix', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/pvs/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'filesystem', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/filesystem/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/filesystem/convars',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-server',
+                    'name' => 'Commands',
+                    'path' => 'modules/filesystem/commands',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'util', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/util/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/util/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'concommand', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/concommand/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'vprof', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/vprof/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/vprof/classes',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-format-list-numbered',
+                    'name' => 'Enums',
+                    'path' => 'modules/pvs/enums',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/concommand/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'cvars', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/cvars/libraries',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'sourcetv', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/sourcetv/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/sourcetv/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/sourcetv/classes',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-format-list-numbered',
+                    'name' => 'Enums',
+                    'path' => 'modules/sourcetv/enums',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/sourcetv/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'bitbuf', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/bitbuf/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/bitbuf/classes',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'steamworks', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/steamworks/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/steamworks/hooks',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'systimer', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/systimer/libraries',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'pas', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/pas/libraries',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'voicechat', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/voicechat/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/voicechat/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/voicechat/classes',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-database',
+                    'name' => 'ConVars',
+                    'path' => 'modules/voicechat/convars',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'physenv', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/physenv/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-hook',
+                    'name' => 'Hooks',
+                    'path' => 'modules/physenv/hooks',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/physenv/classes',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-format-list-numbered',
+                    'name' => 'Enums',
+                    'path' => 'modules/physenv/enums',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'bass', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/bass/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/bass/classes',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
+        array(
+            'name' => 'entitiylist', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/entitiylist/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/entitiylist/classes',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
     );
 
     if ($config['code_language'] == 'c++') {
@@ -206,7 +595,7 @@
                                 echo '<details class="level1">';
 
                                 $path = $config['pages_path'] . $chapter['path'] . '/';
-                                $files = array_diff(scandir($path), array('..', '.'));
+                                $files = file_exists($path) ? array_diff(scandir($path), array('..', '.')) : array();
                                 echo '<summary><div><i class="mdi ' . $chapter['mdi'] . '"></i>' . $chapter['name'] . ' <span class="child-count">' . count($files) . '</span></div></summary>';
 
                                 echo '<ul>';

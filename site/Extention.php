@@ -41,6 +41,9 @@
                 foreach ($category['categories'] as &$chapter) {
                     $shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
                     $path = $shortpath  . $file . '.md';
+                    
+                    if (!file_exists($shortpath))
+                        continue;
 
                     $files = array_diff(scandir($shortpath), array('..', '.'));
                     foreach($files as $file2) {
@@ -230,7 +233,7 @@
         {
             $image = parent::inlineImage($excerpt);
 
-            if ( ! isset($image))
+            if (!isset($image))
             {
                 return null;
             }
@@ -316,7 +319,7 @@
 
                         $html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
                     } else {
-                        $html .= ' ' . $this->getFunctionName($func) . "()";
+                        $html .= ' ' . $this->getFunctionName($func) . ($func['type'] == 'libraryfield') ? '' : "()";
                     }
                 $html .= '</div>';
 
