@@ -24,6 +24,9 @@ Hold <key>C</key> to open the context menu.
 # < removed >
 <removed>Hi2</removed>
 
+# < warning >
+<warning>Hi2</warning>
+
 # < validate >
 <validate>Does this function exist?</validate>
 

@@ -240,13 +240,13 @@
                 array(
                     'mdi' => 'mdi-format-list-numbered',
                     'name' => 'Enums',
-                    'path' => 'modules/pvs/enums',
+                    'path' => 'modules/vprof/enums',
                     'tags' => 'true',
                 ),
                 array(
                     'mdi' => 'mdi-database',
                     'name' => 'ConVars',
-                    'path' => 'modules/concommand/convars',
+                    'path' => 'modules/vprof/convars',
                     'tags' => 'true',
                 ),
             ),

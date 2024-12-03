@@ -358,7 +358,7 @@
                                 $html .= '<span class="default"> = ' . $arg['default'] . '</span>';
                             }
                             $html .= '<div class="numbertagindent">';
-                                $html .= $arg['desc'];
+                                $html .= $this->text($arg['desc']);
                             $html .= '</div>';
                         $html .= '</div>';
                     }
@@ -381,7 +381,7 @@
                                 $html .= '<span class="default"> = ' . $arg['default'] . '</span>';
                             }
                             $html .= '<div class="numbertagindent">';
-                                $html .= $arg['desc'];
+                                $html .= $this->text($arg['desc']);
                             $html .= '</div>';
                         $html .= '</div>';
                     }
@@ -399,7 +399,7 @@
                 #$html .= '<div class="section">';
                 #    $html .= $this->text($type['summ']);
                 #$html .= '</div>';
-                if ($type['is'] = 'convar')
+                if ($type['is'] == 'convar')
                 {
                 	$html .= '</div>';
                 	return $html;
@@ -677,6 +677,27 @@
             return $html;
         }
 
+        protected function buildCallback($text)
+        {
+            $html = '<div class="callback_args">';
+            	$html .= 'Function argument(s): ';
+                $args = $this->GetStuff($text, 'callback', 'arg');
+                $idx = 0;
+                foreach($args as $arg)
+                {
+                	$idx = $idx + 1;
+                	$html .= '<div>';
+                		$html .= '<span class="numbertag">' . $idx . '</span>';
+                		$html .= '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="/?page=' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
+                        $html .= '<strong> ' . $arg['name'] . '</strong>';
+                        $html .= ' - ' . $this->text($arg['desc']);
+                	$html .= '</div>';
+                }
+            $html .= '</div>';
+
+            return $html;
+        }
+
         function getrealm($realm) 
         {
             $data = array();
@@ -759,7 +780,7 @@
 
             if (preg_match_all('/<warning>(.*?)<\/warning>/', $text, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
-                    $text = str_replace('<warning>' . $match[1] . '</interwarningnal>', $this->buildWarning($match[1]), $text);
+                    $text = str_replace('<warning>' . $match[1] . '</warning>', $this->buildWarning($match[1]), $text);
                 }
             }
 
@@ -817,6 +838,12 @@
             if (preg_match_all('/<bug\s+issue="([^"]+)">([^<]+)<\/bug>/', $text, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $text = str_replace('<bug issue="' . $match[1] . '">' . $match[2] . '</bug>', $this->buildBug($match[2], $match[1]), $text);
+                }
+            }
+
+            if (preg_match_all('/<callback>([\s\S]+?)<\/callback>/', $text, $matches, PREG_SET_ORDER)) {
+                foreach ($matches as $match) {
+                    $text = str_replace('<callback>' . $match[1] . '</callback>', $this->buildCallback($match[1]), $text);
                 }
             }
 
@@ -940,6 +967,8 @@
             {
                 $title = $matches[1];
             }
+
+            $markup = preg_replace('!^<p>(.*?)</p>$!i', '$1', $markup);
 
             #$text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
 
