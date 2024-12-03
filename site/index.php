@@ -523,7 +523,7 @@
         <meta property="og:title" name="og:title" content="<?php echo $config['name']; ?>">
         <meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
         <meta property="og:type" name="og:type" content="website">
-        <meta property="og:description" name="og:description" content="Welcome to the HolyLib Wiki.&#xA;Here you will the documentation about HolyLib.&#xA;">
+        <meta property="og:description" name="og:description" content="Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;">
         <script>WikiRealm = "gmod";</script>
     </head>
     <style>
