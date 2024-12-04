@@ -609,9 +609,9 @@
         {
             $file = $this->FindFile($page);
             $html = '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="';
-            $html .= "/" . $page;
+            $html .= "/" . $this->SafeLink($page);
             $html .= '">';
-                $html .= isset($name) && $name != '' ? $name : (isset($file) ? $this->PageTitle($this->OpenFile($file), true) : '');
+                $html .= isset($name) && $name != '' ? $name : (isset($file) ? $this->PageTitle($this->OpenFile($file), true) : $this->SafeLink($page));
             $html .= '</a>';
 
             return $html;
