@@ -104,6 +104,8 @@
                 {
                     if($matches[3] == 'classfunc' && $this->config['code_language'] == 'lua') {
                         $title = (strlen($matches[2]) > 0 ? ($matches[2] . ':') : '') . $matches[1];
+                    } else if($matches[3] == 'libraryfunc' && $this->config['code_language'] == 'lua') {
+                        $title = (strlen($matches[2]) > 0 ? ($matches[2] . '.') : '') . $matches[1];
                     } else {
                         $title = (strlen($matches[2]) > 0 ? ($matches[2] . $this->config['code_funcseparator']) : '') . $matches[1];
                     }
