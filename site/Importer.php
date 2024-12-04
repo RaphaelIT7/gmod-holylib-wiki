@@ -11,7 +11,7 @@
             return $input;
         }
 
-        public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0) {
+        public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0, $addressOverride = NULL) {
             $lastChanged = filemtime($page);
             $sqlPage = $this->MySQL->GetFullPageByFile($page);
             if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) # file wasn't updated
@@ -21,7 +21,7 @@
 
             $title = $this->Parser->PageTitle($file);
             $tags = $this->Parser->GetTags($file);
-            $address = $this->Parser->PageAddress($file);
+            $address = isset($addressOverride) ? $addressOverride : $this->Parser->PageAddress($file);
             $createdTime = isset($sqlPage) ? $sqlPage['createdTime'] : '';
             $markup = $file;
             $html = $this->Parser->text($file);
@@ -66,6 +66,8 @@
                     }
                 }
             }
+
+            $this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, "");
         }
 
         public function Init($MySQL, $Parser) {
