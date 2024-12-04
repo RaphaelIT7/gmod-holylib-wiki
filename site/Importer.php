@@ -33,7 +33,6 @@
             $fileTime = $lastChanged;
             $filePath = $page;
             $updateCount = isset($sqlPage) ? ($sqlPage['updateCount'] + 1) : 0;
-            #echo "Updating " . $page;
 
             $this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
 
@@ -44,7 +43,10 @@
             #$this->ImportPage($categoryFilePath, $category, true);
 
             if (!$fullUpdate)
+            {
+            	# echo 'Making full update! (' . $filePath . ')';
             	$this->ImportEverything(true);
+            }
         }
 
         public function ImportEverything($fullUpdate = false) {

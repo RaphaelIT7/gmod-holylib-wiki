@@ -32,6 +32,6 @@ Hold <key>C</key> to open the context menu.
 
 | Name | Effects |
 |-------|------|
-| [text](https://wiki.facepunch.com/gmod/GM:DoPlayerDeath?format=text) | Returns only the markup of the page in plain text |
-| [html](https://wiki.facepunch.com/gmod/GM:DoPlayerDeath?format=html) | (not 100% Supported!) Returns only the html of the page without any of the surrounding site content |
-| [json](https://wiki.facepunch.com/gmod/GM:DoPlayerDeath?format=json) | (Currently not Supported!) Returns a json summary of the content of the page, including the markup and parsed html |
+| [text](https://holylib.raphaelit7.com/Tests?format=text) | Returns only the markup of the page in plain text |
+| [html](hhttps://holylib.raphaelit7.com/Tests?format=html) | (not 100% Supported!) Returns only the html of the page without any of the surrounding site content |
+| [json](https://holylib.raphaelit7.com/Tests?format=json) | (Currently not Supported!) Returns a json summary of the content of the page, including the markup and parsed html |

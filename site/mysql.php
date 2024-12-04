@@ -147,6 +147,24 @@
             }
         }
 
+        public function GetPageForSidebarByFile($path) {
+            $result = mysqli_query($this->conn, "SELECT address, tags, title FROM pages WHERE filePath = '" . $this->SQLStr($path) . "' LIMIT 1");
+
+            if ($result) {
+                if (mysqli_num_rows($result) > 0) {
+                    $row = mysqli_fetch_assoc($result);
+                    mysqli_free_result($result);
+
+                    return $row;
+                } else {
+                    mysqli_free_result($result);
+                    return;
+                }
+            } else {
+                echo "Error: " . mysqli_error($this->conn);
+            }
+        }
+
         public function GetCategoryPages($category) {
             $stmt = $this->conn->prepare("SELECT address, title, category, display_tags FROM pages WHERE category = ?");
             $stmt->bind_param("s", $category);
@@ -339,7 +357,8 @@
                 searchTags VARCHAR(64),
                 fileTime BIGINT,
                 filePath VARCHAR(255),
-                INDEX idx_category (category)
+                INDEX idx_category (category),
+                INDEX idx_filePath (filePath)
             );");
         }
     }

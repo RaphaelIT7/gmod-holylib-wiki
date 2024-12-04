@@ -649,14 +649,14 @@
                                     if (is_dir($path . $page)) {
                                         echo '<details class="level2 cm type e">';
                                             echo '<summary>';
-                                                $sqlPage = $MySQL->GetFullPageByFile($path . $page . '/' . $page . '.md');
+                                                $sqlPage = $MySQL->GetPageForSidebarByFile($path . $page . '/' . $page . '.md');
                                                 echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
                                             echo '</summary>';
                                             echo '<ul>';
                                                 $fullpath = $path . $page;
                                                 $files2 = array_diff(scandir($fullpath), array('..', '.', $page . '.md'));
                                                 foreach($files2 as &$page2) {
-                                                    $sqlPage = $MySQL->GetFullPageByFile($fullpath . '/' . $page2);
+                                                    $sqlPage = $MySQL->GetPageForSidebarByFile($fullpath . '/' . $page2);
 
                                                     $page2 = substr($page2, 0, strripos($page2, '.'));
 
@@ -667,7 +667,7 @@
                                             echo '</ul>';
                                         echo '</details>';
                                     } else {
-                                        $sqlPage = $MySQL->GetFullPageByFile($path . $page);
+                                        $sqlPage = $MySQL->GetPageForSidebarByFile($path . $page);
 
                                         echo '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
                                     }
