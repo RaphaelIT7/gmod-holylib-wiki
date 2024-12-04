@@ -32,7 +32,7 @@
             $searchTags = '';
             $fileTime = $lastChanged;
             $filePath = $page;
-            $updateCount = isset($sqlPage) ? ($sqlPage['updateCount'] + 1) : 0;
+            $updateCount = isset($sqlPage) ? ($sqlPage['updateCount'] + ($fullUpdate ? ($sqlPage['html'] != $html ? 1 : 0) : 1)) : 0; # If were in a fullUpdate, then we only raise the updateCount if our HTML content actually changed.
 
             $this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
 
