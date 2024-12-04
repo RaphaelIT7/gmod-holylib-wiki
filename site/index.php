@@ -489,7 +489,7 @@
 
     $Importer = new Importer();
     $Importer->Init($MySQL, $Parsedown);
-    $Importer->ImportEverything();
+    $Importer->ImportEverything(); # I want to remove this later. Maybe having a cron job run it every minute would be better than every request?
 
     if (isset($_GET['url'])) {
         $currentPage = $_GET['url'];
