@@ -86,6 +86,12 @@
             return file_get_contents($path);
         }
 
+        function FileExists($path) {
+            $path = strtolower($path);
+
+            return file_exists($path);
+        }
+
         function PageTitle($text, $fullName = NULL)
         {
             $title = $this->config['name'];

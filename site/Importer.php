@@ -3,13 +3,21 @@
         private $MySQL;
         private $Parser;
 
-        public function ImportPage($page, $category, $view_count = 0) {
+        function getTextBeforeLastSlash($input) {
+            $lastSlashPosition = strrpos($input, '/');
+            if ($lastSlashPosition !== false)
+               return substr($input, 0, $lastSlashPosition);
+
+            return $input;
+        }
+
+        public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0) {
             $lastChanged = filemtime($page);
             $sqlPage = $this->MySQL->GetFullPageByFile($page);
-            if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged) # file wasn't updated
-            	return;
+            if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) # file wasn't updated
+                return;
 
-           	$file = $this->Parser->OpenFile($page);
+            $file = $this->Parser->OpenFile($page);
 
             $title = $this->Parser->PageTitle($file);
             $tags = $this->Parser->GetTags($file);
@@ -25,25 +33,35 @@
             $fileTime = $lastChanged;
             $filePath = $page;
             $updateCount = isset($sqlPage) ? ($sqlPage['updateCount'] + 1) : 0;
+            #echo "Updating " . $page;
 
             $this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
+
+            #$categoryFilePath = $this->getTextBeforeLastSlash($page) . '/' . $category . ".md";
+            #if (!$this->Parser->FileExists($categoryFilePath) || $page == $categoryFilePath)
+            # 	return;
+
+            #$this->ImportPage($categoryFilePath, $category, true);
+
+            if (!$fullUpdate)
+            	$this->ImportEverything(true);
         }
 
-        public function ImportEverything($categories, $config) {
-        	foreach ($categories as &$category) {
+        public function ImportEverything($fullUpdate = false) {
+            foreach ($this->Parser->categories as &$category) {
                 foreach ($category['categories'] as &$chapter) {
-                    $path = $config['pages_path'] . $chapter['path'] . '/';
+                    $path = $this->Parser->config['pages_path'] . $chapter['path'] . '/';
                     $files = file_exists($path) ? array_diff(scandir($path), array('..', '.')) : array();
                     foreach ($files as &$page) {
                         if (is_dir($path . $page)) {
-                            $this->ImportPage($path . '/' . $page . '/' . $page . '.md', $page);
+                            $this->ImportPage($path . $page . '/' . $page . '.md', $page, $fullUpdate);
                             $fullpath = $path . $page;
                             $subFiles = array_diff(scandir($fullpath), array('..', '.', $page . '.md'));
                             foreach($subFiles as &$subPage) {
-                            	$this->ImportPage($fullpath . '/' . $subPage, $page);
+                                $this->ImportPage($fullpath . '/' . $subPage, $page, $fullUpdate);
                             }
                         } else {
-                            $this->ImportPage($path . '/' . $page, $chapter['path']);
+                            $this->ImportPage($path . $page, $chapter['path'], $fullUpdate);
                         }
                     }
                 }

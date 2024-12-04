@@ -489,7 +489,7 @@
 
     $Importer = new Importer();
     $Importer->Init($MySQL, $Parsedown);
-    $Importer->ImportEverything($categories, $config);
+    $Importer->ImportEverything();
 
     if (isset($_GET['url'])) {
         $currentPage = $_GET['url'];
@@ -649,7 +649,7 @@
                                     if (is_dir($path . $page)) {
                                         echo '<details class="level2 cm type e">';
                                             echo '<summary>';
-                                                $sqlPage = $MySQL->GetFullPageByFile($path . '/' . $page . '/' . $page . '.md');
+                                                $sqlPage = $MySQL->GetFullPageByFile($path . $page . '/' . $page . '.md');
                                                 echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
                                             echo '</summary>';
                                             echo '<ul>';
@@ -667,7 +667,7 @@
                                             echo '</ul>';
                                         echo '</details>';
                                     } else {
-                                        $sqlPage = $MySQL->GetFullPageByFile($path . '/' . $page);
+                                        $sqlPage = $MySQL->GetFullPageByFile($path . $page);
 
                                         echo '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
                                     }
@@ -847,7 +847,7 @@
             }
 
             InitSearch();
-            Navigate.Install();
+            // Navigate.Install();
         </script>
     </body>
 </html>
