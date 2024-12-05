@@ -482,7 +482,7 @@
                                         $html .= $this->getFunctionName($func) . "()";
                                     }
                                     $html .= '<div class="summary">';
-                                        $html .= $this->text($func['desc']);
+                                        $html .= parent::text($func['desc']);
                                     $html .= '</div>';
                                 $html .= '</div>';
                             }
