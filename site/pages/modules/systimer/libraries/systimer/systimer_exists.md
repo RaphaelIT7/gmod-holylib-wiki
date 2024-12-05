@@ -7,6 +7,6 @@
 		<arg name="name" type="string">name of timer</arg>
 	</args>
 	<rets>
-		<ret name="success" type="boolean">Returns `true` if the given timer exists.</ret>
+		<ret name="success" type="boolean">Returns whether the timer exists or not.</ret>
 	</rets>
 </function>

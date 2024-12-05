@@ -8,6 +8,6 @@
 		<arg name="name" type="string">name of timer</arg>
 	</args>
 	<rets>
-		<ret name="success" type="boolean"></ret>
+		<ret name="success" type="boolean">Returns whether the timer was restarted or stopped.</ret>
 	</rets>
 </function>

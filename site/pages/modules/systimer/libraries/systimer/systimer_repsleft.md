@@ -8,6 +8,6 @@
 		<arg name="name" type="string">name of timer</arg>
 	</args>
 	<rets>
-		<ret name="" type="number"></ret>
+		<ret name="" type="number">Returns the Number of reps left.</ret>
 	</rets>
 </function>

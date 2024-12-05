@@ -7,6 +7,6 @@
 		<arg name="name" type="string">name of timer</arg>
 	</args>
 	<rets>
-		<ret name="success" type="boolean"></ret>
+		<ret name="success" type="boolean">Returns whether the timer was paused successfully or not.</ret>
 	</rets>
 </function>

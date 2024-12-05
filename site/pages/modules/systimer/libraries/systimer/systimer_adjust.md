@@ -11,6 +11,6 @@
 		<arg name="callback = nil" type="function"></arg>
 	</args>
 	<rets>
-		<ret name="success" type="boolean"></ret>
+		<ret name="success" type="boolean">Returns whether the adjustment was successful or not.</ret>
 	</rets>
 </function>
