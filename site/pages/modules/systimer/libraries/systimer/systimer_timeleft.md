@@ -1,4 +1,4 @@
-<function name="Adjust" parent="systimer" type="libraryfunc">
+<function name="TimeLeft" parent="systimer" type="libraryfunc">
 	<description>
 		Returns the time left until the given timer is executed again.
 		Returns `0` if the timer wasn't found.

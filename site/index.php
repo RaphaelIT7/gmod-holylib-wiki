@@ -631,7 +631,10 @@
                                                     $page2 = substr($page2, 0, strripos($page2, '.'));
 
                                                     echo '<li>';
-                                                        echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+                                                    	if (isset($sqlPage))
+                                                        	echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+                                                       	else
+                                                            echo '<p>' . $fullpath . '/' . $page2 . '</p>';
                                                     echo '</li>';
                                                 }
                                             echo '</ul>';
