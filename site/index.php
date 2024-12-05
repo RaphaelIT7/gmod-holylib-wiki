@@ -446,7 +446,7 @@
         $config['code_funcseparator'] = ':';
     }
 
-    include('Extention.php');
+    include('Extension.php');
     include('mysql.php');
     include('Importer.php');
 
