@@ -122,12 +122,6 @@
                     'path' => 'modules/stringtable/classes',
                     'tags' => 'true',
                 ),
-                array(
-                    'mdi' => 'mdi-format-list-numbered',
-                    'name' => 'Enums',
-                    'path' => 'modules/stringtable/enums',
-                    'tags' => 'true',
-                ),
             ),
         ),
         array(
@@ -143,12 +137,6 @@
                     'mdi' => 'mdi-hook',
                     'name' => 'Hooks',
                     'path' => 'modules/pvs/hooks',
-                    'tags' => 'true',
-                ),
-                array(
-                    'mdi' => 'mdi-format-list-numbered',
-                    'name' => 'Enums',
-                    'path' => 'modules/pvs/enums',
                     'tags' => 'true',
                 ),
                 array(
@@ -237,12 +225,6 @@
                     'tags' => 'true',
                 ),
                 array(
-                    'mdi' => 'mdi-format-list-numbered',
-                    'name' => 'Enums',
-                    'path' => 'modules/vprof/enums',
-                    'tags' => 'true',
-                ),
-                array(
                     'mdi' => 'mdi-database',
                     'name' => 'ConVars',
                     'path' => 'modules/vprof/convars',
@@ -280,12 +262,6 @@
                     'mdi' => 'mdi-book',
                     'name' => 'Classes',
                     'path' => 'modules/sourcetv/classes',
-                    'tags' => 'true',
-                ),
-                array(
-                    'mdi' => 'mdi-format-list-numbered',
-                    'name' => 'Enums',
-                    'path' => 'modules/sourcetv/enums',
                     'tags' => 'true',
                 ),
                 array(
@@ -402,12 +378,6 @@
                     'path' => 'modules/physenv/classes',
                     'tags' => 'true',
                 ),
-                array(
-                    'mdi' => 'mdi-format-list-numbered',
-                    'name' => 'Enums',
-                    'path' => 'modules/physenv/enums',
-                    'tags' => 'true',
-                ),
             ),
         ),
         array(
@@ -465,7 +435,7 @@
             readfile("fonts/materialdesignicons-webfont.ttf");
         else if ($contentType == 'font/woff')
             readfile("fonts/materialdesignicons-webfont.woff");
-           else if ($contentType == 'font/woff2')
+        else if ($contentType == 'font/woff2')
             readfile("fonts/materialdesignicons-webfont.woff2");
         exit(0);
     }

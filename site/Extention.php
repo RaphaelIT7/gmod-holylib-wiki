@@ -135,6 +135,10 @@
                         $tags .= 'cm f meth memb';
                     }
 
+                    if ($matches[3] == 'libraryfield') {
+                        $tags .= 'cm meth memb';
+                    }
+
                     if ($matches[3] == 'hook') {
                         $tags .= 'cm event f meth memb';
                     }
@@ -281,7 +285,7 @@
 
                $outPut = $func['parent'];
 
-               if (isset($func['type']) && $func['type'] == 'libraryfunc')
+               if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield'))
                    $outPut .= '.';
                else if (isset($func['type']) && $func['type'] == 'hook')
                    $outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
@@ -340,7 +344,7 @@
 
                         $html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
                     } else {
-                        $html .= ' ' . $this->getFunctionName($func) . ($func['type'] == 'libraryfield') ? '' : "()";
+                        $html .= ' ' . $this->getFunctionName($func) . (($func['type'] == 'libraryfield') ? (isset($func['value']) ? (" = " . $func['value']) : '') : "()");
                     }
                 $html .= '</div>';
 
@@ -908,6 +912,10 @@
 
                 if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches)) {
                     $function['source'] = $matches[1];
+                }
+
+                if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $text, $matches)) { # Used by enums
+                    $function['value'] = $matches[1];
                 }
 
                 if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
