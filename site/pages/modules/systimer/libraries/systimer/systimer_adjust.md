@@ -11,6 +11,6 @@
 		<arg name="callback = nil" type="function"></arg>
 	</args>
 	<rets>
-		<ret name="success" type="boolean">Returns `true` if the timer was successfully adjusted.</ret>
+		<ret name="success" type="boolean"></ret>
 	</rets>
 </function>

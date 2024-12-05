@@ -1,6 +1,6 @@
-<function name="Start" parent="systimer" type="libraryfunc">
+<function name="Pause" parent="systimer" type="libraryfunc">
 	<description>
-		Returns `true` if the given timer was successfully started again.
+		Returns true if the given timer was successfully paused.
 	</description>
 	<realm>Server</realm>
 	<args>

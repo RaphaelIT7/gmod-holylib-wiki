@@ -8,6 +8,6 @@
 		<arg name="name" type="string">name of timer</arg>
 	</args>
 	<rets>
-		<ret name="" type="number">Returns `0` if the timer wasn't found or the reps are below `0`.</ret>
+		<ret name="" type="number"></ret>
 	</rets>
 </function>

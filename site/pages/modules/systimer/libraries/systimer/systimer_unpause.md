@@ -1,6 +1,7 @@
-<function name="Start" parent="systimer" type="libraryfunc">
+<function name="UnPause" parent="systimer" type="libraryfunc">
 	<description>
-		Returns `true` if the given timer was successfully started again.
+		Unpauses the given timer.
+		Unlike systimer. Start this won't reset the time left until it executes again.
 	</description>
 	<realm>Server</realm>
 	<args>

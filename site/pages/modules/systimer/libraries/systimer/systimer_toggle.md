@@ -1,6 +1,7 @@
-<function name="Start" parent="systimer" type="libraryfunc">
+<function name="Toggle" parent="systimer" type="libraryfunc">
 	<description>
-		Returns `true` if the given timer was successfully started again.
+		Toggles the given timer.
+		Returns true if the timer was activated/started again.
 	</description>
 	<realm>Server</realm>
 	<args>
