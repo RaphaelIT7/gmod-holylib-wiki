@@ -1,4 +1,4 @@
-<function name="Start" parent="systimer" type="libraryfunc">
+<function name="Stop" parent="systimer" type="libraryfunc">
 	<description>
 		Returns `true` if the given timer was successfully stopped.
 	</description>
