@@ -38,12 +38,17 @@
         function FindFile($file) {
             $file = $this->SafeLink($file);
             $file = strtolower($file);
+            $file = str_replace('.', '_', $file); // Removes all *
+
+            $debug = false;
+            if ($file == 'stringtable.invalid_string_index')
+            	$debug = true;
 
             foreach($this->categories as &$category) {
                 foreach ($category['categories'] as &$chapter) {
                     $shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
                     $path = $shortpath  . $file . '.md';
-                    
+
                     if (!file_exists($shortpath))
                         continue;
 
@@ -104,7 +109,7 @@
                 {
                     if($matches[3] == 'classfunc' && $this->config['code_language'] == 'lua') {
                         $title = (strlen($matches[2]) > 0 ? ($matches[2] . ':') : '') . $matches[1];
-                    } else if($matches[3] == 'libraryfunc' && $this->config['code_language'] == 'lua') {
+                    } else if(($matches[3] == 'libraryfunc' || $matches[3] == 'libraryfield') && $this->config['code_language'] == 'lua') {
                         $title = (strlen($matches[2]) > 0 ? ($matches[2] . '.') : '') . $matches[1];
                     } else {
                         $title = (strlen($matches[2]) > 0 ? ($matches[2] . $this->config['code_funcseparator']) : '') . $matches[1];
