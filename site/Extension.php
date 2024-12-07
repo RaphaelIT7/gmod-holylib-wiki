@@ -730,6 +730,28 @@
             return $html;
         }
 
+        protected function buildAdded($text, $version)
+        {
+        	$version = (double)$version;
+            if ($version < $this->config['version'])
+            	return '';
+
+            $html = '<h1>';
+                $html .= 'Recently Added';
+                $html .= '<a class="anchor" href="#recentlyadded">';
+                	$html .= '<i class="mdi mdi-link-variant"></i>';
+                $html .= '</a>';
+                $html .= '<a name="recentlyadded" class="anchor_offset"></a>';
+            $html .= '</h1>';
+
+            $html .= '<div class="section">';
+            	$html .= 'This was recently added in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).';
+            	$html .= '<p>' . $text . '</p>';
+            $html .= '</div>';
+
+            return $html;
+        }
+
         function getrealm($realm) 
         {
             $data = array();
@@ -870,6 +892,12 @@
             if (preg_match_all('/<bug\s+issue="([^"]+)">([^<]+)<\/bug>/', $text, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $text = str_replace('<bug issue="' . $match[1] . '">' . $match[2] . '</bug>', $this->buildBug($match[2], $match[1]), $text);
+                }
+            }
+
+            if (preg_match_all('/<added\s+version="([^"]+)">([^<]+)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
+                foreach ($matches as $match) {
+                    $text = str_replace('<added version="' . $match[1] . '">' . $match[2] . '</added>', $this->buildAdded($match[2], $match[1]), $text);
                 }
             }
 

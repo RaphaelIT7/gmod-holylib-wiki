@@ -10,6 +10,8 @@
         'issues_url' => 'https://github.com/RaphaelIT7/gmod-holylib/issues/',
         'code_language' => 'lua', // lua or c++
         'icon' => '',
+        'version' => 0.61,
+        'next_version' => 0.7,
     );
 
     $categories = array(
