@@ -4,6 +4,7 @@
 		<note>
 			This was added as a alternative to figure out when player get on or off a ladder.
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

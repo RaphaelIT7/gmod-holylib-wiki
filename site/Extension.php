@@ -895,7 +895,7 @@
                 }
             }
 
-            if (preg_match_all('/<added\s+version="([^"]+)">([^<]+)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
+            if (preg_match_all('/<added\s+version="([^"]+)">([^<]*)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $text = str_replace('<added version="' . $match[1] . '">' . $match[2] . '</added>', $this->buildAdded($match[2], $match[1]), $text);
                 }

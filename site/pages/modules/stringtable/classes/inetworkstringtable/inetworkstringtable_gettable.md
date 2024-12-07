@@ -1,6 +1,7 @@
 <function name="GetTable" parent="INetworkStringTable" type="classfunc">
 	<description>
 		Returns the lua table used by `__newindex` and `__index`<br>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

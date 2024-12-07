@@ -5,6 +5,7 @@
 		<note>
 			This currently only works with `func_useableladder` ladders.
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>
