@@ -5,6 +5,7 @@
 			This function currently only works with `func_useableladder`<br>
 			(Experimental - Linux 32x safe only)
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

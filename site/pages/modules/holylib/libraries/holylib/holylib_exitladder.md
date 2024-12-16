@@ -4,6 +4,7 @@
 		<note>
 			(Experimental - 32x safe only)
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>
