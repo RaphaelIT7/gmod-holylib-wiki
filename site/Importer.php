@@ -51,7 +51,30 @@
             }
         }
 
+        public function CheckPHP($file, $name)
+        {
+            $fileChanged = filemtime($file);
+            if ($fileChanged != $this->MySQL->GetCacheTime($name))
+            {
+                $this->MySQL->SetCachePage($name, '', $fileChanged);
+                return true;
+            }
+
+            return false;
+        }
+
         public function ImportEverything($fullUpdate = false) {
+            if (!$fullUpdate)
+            {
+                if ($this->CheckPHP('Importer.php', 'importer') ||
+                    $this->CheckPHP('index.php', 'index') ||
+                    $this->CheckPHP('Extension.php', 'extension') ||
+                    $this->CheckPHP('mysql.php', 'myql'))
+                {
+                    $fullUpdate = true;
+                }
+            }
+
             foreach ($this->Parser->categories as &$category) {
                 foreach ($category['categories'] as &$chapter) {
                     $path = $this->Parser->config['pages_path'] . $chapter['path'] . '/';
@@ -135,7 +158,7 @@
                 $html .= '</div>';
             }
 
-            $this->MySQL->SetCachePage('sidebar', $html, '');
+            $this->MySQL->SetCachePage('sidebar', $html, 0);
         }
 
         public function Init($MySQL, $Parser) {

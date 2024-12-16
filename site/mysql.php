@@ -337,17 +337,17 @@
             }
         }
 
-        public function SetCachePage($title, $html, $updated, $updateCount = 0) {
+        public function SetCachePage($title, $html, $fileTime, $updateCount = 0) {
             $exists = $this->GetCachePage($title);
-            if (!isset($exists) || strlen($exists) == 0) {
-                $stmt = $this->conn->prepare("INSERT INTO cache (title, updateCount, html, updated) 
+            if (!isset($exists)) {
+                $stmt = $this->conn->prepare("INSERT INTO cache (title, updateCount, html, fileTime) 
                 VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("siss", $title, $updateCount, $html, $updated);
+                $stmt->bind_param("sisi", $title, $updateCount, $html, $fileTime);
                 $stmt->execute();
                 $stmt->close();
             } else {
-                $stmt = $this->conn->prepare("UPDATE cache SET updateCount=?, html=?, updated=? WHERE title=?");
-                $stmt->bind_param("isss", $updateCount, $html, $updated, $title);
+                $stmt = $this->conn->prepare("UPDATE cache SET updateCount=?, html=?, fileTime=? WHERE title=?");
+                $stmt->bind_param("isis", $updateCount, $html, $fileTime, $title);
                 $stmt->execute();
                 $stmt->close();
             }
@@ -361,7 +361,19 @@
             if ($row = $result->fetch_assoc()) {
                  return $row['html'];
             } else {
-                return '';
+                return null;
+            }
+        }
+
+        public function GetCacheTime($title) {
+            $stmt = $this->conn->prepare("SELECT fileTime FROM cache WHERE title = ? LIMIT 1");
+            $stmt->bind_param("s", $title);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                 return $row['fileTime'];
+            } else {
+                return null;
             }
         }
 
@@ -393,7 +405,7 @@
                 title VARCHAR(255),
                 html TEXT,
                 updateCount INT DEFAULT 0,
-                updated VARCHAR(32),
+                fileTime BIGINT,
                 INDEX idx_titles (title)
             );");
         }
