@@ -488,7 +488,8 @@
     }
 
     //title = $config['name'];
-    $title = $MySQL->GetTitle($currentPage);
+    $currentSQLPage = $MySQL->GetFullPage($currentPage);
+    $title = $currentSQLPage['title'];
     if (!isset($title))
         $missing = True;
 ?>
@@ -579,7 +580,7 @@
                                 echo '<a name="notfound" class="anchor_offset"></a>';
                                 echo '<h1>Not Found<a class"anchor" href="#notfound"><i class="mdi mdi-link-variant"></i></a></h1>This page is missing.';
                             } else {
-                                echo $MySQL->GetHTML($currentPage);
+                                echo $currentSQLPage['html'];
                             }   
                         ?>
                     </div>
@@ -589,7 +590,7 @@
                     <?php
                         echo 'Page views: ' . $MySQL->GetIncreasedViews($currentPage);
                         echo '<br>';
-                        echo 'Updated: ' . $MySQL->GetLastUpdated($currentPage);
+                        echo 'Updated: ' . $currentSQLPage['updated'];
                     ?>
                 </div>
             </div>
@@ -621,58 +622,7 @@
 
                 <div id="contents">
                     <?php
-                        foreach ($categories as &$category) {
-                            echo '<div class="sectionheader">' . $category['name'] . '</div>';
-                            echo '<div class="section">';
-
-                            foreach ($category['categories'] as &$chapter) {
-                                echo '<details class="level1">';
-
-                                $path = $config['pages_path'] . $chapter['path'] . '/';
-                                $files = file_exists($path) ? array_diff(scandir($path), array('..', '.')) : array();
-                                echo '<summary><div><i class="mdi ' . $chapter['mdi'] . '"></i>' . $chapter['name'] . ' <span class="child-count">' . count($files) . '</span></div></summary>';
-
-                                echo '<ul>';
-                                foreach ($files as &$page) {
-                                    echo '<li>';
-                                    if (is_dir($path . $page)) {
-                                        echo '<details class="level2 cm type e">';
-                                            echo '<summary>';
-                                                $sqlPage = $MySQL->GetPageForSidebarByFile($path . $page . '/' . $page . '.md');
-                                                echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
-                                            echo '</summary>';
-                                            echo '<ul>';
-                                                $fullpath = $path . $page;
-                                                $files2 = array_diff(scandir($fullpath), array('..', '.', $page . '.md'));
-                                                foreach($files2 as &$page2) {
-                                                    $sqlPage = $MySQL->GetPageForSidebarByFile($fullpath . '/' . $page2);
-
-                                                    $page2 = substr($page2, 0, strripos($page2, '.'));
-
-                                                    echo '<li>';
-                                                    	if (isset($sqlPage))
-                                                        	echo '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
-                                                       	else
-                                                            echo '<p>' . $fullpath . '/' . $page2 . '</p>';
-                                                    echo '</li>';
-                                                }
-                                            echo '</ul>';
-                                        echo '</details>';
-                                    } else {
-                                        $sqlPage = $MySQL->GetPageForSidebarByFile($path . $page);
-
-                                        echo '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
-                                    }
-
-                                    echo '</li>';
-                                }
-
-                                echo '</ul>';
-                                echo '</details>';
-                            }
-
-                            echo '</div>';
-                        }
+                        echo $MySQL->GetCachePage('sidebar');
                     ?>
                 </div>
             </div>

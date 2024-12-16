@@ -337,6 +337,34 @@
             }
         }
 
+        public function SetCachePage($title, $html, $updated, $updateCount = 0) {
+            $exists = $this->GetCachePage($title);
+            if (!isset($exists) || strlen($exists) == 0) {
+                $stmt = $this->conn->prepare("INSERT INTO cache (title, updateCount, html, updated) 
+                VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("siss", $title, $updateCount, $html, $updated);
+                $stmt->execute();
+                $stmt->close();
+            } else {
+                $stmt = $this->conn->prepare("UPDATE cache SET updateCount=?, html=?, updated=? WHERE title=?");
+                $stmt->bind_param("isss", $updateCount, $html, $updated, $title);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+
+        public function GetCachePage($title) {
+            $stmt = $this->conn->prepare("SELECT html FROM cache WHERE title = ? LIMIT 1");
+            $stmt->bind_param("s", $title);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                 return $row['html'];
+            } else {
+                return '';
+            }
+        }
+
         public function Init() {
             $this->Connect();
             $this->Query("CREATE DATABASE IF NOT EXISTS " . $this->db);
@@ -359,6 +387,14 @@
                 filePath VARCHAR(255),
                 INDEX idx_category (category),
                 INDEX idx_filePath (filePath)
+            );");
+
+            $this->Query("CREATE TABLE IF NOT EXISTS cache (
+                title VARCHAR(255),
+                html TEXT,
+                updateCount INT DEFAULT 0,
+                updated VARCHAR(32),
+                INDEX idx_titles (title)
             );");
         }
     }

@@ -71,7 +71,71 @@
                 }
             }
 
+            if ($fullUpdate)
+            {
+                $this->UpdateSideBar();
+            }
+
             $this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, "");
+        }
+
+        public function UpdateSideBar()
+        {
+            $html = '';
+            foreach ($this->Parser->categories as &$category) {
+                $html .= '<div class="sectionheader">' . $category['name'] . '</div>';
+                $html .= '<div class="section">';
+
+                foreach ($category['categories'] as &$chapter) {
+                    $html .= '<details class="level1">';
+
+                    $path = $this->Parser->config['pages_path'] . $chapter['path'] . '/';
+                    $files = file_exists($path) ? array_diff(scandir($path), array('..', '.')) : array();
+                    $html .= '<summary><div><i class="mdi ' . $chapter['mdi'] . '"></i>' . $chapter['name'] . ' <span class="child-count">' . count($files) . '</span></div></summary>';
+
+                    $html .= '<ul>';
+                    foreach ($files as &$page) {
+                        $html .= '<li>';
+                        if (is_dir($path . $page)) {
+                            $html .= '<details class="level2 cm type e">';
+                                $html .= '<summary>';
+                                    $sqlPage = $this->MySQL->GetPageForSidebarByFile($path . $page . '/' . $page . '.md');
+                                    $html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+                                $html .= '</summary>';
+                                $html .= '<ul>';
+                                    $fullpath = $path . $page;
+                                    $files2 = array_diff(scandir($fullpath), array('..', '.', $page . '.md'));
+                                    foreach($files2 as &$page2) {
+                                        $sqlPage = $this->MySQL->GetPageForSidebarByFile($fullpath . '/' . $page2);
+
+                                        $page2 = substr($page2, 0, strripos($page2, '.'));
+
+                                        $html .= '<li>';
+                                            if (isset($sqlPage))
+                                                $html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+                                               else
+                                               $html .= '<p>' . $fullpath . '/' . $page2 . '</p>';
+                                        $html .= '</li>';
+                                    }
+                                $html .= '</ul>';
+                            $html .= '</details>';
+                        } else {
+                            $sqlPage = $this->MySQL->GetPageForSidebarByFile($path . $page);
+
+                            $html .= '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+                        }
+
+                        $html .= '</li>';
+                    }
+
+                    $html .= '</ul>';
+                    $html .= '</details>';
+                }
+
+                $html .= '</div>';
+            }
+
+            $this->MySQL->SetCachePage('sidebar', $html, '');
         }
 
         public function Init($MySQL, $Parser) {
