@@ -416,6 +416,23 @@
                 ),
             ),
         ),
+        array(
+            'name' => 'httpserver', 
+            'categories' => array(
+                array(
+                    'mdi' => 'mdi-bookshelf',
+                    'name' => 'Libraries',
+                    'path' => 'modules/entitiylist/libraries',
+                    'tags' => 'true',
+                ),
+                array(
+                    'mdi' => 'mdi-book',
+                    'name' => 'Classes',
+                    'path' => 'modules/entitiylist/classes',
+                    'tags' => 'true',
+                ),
+            ),
+        ),
     );
 
     # I hate this so much XD
