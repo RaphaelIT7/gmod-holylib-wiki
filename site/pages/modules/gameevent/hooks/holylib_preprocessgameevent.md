@@ -9,6 +9,6 @@
 		<arg name="entIndex" type="number">The entindex of the player</arg>
 	</args>
 	<rets>
-		<ret name="cancel" type="boolean">Return `true` to stop the </ret>
+		<ret name="cancel" type="boolean">Return `true` to stop the from processing the gameevent list</ret>
 	</rets>
 </function>
