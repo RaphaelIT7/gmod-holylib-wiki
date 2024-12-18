@@ -12,6 +12,9 @@
         }
 
         public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0, $addressOverride = NULL) {
+        	if (!file_exists($page))
+        		return;
+
             $lastChanged = filemtime($page);
             $sqlPage = $this->MySQL->GetFullPageByFile($page);
             if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) # file wasn't updated
