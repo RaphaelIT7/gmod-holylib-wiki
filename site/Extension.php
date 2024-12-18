@@ -743,7 +743,7 @@
 		protected function buildAdded($text, $version)
 		{
 			$version = (double)$version;
-			if ($version < $this->config['version'])
+			if ($version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
 				return '';
 
 			$html = '<h1>';
@@ -756,7 +756,29 @@
 
 			$html .= '<div class="section">';
 				$html .= 'This was recently added in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).';
-				$html .= '<p>' . $text . '</p>';
+				$html .= '<p>' . $this->text($text) . '</p>';
+			$html .= '</div>';
+
+			return $html;
+		}
+
+		protected function buildChanged($text, $version)
+		{
+			$version = (double)$version;
+			if ($version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
+				return '';
+
+			$html = '<h1>';
+				$html .= 'Recently Changed';
+				$html .= '<a class="anchor" href="#recentlychanged">';
+					$html .= '<i class="mdi mdi-link-variant"></i>';
+				$html .= '</a>';
+				$html .= '<a name="recentlychanged" class="anchor_offset"></a>';
+			$html .= '</h1>';
+
+			$html .= '<div class="section">';
+				$html .= 'This was recently changed in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).';
+				$html .= '<p>' . $this->text($text) . '</p>';
 			$html .= '</div>';
 
 			return $html;
@@ -908,6 +930,12 @@
 			if (preg_match_all('/<added\s+version="([^"]+)">([^<]*)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<added version="' . $match[1] . '">' . $match[2] . '</added>', $this->buildAdded($match[2], $match[1]), $text);
+				}
+			}
+
+			if (preg_match_all('/<changed\s+version="([^"]+)">([^<]*)<\/changed>/', $text, $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $match) {
+					$text = str_replace('<changed version="' . $match[1] . '">' . $match[2] . '</changed>', $this->buildChanged($match[2], $match[1]), $text);
 				}
 			}
 
