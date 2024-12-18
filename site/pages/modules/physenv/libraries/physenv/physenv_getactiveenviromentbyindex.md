@@ -1,6 +1,7 @@
 <function name="GetActiveEnvironmentByIndex" parent="physenv" type="libraryfunc">
 	<description>
-			Returns the physics environment by the given index.
+		Returns the physics environment by the given index.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

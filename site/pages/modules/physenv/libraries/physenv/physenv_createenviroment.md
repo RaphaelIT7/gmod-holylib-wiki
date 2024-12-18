@@ -6,6 +6,7 @@
 			If you notice Physics objects that have a invalid entity, report this. But this should normally never happen.
 			In this case, this means that something is failing to remove physics objects and it will cause random crashes.
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

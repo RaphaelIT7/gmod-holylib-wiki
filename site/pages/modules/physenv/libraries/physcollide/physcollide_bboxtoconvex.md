@@ -1,6 +1,7 @@
 <function name="BBoxToConvex" parent="physcollide" type="libraryfunc">
 	<description>
 		Creates a CPhysConvex from the given mins & maxs.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

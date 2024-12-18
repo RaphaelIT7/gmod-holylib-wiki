@@ -1,9 +1,10 @@
 <function name="FindOrCreateCollisionSet" parent="physenv" type="libraryfunc">
 	<description>
-			Returns the collision set by the given index or creates it if needed.
-			<note>
-				Only 32 collision sets can exist at the same time!
-			</note>
+		Returns the collision set by the given index or creates it if needed.
+		<note>
+			Only 32 collision sets can exist at the same time!
+		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

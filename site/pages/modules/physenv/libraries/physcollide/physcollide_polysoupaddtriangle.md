@@ -1,6 +1,7 @@
 <function name="PolysoupAddTriangle" parent="physcollide" type="libraryfunc">
 	<description>
 		Adds a triangle to the polysoup.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

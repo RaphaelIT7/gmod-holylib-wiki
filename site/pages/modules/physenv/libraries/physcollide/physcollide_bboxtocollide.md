@@ -1,6 +1,7 @@
 <function name="BBoxToCollide" parent="physcollide" type="libraryfunc">
 	<description>
 		Creates a CPhysCollide from the given mins & maxs.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>
