@@ -14,7 +14,7 @@
 		// Returns true if it ran a full update
 		public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0, $addressOverride = NULL) {
 			if (!file_exists($page))
-				return;
+				return false;
 
 			$lastChanged = filemtime($page);
 			$sqlPage = $this->MySQL->GetFullPageByFile($page);
@@ -52,7 +52,7 @@
 			{
 				# echo 'Making full update! (' . $filePath . ')';
 				$this->ImportEverything(true);
-				echo '<p>Triggered full update ' . $filePath . ' (' . $sqlPage . ', ' . $lastChanged . ')';
+				echo '<p>Triggered full update ' . $filePath . ' (' . (isset($sqlPage) ? 'true' : 'false') . ', ' . $lastChanged . ')';
 				return true;
 			}
 		}

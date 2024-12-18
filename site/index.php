@@ -622,6 +622,7 @@
 
 				<div id="contents">
 					<?php
+						// SideBar is built in Importer.php -> UpdateSideBar
 						echo $MySQL->GetCachePage('sidebar');
 					?>
 				</div>

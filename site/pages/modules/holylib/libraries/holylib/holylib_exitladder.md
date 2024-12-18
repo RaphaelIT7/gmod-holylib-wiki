@@ -2,7 +2,7 @@
 	<description>
 		Forces the player off the ladder.
 		<note>
-			(Experimental - 32x safe only)
+			(**Experimental** - 32x safe only)
 		</note>
 		<added version="0.7"></added>
 	</description>

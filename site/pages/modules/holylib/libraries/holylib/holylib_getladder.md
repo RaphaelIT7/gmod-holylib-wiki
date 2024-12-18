@@ -3,7 +3,7 @@
 		Returns the Ladder the player is currently on.
 		<note>
 			This function currently only works with `func_useableladder`<br>
-			(Experimental - Linux 32x safe only)
+			(**Experimental** - Linux 32x safe only)
 		</note>
 		<added version="0.7"></added>
 	</description>
