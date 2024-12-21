@@ -38,7 +38,8 @@
 		function FindFile($file) {
 			$file = $this->SafeLink($file);
 			$file = strtolower($file);
-			$file = str_replace('.', '_', $file); // Removes all *
+			$file = str_replace('.', '_', $file);
+			$file = str_replace(':', '_', $file);
 
 			$debug = false;
 			if ($file == 'stringtable.invalid_string_index')
