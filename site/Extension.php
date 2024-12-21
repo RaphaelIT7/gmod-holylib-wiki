@@ -921,19 +921,19 @@
 				}
 			}
 
-			if (preg_match_all('/<bug\s+issue="([^"]+)">([^<]+)<\/bug>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<bug\s+issue="([^"]+)">([\s\S]+?)<\/bug>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<bug issue="' . $match[1] . '">' . $match[2] . '</bug>', $this->buildBug($match[2], $match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<added\s+version="([^"]+)">([^<]*)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<added\s+version="([^"]+)">([\s\S]+?)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<added version="' . $match[1] . '">' . $match[2] . '</added>', $this->buildAdded($match[2], $match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<changed\s+version="([^"]+)">([^<]*)<\/changed>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<changed\s+version="([^"]+)">([\s\S]+?)<\/changed>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<changed version="' . $match[1] . '">' . $match[2] . '</changed>', $this->buildChanged($match[2], $match[1]), $text);
 				}
