@@ -590,7 +590,7 @@
 					<?php
 						echo 'Page views: ' . $MySQL->GetIncreasedViews($currentPage);
 						echo '<br>';
-						echo 'Updated: ' . $currentSQLPage['updated'];
+						echo 'Updated: ' . isset($currentSQLPage['updated']) ? $currentSQLPage['updated'] : 'Never';
 					?>
 				</div>
 			</div>
