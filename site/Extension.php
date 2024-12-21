@@ -175,14 +175,21 @@
 				$tags .= 'cm e';
 			}
 
-			if (preg_match('/<deprecated>(.*?)<\/deprecated>/', $text, $matches)) {
+			if (preg_match('/<deprecated>([\s\S]+?)<\/deprecated>/', $text, $matches)) {
 				if (strlen($tags) != 0) {
 					$tags .= ' ';
 				}
 				$tags .= 'depr';
 			}
 
-			if (preg_match_all('/<internal>(.*?)<\/internal>/', $text, $matches)) {
+			if (preg_match('/<removed>([\s\S]+?)<\/removed>/', $text, $matches)) {
+				if (strlen($tags) != 0) {
+					$tags .= ' ';
+				}
+				$tags .= 'depr';
+			}
+
+			if (preg_match_all('/<internal>([\s\S]+?)<\/internal>/', $text, $matches)) {
 				if (strlen($tags) != 0) {
 					$tags .= ' ';
 				}
@@ -858,49 +865,43 @@
 			$text = implode("\n", $lines);
 			$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
 
-			if (preg_match_all('/<note>(.*?)<\/note>/s', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<note>([\s\S]+?)<\/note>/s', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<note>' . $match[1] . '</note>', $this->buildNote($match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<warning>(.*?)<\/warning>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<warning>([\s\S]+?)<\/warning>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<warning>' . $match[1] . '</warning>', $this->buildWarning($match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<removed>(.*?)<\/removed>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<removed>([\s\S]+?)<\/removed>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<removed>' . $match[1] . '</removed>', $this->buildRemoved($match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<deprecated>(.*?)<\/deprecated>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<deprecated>([\s\S]+?)<\/deprecated>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<deprecated>' . $match[1] . '</deprecated>', $this->buildDeprecated($match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<validate>(.*?)<\/validate>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<validate>([\s\S]+?)<\/validate>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<validate>' . $match[1] . '</validate>', $this->buildValidate($match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<internal>(.*?)<\/internal>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<internal>([\s\S]+?)<\/internal>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<internal>' . $match[1] . '</internal>', $this->buildInternal($match[1]), $text);
 				}
 			}
 
-			if (preg_match_all('/<key>(.*?)<\/key>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<key>' . $match[1] . '</key>', $this->buildKey(strtolower($match[1])), $text);
-				}
-			}
-
-			if (preg_match_all('/<key>(.*?)<\/key>/', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<key>([\s\S]+?)<\/key>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<key>' . $match[1] . '</key>', $this->buildKey(strtolower($match[1])), $text);
 				}
@@ -912,7 +913,7 @@
 				}
 			}
 
-			if (preg_match_all('/<ambig\s+page="([^"]+)">(.*?)<\/ambig>/s', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<ambig\s+page="([^"]+)">([\s\S]+?)<\/ambig>/s', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $_)) {
 						$markup .= $this->buildAmbig($match[2], $match[1]);

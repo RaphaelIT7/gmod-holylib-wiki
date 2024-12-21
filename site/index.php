@@ -141,12 +141,6 @@
 					'path' => 'modules/pvs/hooks',
 					'tags' => 'true',
 				),
-				array(
-					'mdi' => 'mdi-database',
-					'name' => 'ConVars',
-					'path' => 'modules/pvs/convars',
-					'tags' => 'true',
-				),
 			),
 		),
 		array(
