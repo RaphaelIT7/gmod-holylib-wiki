@@ -1,6 +1,7 @@
 <function name="HolyLib:PreProcessVoiceChat" parent="" type="hook">
 	<description>
-		Called when the client sends the gameevent list it wants to listen to.<br>
+		Called before the voicedata is processed.<br>
+		Return `true` to stop the engine from processing it.  
 	</description>
 	<realm>Server</realm>
 	<args>
