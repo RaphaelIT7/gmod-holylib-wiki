@@ -12,6 +12,7 @@
 		'icon' => '',
 		'version' => 0.61,
 		'next_version' => 0.7,
+		'description' => 'Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;'
 	);
 
 	$categories = array(
@@ -489,7 +490,6 @@
 		$currentPage = strtr(substr(parse_url($currentUrl, PHP_URL_PATH), 1), array("gmod/" => ""));
 	}
 
-	//title = $config['name'];
 	$currentSQLPage = $MySQL->GetFullPage($currentPage);
 	$title = isset($currentSQLPage) ? $currentSQLPage['title'] : null;
 	if (!isset($title))
@@ -514,7 +514,7 @@
 		<meta property="og:title" name="og:title" content="<?php echo $config['name']; ?>">
 		<meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
 		<meta property="og:type" name="og:type" content="website">
-		<meta property="og:description" name="og:description" content="Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;">
+		<meta property="og:description" name="og:description" content="<?php echo $config['description']; ?>">
 		<script>WikiRealm = "gmod";</script>
 	</head>
 	<body>
