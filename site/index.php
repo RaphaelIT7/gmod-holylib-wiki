@@ -439,6 +439,10 @@
 		$contentType = 'font/woff';
 	} elseif (preg_match('/\.woff2.*$/', $requestedFile)) {
 		$contentType = 'font/woff2';
+	} elseif (preg_match('/\.css.*$/', $requestedFile)) {
+		$contentType = 'text/css';
+	} elseif (preg_match('/\.js.*$/', $requestedFile)) {
+		$contentType = 'text/js';
 	}
 
 	if (isset($contentType))
@@ -450,6 +454,10 @@
 			readfile("fonts/materialdesignicons-webfont.woff");
 		else if ($contentType == 'font/woff2')
 			readfile("fonts/materialdesignicons-webfont.woff2");
+		else if ($contentType == 'text/css')
+			readfile("gmod_style.css");
+		else if ($contentType == 'text/js')
+			readfile("gmod_script.js");
 		exit(0);
 	}
 
@@ -498,9 +506,8 @@
 		<link rel="icon" type="image/png" href="https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png">
 		<link rel="search" title="<?php echo $config['name']; ?>" type="application/opensearchdescription+xml" href="https://wiki.facepunch.com/gmod/~searchmanifest" />
 		<script href="https://wiki.facepunch.com/cdn-cgi/apps/head/JodREY1zTjWBVnPepvx61z0haaQ.js"></script>
-		<link rel="stylesheet" href="https://wiki.facepunch.com/styles/gmod.css?n=7fe51698-72dd-4fa7-aee6-7942d119990a" />
-		<script src="https://wiki.facepunch.com/script.js?n=7fe51698-72dd-4fa7-aee6-7942d119990a"></script>
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="gmod_style.css" />
+		<script src="gmod_script.js"></script>
 
 		<meta name="theme-color" content="#0082ff">
 
@@ -510,25 +517,6 @@
 		<meta property="og:description" name="og:description" content="Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;">
 		<script>WikiRealm = "gmod";</script>
 	</head>
-	<style>
-		@font-face {
-		font-family: "Material Design Icons";
-		src: url("https://wiki.facepunch.com/fonts/materialdesignicons-webfont.eot?v=5.9.55");
-		src: url("https://wiki.facepunch.com/fonts/materialdesignicons-webfont.eot?#iefix&v=5.9.55") format("embedded-opentype"), url("https://wiki.facepunch.com/fonts/materialdesignicons-webfont.woff2?v=5.9.55") format("woff2"), url("https://wiki.facepunch.com/fonts/materialdesignicons-webfont.woff?v=5.9.55") format("woff"), url("../../fonts/materialdesignicons-webfont.ttf?v=5.9.55") format("truetype");
-		font-weight: normal;
-		font-style: normal;
-		}
-		.mdi:before,
-		.mdi-set {
-		display: inline-block;
-		font: normal normal normal 24px/1 "Material Design Icons";
-		font-size: inherit;
-		text-rendering: auto;
-		line-height: inherit;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		}
-	</style>
 	<body>
 		<div id="toolbar">
 			<div>
