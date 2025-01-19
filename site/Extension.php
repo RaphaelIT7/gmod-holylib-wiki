@@ -668,11 +668,44 @@
 			return $html;
 		}
 
+		protected function processCode($code)
+		{
+			if ($this->config['code_language'] == 'lua') {
+				/*foreach($this->lua_operators as $operator)
+				{
+					$code = preg_replace('/(?<![<\w])' . preg_quote($operator, '/') . '(?![>\w])/', '<span class="operator">' . $operator . '</span>', $code);
+				}*/
+
+				$code = preg_replace('/"(.*?)"/', '<span class="string">"$1"</span>', $code);
+
+				foreach($this->lua_keywords as $keyword)
+				{
+					$code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
+				}
+
+				$code = preg_replace('/--(.*?)\n/', '<span class="comment">--$1</span>', $code);
+				$code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
+				$code = preg_replace('/--\[\[(.*?)\]\]/s', '<span class="multiline-comment">--[[$1]]</span>', $code);
+
+				$code = preg_replace('/local function (\w+)\(/', 'local function <span class="methoddef">$1</span>(', $code);
+			} elseif ($this->config['code_language'] == 'c++') {
+				foreach($this->cpp_keywords as $keyword)
+				{
+					$code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
+				}
+
+				$code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
+				$code = preg_replace('#/\*(.*?)\*/#s', '<span class="multiline-comment">/* $1 */</span>', $code);
+			}
+
+			return $code;
+		}
+
 		protected function buildCode($code, $language)
 		{
-			$html = '<pre>';
-				$html .= $code;
-			$html .= '</pre>';
+			$html = '<div class="code">';
+				$html .= $this->processCode($code);
+			$html .= '</div>';
 
 			return $html;
 		}
@@ -685,41 +718,13 @@
 					$html .= $exam['desc'];
 				$html .= '</div>';
 				$html .= '<div class="code">';
-					$code = $exam['code'];
-
-					if ($this->config['code_language'] == 'lua') {
-						/*foreach($this->lua_operators as $operator)
-						{
-							$code = preg_replace('/(?<![<\w])' . preg_quote($operator, '/') . '(?![>\w])/', '<span class="operator">' . $operator . '</span>', $code);
-						}*/
-
-						$code = preg_replace('/"(.*?)"/', '<span class="string">"$1"</span>', $code);
-
-						foreach($this->lua_keywords as $keyword)
-						{
-							$code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
-						}
-
-						$code = preg_replace('/--(.*?)\n/', '<span class="comment">--$1</span>', $code);
-						$code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
-						$code = preg_replace('/--\[\[(.*?)\]\]/s', '<span class="multiline-comment">--[[$1]]</span>', $code);
-
-						$code = preg_replace('/local function (\w+)\(/', 'local function <span class="methoddef">$1</span>(', $code);
-					} elseif ($this->config['code_language'] == 'c++') {
-						foreach($this->cpp_keywords as $keyword)
-						{
-							$code = preg_replace('/\b' . preg_quote($keyword, '/') . '\b/', '<span class="keyword">' . $keyword . '</span>', $code);
-						}
-
-						$code = preg_replace('/\/\/(.*?)\n/', '<span class="comment">//$1</span>', $code);
-						$code = preg_replace('#/\*(.*?)\*/#s', '<span class="multiline-comment">/* $1 */</span>', $code);
-					}
-
-					$html .= $code;
+					$html .= $this->processCode($exam['code']);
 				$html .= '</div>';
 				if (isset($exam['output'])) {
 					$html .= '<div class="output">';
-						$html .= $exam['output'];
+						$html .= '<div class="code">';
+							$html .= $this->processCode($exam['output']);
+						$html .= '</div>';
 					$html .= '</div>';
 				}
 			$html .= '</div>';
@@ -947,11 +952,17 @@
 				}
 			}
 
-			#if (preg_match_all('/```([a-zA-Z0-9_-]*)\n(.*?)\n```/s', $text, $matches, PREG_SET_ORDER)) {
-				#foreach ($matches as $match) {
-					#$text = str_replace('```' . $match[1] . '\n' . $match[2] . '```', $this->buildCode($match[1], $match[2]), $text);
-				#}
-			#}
+			//if (preg_match_all('/```([^"]+)\n([\s\S]+?)\n```/s', $text, $matches, PREG_SET_ORDER)) {
+			//	foreach ($matches as $match) {
+			//		$text = str_replace('```' . $match[1] . '\n' . $match[2] . '```', $this->buildCode($match[1], $match[2]), $text);
+			//	}
+			//}
+
+			if (preg_match_all('/<code\s+language="([^"]+)">([\s\S]+?)<\/code>/', $text, $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $match) {
+					$text = str_replace('<code language="' . $match[1] . '">' . $match[2] . '</code>', $this->buildCode($match[2], $match[1]), $text);
+				}
+			}
 
 			if (preg_match_all('/<page(?:\s+text="([^"]*)")?>([^<]+)<\/page>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
@@ -1055,11 +1066,26 @@
 
 				foreach ($matches as $match) {
 					$markup .= $this->buildExample(array(
-						'out' => isset($match[3]) ? trim($match[3]) : '',
+						'output' => isset($match[3]) ? trim($match[3]) : '',
 						'code' => trim($match[2]),
 						'desc' => parent::text(trim($match[1])),
 					));
 				}
+			
+				#$text = preg_replace_callback(
+				#	'/<example>\s*<description>(.*?)<\/description>\s*<code>(.*?)<\/code>(?:\s*<output>(.*?)<\/output>)?\s*<\/example>/s',
+				#	function ($match) use (&$markup) {
+				#		$replacement = $this->buildExample([
+				#			'output' => isset($match[3]) ? trim($match[3]) : '',
+				#			'code' => trim($match[2]),
+				#			'desc' => parent::text(trim($match[1])),
+				#		]);
+				#
+				#		$markup .= $replacement;
+				#		return '';
+				#	},
+				#	$text
+				#);
 			}
 
 			if (!$special) {

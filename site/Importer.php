@@ -30,7 +30,7 @@
 			$markup = $file;
 			$html = $this->Parser->text($file);
 			$views = isset($sqlPage) ? $sqlPage['views'] : 0;
-			$updated = 'Recently';
+			$updated = 'Unknown';
 			$revisionId = 0;
 			# $category = $category;
 			$searchTags = '';
@@ -69,6 +69,10 @@
 			return false;
 		}
 
+		/*
+		 * BUG: If a file is imported using a wrong filePath, it will create a broken entry.
+		 * I'll implement a fix later, when it happens again & annoys me enouth.
+		 */
 		public function ImportEverything($fullUpdate = false) {
 			if (!$fullUpdate)
 			{
@@ -149,7 +153,7 @@
 										$html .= '<li>';
 											if (isset($sqlPage))
 												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
-											   else
+											else
 											   $html .= '<p>' . $fullpath . '/' . $page2 . '</p>';
 										$html .= '</li>';
 									}

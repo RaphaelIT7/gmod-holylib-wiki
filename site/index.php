@@ -428,6 +428,29 @@
 				),
 			),
 		),
+		array(
+			'name' => 'gameserver', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/gameserver/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-book',
+					'name' => 'Classes',
+					'path' => 'modules/gameserver/classes',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'modules/gameserver/hooks',
+					'tags' => 'true',
+				),
+			),
+		),
 	);
 
 	# I hate this so much XD
