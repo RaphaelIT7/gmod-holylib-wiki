@@ -119,7 +119,7 @@
 					}
 				} else {
 					   $title = $matches[1];
-				   }
+				}
 			}
 
 			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
@@ -295,7 +295,7 @@
 
 		protected function getFunctionName($func)
 		   {
-			   if (!isset($func['parent']))
+			   if (!isset($func['parent']) || strlen($func['parent']) == 0)
 				   return $func['name'];
 
 			   $outPut = $func['parent'];
@@ -319,7 +319,7 @@
 					$html .= '<a href="gmod/States" class="realm_icon" title="' . $func['realmdesc'] . '">&nbsp;</a>';
 					#$html .= '<a class="link-page exists" href="/gmod/number">number</a>';
 
-					if(isset($func['parent']) && $func['parent'] != '')
+					if(isset($func['parent']) && strlen($func['parent']) > 0)
 					{
 						$func['parent'] = '<a class="link-page ' . ($this->FindFile($func['parent']) != null ? 'exists' : 'missing') . '" href="/' . $func['parent'] . '">' . $func['parent'] . '</a>';
 					}

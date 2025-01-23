@@ -44,6 +44,12 @@ function GetConfig()
 			'basePath' => 'modules',
 			'categories' => array(
 				array(
+					'mdi' => 'mdi-code-braces',
+					'name' => 'Globals',
+					'path' => 'globals',
+					'tags' => 'true',
+				),
+				array(
 					'mdi' => 'mdi-bookshelf',
 					'name' => 'Libraries',
 					'path' => 'libraries',
@@ -429,18 +435,18 @@ function GetConfig()
 			),
 		),
 		array(
-			'name' => 'entitiylist', 
+			'name' => 'entitylist', 
 			'categories' => array(
 				array(
-					'mdi' => 'mdi-bookshelf',
-					'name' => 'Libraries',
-					'path' => 'modules/entitiylist/libraries',
+					'mdi' => 'mdi-code-braces',
+					'name' => 'Globals',
+					'path' => 'modules/entitylist/globals',
 					'tags' => 'true',
 				),
 				array(
 					'mdi' => 'mdi-book',
 					'name' => 'Classes',
-					'path' => 'modules/entitiylist/classes',
+					'path' => 'modules/entitylist/classes',
 					'tags' => 'true',
 				),
 			),
