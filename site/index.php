@@ -454,13 +454,13 @@
 				array(
 					'mdi' => 'mdi-bookshelf',
 					'name' => 'Libraries',
-					'path' => 'modules/entitiylist/libraries',
+					'path' => 'modules/httpserver/libraries',
 					'tags' => 'true',
 				),
 				array(
 					'mdi' => 'mdi-book',
 					'name' => 'Classes',
-					'path' => 'modules/entitiylist/classes',
+					'path' => 'modules/httpserver/classes',
 					'tags' => 'true',
 				),
 			),
