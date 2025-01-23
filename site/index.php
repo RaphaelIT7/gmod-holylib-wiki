@@ -15,7 +15,7 @@
 	} elseif (preg_match('/\.css.*$/', $requestedFile)) {
 		$contentType = 'text/css';
 	} elseif (preg_match('/\.js.*$/', $requestedFile)) {
-		$contentType = 'text/js';
+		$contentType = 'text/javascript';
 	}
 
 	if (isset($contentType))
@@ -29,7 +29,7 @@
 			readfile("fonts/materialdesignicons-webfont.woff2");
 		else if ($contentType == 'text/css')
 			readfile("gmod_style.css");
-		else if ($contentType == 'text/js')
+		else if ($contentType == 'text/javascript')
 			readfile("gmod_script.js");
 		exit(0);
 	}
@@ -82,7 +82,7 @@
 		<link rel="icon" type="image/png" href="https://files.facepunch.com/garry/822e60dc-c931-43e4-800f-cbe010b3d4cc.png">
 		<link rel="search" title="<?php echo $config['name']; ?>" type="application/opensearchdescription+xml" href="https://wiki.facepunch.com/gmod/~searchmanifest" />
 		<script href="https://wiki.facepunch.com/cdn-cgi/apps/head/JodREY1zTjWBVnPepvx61z0haaQ.js"></script>
-		<link rel="stylesheet" href="gmod_style.css" />
+		<link rel="stylesheet" href="gmod_style.css"/>
 		<script src="gmod_script.js"></script>
 
 		<meta name="theme-color" content="#0082ff">
