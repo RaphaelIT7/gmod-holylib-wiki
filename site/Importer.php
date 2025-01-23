@@ -64,8 +64,16 @@
 			}
 		}
 
-		public function CheckPHP($file, $name)
+		private $phpPages = array(
+			"Importer.php",
+			"index.php",
+			"Extension.php",
+			"mysql.php",
+			"config.php"
+		);
+		public function CheckPHP($file)
 		{
+			$name = str_replace(".php", "", strtolower($file));
 			$fileChanged = filemtime($file);
 			if ($fileChanged != $this->MySQL->GetCacheTime($name))
 			{
@@ -84,15 +92,9 @@
 		 */
 		public function ImportEverything($fullUpdate = false) {
 			if (!$fullUpdate)
-			{
-				if ($this->CheckPHP('Importer.php', 'importer') ||
-					$this->CheckPHP('index.php', 'index') ||
-					$this->CheckPHP('Extension.php', 'extension') ||
-					$this->CheckPHP('mysql.php', 'myql'))
-				{
-					$fullUpdate = true;
-				}
-			}
+				foreach($this->phpPages as &$phpPage)
+					if ($this->CheckPHP($phpPage))
+						$fullUpdate = true;
 
 			foreach ($this->Parser->categories as &$category) {
 				foreach ($category['categories'] as &$chapter) {

@@ -410,7 +410,7 @@
 
 			$this->Query("CREATE TABLE IF NOT EXISTS cache (
 				title VARCHAR(255),
-				html TEXT,
+				html LONGTEXT,
 				updateCount INT DEFAULT 0,
 				fileTime BIGINT,
 				INDEX idx_titles (title)
