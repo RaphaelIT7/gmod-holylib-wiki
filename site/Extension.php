@@ -572,10 +572,22 @@
 			return $html;
 		}
 
-		protected function buildRemoved($text)
+		protected function buildRemoved($text, $version)
 		{
+			$future = false;
+			if ($version)
+			{
+				$version = (double)$version;
+				if ($version == 0 || $version > $this->config['version']) // If 0 then it failed to cast.
+					$future = true;
+			}
+
 			$html = '<div class="removed">';
 				$html .= '<div class="inner">';
+					if ($future)
+					{
+						$html .= '<p>This will be removed in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).</p>';
+					}
 					$html .= $text;
 				$html .= '</div>';
 			$html .= '</div>';
@@ -885,7 +897,7 @@
 
 			if (preg_match_all('/<removed>([\s\S]+?)<\/removed>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
-					$text = str_replace('<removed>' . $match[1] . '</removed>', $this->buildRemoved($match[1]), $text);
+					$text = str_replace('<removed>' . $match[1] . '</removed>', $this->buildRemoved($match[1], null), $text);
 				}
 			}
 
@@ -937,6 +949,12 @@
 			if (preg_match_all('/<added\s+version="([^"]+)">([\s\S]+?)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$text = str_replace('<added version="' . $match[1] . '">' . $match[2] . '</added>', $this->buildAdded($match[2], $match[1]), $text);
+				}
+			}
+
+			if (preg_match_all('/<removed\s+version="([^"]+)">([\s\S]+?)<\/removed>/', $text, $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $match) {
+					$text = str_replace('<removed version="' . $match[1] . '">' . $match[2] . '</removed>', $this->buildRemoved($match[2], $match[1]), $text);
 				}
 			}
 

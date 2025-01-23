@@ -41,6 +41,43 @@
 				),
 			),
 		),
+		array( // A category containing EVERY single thing
+			'name' => 'Global', 
+			'global' => true,
+			'basePath' => 'modules',
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'hooks',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-book',
+					'name' => 'Classes',
+					'path' => 'classes',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'convars',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-server',
+					'name' => 'Commands',
+					'path' => 'commands',
+					'tags' => 'true',
+				),
+			),
+		),
 		array(
 			'name' => 'holylib', 
 			'categories' => array(
@@ -795,7 +832,7 @@
 			}
 
 			InitSearch();
-			// Navigate.Install();
+			Navigate.Install();
 		</script>
 	</body>
 </html>
