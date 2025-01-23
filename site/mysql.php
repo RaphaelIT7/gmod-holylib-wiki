@@ -7,6 +7,13 @@
 		private $conn;
 
 		private function Connect() {
+			if (str_contains($_SERVER['SERVER_SOFTWARE'], "Apache"))
+			{
+				$this->password = '';
+				$this->username = 'root';
+				// Makes testing with XAMPP easier.
+			}
+
 		   $this->conn = mysqli_connect($this->servername, $this->username, $this->password);
 	
 			if (!$this->conn) {
