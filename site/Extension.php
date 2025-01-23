@@ -466,41 +466,42 @@
 								$func['rets'] = isset($func['rets']) ? $func['rets'] : array();
 
 								$html .= '<div class="member_line">';
+									$html .= '<div class="syntax">';
+										$func['name'] = '<a class="subject" href="/' . $this->PageAddress($file) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_')  . '</a>';
 
-									$func['name'] = '<a class="subject" href="/' . $this->PageAddress($file) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_')  . '</a>';
+										if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
+											$args = '';
+											foreach ($func['args'] as $arg) {
+												if (! str_ends_with($args, ',') && $args !== '')
+												{
+													$args .= ',';
+												}
 
-									if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
-										$args = '';
-										foreach ($func['args'] as $arg) {
-											if (! str_ends_with($args, ',') && $args !== '')
-											{
-												$args .= ',';
+												$args .= ' ' . '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
+
+												if (isset($arg['default']) && $arg['default'] !== '')
+												{
+													$args .= ' = ' . $arg['default'];
+												}
 											}
 
-											$args .= ' ' . '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
+											$rets = '';
+											foreach ($func['rets'] as $ret) {
+												if (! str_ends_with($rets, ',') && $rets !== '')
+												{
+													$rets .= ',';
+												}
 
-											if (isset($arg['default']) && $arg['default'] !== '')
-											{
-												$args .= ' = ' . $arg['default'];
+												$rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
 											}
+
+											$html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
+										} else {
+											$html .= $this->getFunctionName($func) . "()";
 										}
-
-										$rets = '';
-										foreach ($func['rets'] as $ret) {
-											if (! str_ends_with($rets, ',') && $rets !== '')
-											{
-												$rets .= ',';
-											}
-
-											$rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
-										}
-
-										$html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
-									} else {
-										$html .= $this->getFunctionName($func) . "()";
-									}
+									$html .= '</div>';
 									$html .= '<div class="summary">';
-										$html .= parent::text(isset($func['desc']) ? $func['desc'] : '');
+										$html .= $this->GetParentText(isset($func['desc']) ? $func['desc'] : '');
 									$html .= '</div>';
 								$html .= '</div>';
 							}
@@ -1119,6 +1120,18 @@
 			$markup = preg_replace('!^<p>(.*?)</p>$!i', '$1', $markup);
 
 			#$text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
+
+			return $markup;
+		}
+
+		public function GetParentText($text)
+		{
+			$markup = parent::text($text);
+
+			if (str_starts_with($markup, "<p>") && str_ends_with($markup, "</p>"))
+			{
+				$markup = substr($markup, 3, strlen($markup) - 7);
+			}
 
 			return $markup;
 		}

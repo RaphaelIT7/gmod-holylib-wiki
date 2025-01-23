@@ -16,6 +16,13 @@
 			if (!file_exists($page))
 				return false;
 
+			// Enfoce lowercase as out stuff expects it
+			if (strtolower($page) != $page)
+			{
+				rename($page, strtolower($page));
+				$page = strtolower($page);
+			}
+
 			$lastChanged = filemtime($page);
 			$sqlPage = $this->MySQL->GetFullPageByFile($page);
 			if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) # file wasn't updated
@@ -72,6 +79,8 @@
 		/*
 		 * BUG: If a file is imported using a wrong filePath, it will create a broken entry.
 		 * I'll implement a fix later, when it happens again & annoys me enouth.
+		 * 
+		 * NOTE: This entire thing is utterly slow, we should minimize filesystem usage.
 		 */
 		public function ImportEverything($fullUpdate = false) {
 			if (!$fullUpdate)
