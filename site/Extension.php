@@ -83,6 +83,11 @@
 			$url = str_replace(['../', './'], '', $url);
 			$url = preg_replace('/[^a-zA-Z0-9_\-.:]/', '', $url);
 
+			if ($this->config['xampp'])
+			{
+				$url = str_replace(':', '/:', $url); // Apache hates it
+			}
+
 			return $url;
 		}
 

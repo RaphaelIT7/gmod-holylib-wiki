@@ -12,6 +12,7 @@ function GetConfig()
 	'version' => 0.61,
 	'next_version' => 0.7,
 	'description' => 'Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;',
+	'xampp' => str_contains($_SERVER['SERVER_SOFTWARE'], "Apache"),
 	'categories' => array(
 		array(
 			'name' => 'Basics', 

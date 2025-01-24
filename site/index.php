@@ -64,6 +64,11 @@
 	} else {
 		$currentUrl = $_SERVER['REQUEST_URI'];
 		$currentPage = strtr(substr(parse_url($currentUrl, PHP_URL_PATH), 1), array("gmod/" => ""));
+
+		if ($config['xampp'])
+		{
+			$currentUrl = str_replace('/:', ':', $currentUrl); // Apache hates it
+		}
 	}
 
 	$currentSQLPage = $MySQL->GetFullPage($currentPage);
