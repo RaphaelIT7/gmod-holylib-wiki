@@ -68,6 +68,18 @@ function GetConfig()
 					'path' => 'classes',
 					'tags' => 'true',
 				),
+				/*array(
+					'mdi' => 'mdi-format-list-numbered',
+					'name' => 'Enums',
+					'path' => 'enums',
+					'tags' => 'true',
+				),*/
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'Structs',
+					'path' => 'structs',
+					'tags' => 'true',
+				),
 				array(
 					'mdi' => 'mdi-database',
 					'name' => 'ConVars',
@@ -166,6 +178,12 @@ function GetConfig()
 					'path' => 'modules/stringtable/classes',
 					'tags' => 'true',
 				),
+				/*array(
+					'mdi' => 'mdi-format-list-numbered',
+					'name' => 'Enums',
+					'path' => 'modules/stringtable/enums',
+					'tags' => 'true',
+				),*/
 			),
 		),
 		array(
@@ -262,6 +280,12 @@ function GetConfig()
 					'path' => 'modules/vprof/classes',
 					'tags' => 'true',
 				),
+				/*array(
+					'mdi' => 'mdi-format-list-numbered',
+					'name' => 'Enums',
+					'path' => 'modules/vprof/enums',
+					'tags' => 'true',
+				),*/
 				array(
 					'mdi' => 'mdi-database',
 					'name' => 'ConVars',
@@ -308,6 +332,12 @@ function GetConfig()
 					'path' => 'modules/sourcetv/convars',
 					'tags' => 'true',
 				),
+				/*array(
+					'mdi' => 'mdi-format-list-numbered',
+					'name' => 'Enums',
+					'path' => 'modules/sourcetv/enums',
+					'tags' => 'true',
+				),*/
 			),
 		),
 		array(
@@ -414,6 +444,18 @@ function GetConfig()
 					'mdi' => 'mdi-book',
 					'name' => 'Classes',
 					'path' => 'modules/physenv/classes',
+					'tags' => 'true',
+				),
+				/*array(
+					'mdi' => 'mdi-format-list-numbered',
+					'name' => 'Enums',
+					'path' => 'modules/physenv/enums',
+					'tags' => 'true',
+				),*/
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'Structs',
+					'path' => 'modules/physenv/structs',
 					'tags' => 'true',
 				),
 			),

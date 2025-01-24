@@ -571,6 +571,35 @@
 			return $html;
 		}
 
+		protected function buildEnums($enums) {
+			$html = '<div class="enum">';
+				$html .= '<h1>Description</h1>';
+				$html .= '<div class="function_description section">';
+					$html .= $this->text($enums['desc']);
+				$html .= '</div>';
+				$html .= '<h1>Parameters</h1>';
+				$html .= '<div class="section">';
+					foreach ($enums['items'] as $field) {
+						$html .='<div class="parameter">';
+							$html .= '<a class="link-page ' . ($this->FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
+							$html .= '<strong> ' . $field['name'] . '</strong>';
+							$html .= '<div class="description numbertagindent">';
+								$html .= $this->text($field['desc']);
+								if(isset($field['default']) && $field['default'] != '') {
+									$html .= '<p>';
+										$html .= '<strong>Default:</strong>';
+										$html .= '<code>' . $field['default'] . '</code>';
+									$html .= '</p>';
+								}
+							$html .= '</div>';
+						$html .= '</div>';
+					}
+				$html .= '</div>';
+			$html .= '</div>';
+
+			return $html;
+		}
+
 		protected function buildNote($text)
 		{
 			$html = '<div class="note">';
@@ -1112,6 +1141,34 @@
 				$markup .= $this->buildStructure($structure);
 			}
 
+			if (preg_match('/<enum>([\s\S]+?)<\/enum>/s', $text, $matches)) {
+				$special = true;
+				$enums = array();
+
+				if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
+					$enums['desc'] = $matches[1];
+				}
+
+				if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches)) {
+					$enums['src'] = $matches[1];
+				}
+
+				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
+					$data = $this->getrealm($matches[1]);
+					$enums['realm'] = $data['realm'];
+					$enums['realmdesc'] = $data['realmdesc'];
+				} else {
+					$enums['realm'] = '';
+					$enums['realmdesc'] = "No";
+				}
+
+				if (preg_match('/<items>(.*?)<\/items>/s', $text, $matches)) {
+					$enums['items'] = $this->GetStuff($matches[1], 'items', 'item');
+				}
+
+				$markup .= $this->buildEnums($enums);
+			}
+
 			if (preg_match_all('/<example>\s*<description>(.*?)<\/description>\s*<code>(.*?)<\/code>(?:\s*<output>(.*?)<\/output>)?\s*<\/example>/s', $text, $matches, PREG_SET_ORDER)) {
 				$special = true;
 
@@ -1122,21 +1179,6 @@
 						'desc' => parent::text(trim($match[1])),
 					));
 				}
-			
-				#$text = preg_replace_callback(
-				#	'/<example>\s*<description>(.*?)<\/description>\s*<code>(.*?)<\/code>(?:\s*<output>(.*?)<\/output>)?\s*<\/example>/s',
-				#	function ($match) use (&$markup) {
-				#		$replacement = $this->buildExample([
-				#			'output' => isset($match[3]) ? trim($match[3]) : '',
-				#			'code' => trim($match[2]),
-				#			'desc' => parent::text(trim($match[1])),
-				#		]);
-				#
-				#		$markup .= $replacement;
-				#		return '';
-				#	},
-				#	$text
-				#);
 			}
 
 			if (!$special) {
