@@ -1128,9 +1128,10 @@
 		{
 			$markup = parent::text($text);
 
-			if (str_starts_with($markup, "<p>") && str_ends_with($markup, "</p>"))
-			{
-				$markup = substr($markup, 3, strlen($markup) - 7);
+			if (preg_match_all('/<p>([\s\S]+?)<\/p>/', $markup, $matches, PREG_SET_ORDER)) {
+				foreach ($matches as $match) {
+					$markup = str_replace('<p>' . $match[1] . '</p>', $match[1], $markup);
+				}
 			}
 
 			return $markup;
