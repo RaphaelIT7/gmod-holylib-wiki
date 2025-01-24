@@ -162,7 +162,10 @@
 							$html .= '<details class="level2 cm type e">';
 								$html .= '<summary>';
 									$sqlPage = $this->MySQL->GetPageForSidebarByFile($folderPath . $page . '/' . $page . '.md');
-									$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+									if (isset($sqlPage))
+										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+									else
+										$html .= '<p>' . $folderPath . $page . '/' . $page . '.md' . '</p>';
 								$html .= '</summary>';
 								$html .= '<ul>';
 									$fullpath = $folderPath . $page;
@@ -231,7 +234,10 @@
 							$html .= '<details class="level2 cm type e">';
 								$html .= '<summary>';
 									$sqlPage = $this->MySQL->GetPageForSidebarByFile($path . $page . '/' . $page . '.md');
-									$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+									if (isset($sqlPage))
+										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+									else
+										$html .= '<p>' . $path . $page . '/' . $page . '.md' . '</p>';
 								$html .= '</summary>';
 								$html .= '<ul>';
 									$fullpath = $path . $page;

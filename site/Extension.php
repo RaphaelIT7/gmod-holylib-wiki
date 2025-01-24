@@ -299,23 +299,23 @@
 		}
 
 		protected function getFunctionName($func)
-		   {
-			   if (!isset($func['parent']) || strlen($func['parent']) == 0)
-				   return $func['name'];
+		{
+			if (!isset($func['parent']) || strlen($func['parent']) == 0)
+				return $func['name'];
 
-			   $outPut = $func['parent'];
+			$outPut = $func['parent'];
 
-			   if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield'))
-				   $outPut .= '.';
-			   else if (isset($func['type']) && $func['type'] == 'hook')
-				   $outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
-			   else
-				   $outPut .= $this->config['code_funcseparator'];
+			if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield'))
+				$outPut .= '.';
+			else if (isset($func['type']) && $func['type'] == 'hook')
+				$outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
+			else
+				$outPut .= $this->config['code_funcseparator'];
 
-			   $outPut .= $func['name'];
+			$outPut .= $func['name'];
 
-			   return $outPut;
-		   }
+			return $outPut;
+		}
 
 		protected function buildFunction($func)
 		{
