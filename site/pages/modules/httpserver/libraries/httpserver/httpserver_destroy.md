@@ -1,4 +1,4 @@
-<function name="Destroy" parent="httpserver_" type="libraryfunc">
+<function name="Destroy" parent="httpserver" type="libraryfunc">
 	<description>
 		Destroys the given <page>HttpServer</page>
 		<added version="0.7"></added>

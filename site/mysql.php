@@ -132,7 +132,7 @@
 					return;
 				}
 			} else {
-				echo "Error: " . mysqli_error($this->conn);
+				echo "Error: " . mysqli_error($this->conn) . "\n";
 			}
 		}
 
@@ -392,7 +392,7 @@
 			$this->Query("CREATE TABLE IF NOT EXISTS pages (
 				title VARCHAR(255),
 				tags VARCHAR(255),
-				address VARCHAR(255) UNIQUE,
+				address VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin UNIQUE,
 				createdTime VARCHAR(32),
 				updateCount INT DEFAULT 0,
 				markup TEXT,

@@ -1,4 +1,4 @@
-<function name="Create" parent="httpserver_" type="libraryfunc">
+<function name="Create" parent="httpserver" type="libraryfunc">
 	<description>
 		Creates a new <page>HttpServer</page>.  
 		<added version="0.7"></added>

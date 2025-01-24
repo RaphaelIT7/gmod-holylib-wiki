@@ -35,10 +35,16 @@
 		#
 		# Utilities
 		#
-		function FindFile($file) {
+		function FindFile($file, $title = null) {
 			$file = $this->SafeLink($file);
 			$file = strtolower($file);
 			$file = str_replace('.', '_', $file);
+
+			if ($this->config['xampp'])
+			{
+				$file = str_replace('/:', ':', $file); // Apache hates it
+			}
+
 			$file = str_replace(':', '_', $file);
 
 			$debug = false;
@@ -58,6 +64,13 @@
 						if (is_dir($shortpath . $file2)) {
 							if (file_exists($shortpath . $file2 . '/' . $file . '.md'))
 							{
+								if ($title)
+								{
+									$content = $this->OpenFile($shortpath . $file2 . '/' . $file . '.md');
+									if ($title != $this->PageTitle($content, true))
+										continue;
+								}
+
 								return $shortpath . $file2 . '/' . $file . '.md';
 							}
 						}
@@ -93,6 +106,12 @@
 
 		function OpenFile($path) {
 			$path = strtolower($path);
+
+			if ($this->config['xampp'])
+			{
+				$path = str_replace('/:', ':', $path); // Apache hates it
+			}
+
 			if (!file_exists($path))
 				return null;
 
@@ -101,6 +120,11 @@
 
 		function FileExists($path) {
 			$path = strtolower($path);
+
+			if ($this->config['xampp'])
+			{
+				$path = str_replace('/:', ':', $path); // Apache hates it
+			}
 
 			return file_exists($path);
 		}
@@ -453,7 +477,7 @@
 				$html .= '<div class="members">';
 					$html .= '<h1>Methods</h1>';
 					$html .= '<div class="section">';
-						$path = $this->FindFile($type['name']);
+						$path = $this->FindFile($type['name'], $type['name']);
 						if (isset($path) && $path != '') {
 							$path = substr($path, 0, strripos($path, '/'));
 							$files = array_diff(scandir($path), array('..', '.', strtolower($type['name']) . '.md'));
