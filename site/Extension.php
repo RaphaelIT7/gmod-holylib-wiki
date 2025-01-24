@@ -869,6 +869,9 @@
 		{
 			$ret = array();
 
+			// Solves a bug, as callback also uses <arg> & in a function list it would falsely add these args
+			$text = preg_replace('/<callback>[\s\S]+?<\/callback>/', '', $text);
+
 			preg_match_all('/<' . $prefix . ' name="([^"]*)" type="([^"]+)"(?: default="([^"]*)")?>(.*?)<\/' . $prefix . '>/s', $text, $matches, PREG_SET_ORDER);
 
 			foreach ($matches as $match) {
