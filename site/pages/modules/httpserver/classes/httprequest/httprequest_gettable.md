@@ -1,4 +1,4 @@
-<function name="GetTable" parent="IGameEvent" type="classfunc">
+<function name="GetTable" parent="HttpRequest" type="classfunc">
 	<description>
 		Returns the lua table used by `__newindex` and `__index`<br>
 		<added version="0.7"></added>

@@ -5,6 +5,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="luatable" type="table">Returns the Lua table</ret>
+		<ret name="luaTable" type="table">Returns the Lua table</ret>
 	</rets>
 </function>
