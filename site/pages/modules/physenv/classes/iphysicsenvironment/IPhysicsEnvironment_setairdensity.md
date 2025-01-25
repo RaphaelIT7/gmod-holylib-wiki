@@ -1,4 +1,4 @@
-<function name="SetAirDensity" parent="IPhysicsEvironment" type="classfunc">
+<function name="SetAirDensity" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Sets the new air density.
 	</description>

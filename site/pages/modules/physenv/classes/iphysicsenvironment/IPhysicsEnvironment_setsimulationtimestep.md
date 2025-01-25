@@ -1,4 +1,4 @@
-<function name="SetSimulationTimestep" parent="IPhysicsEvironment" type="classfunc">
+<function name="SetSimulationTimestep" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Sets the next simulation timestep.
 	</description>

@@ -1,4 +1,4 @@
-<function name="GetNextFrameTime" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetNextFrameTime" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		returns the current simulation clock's value at the next frame.
 		This is an absolute time.

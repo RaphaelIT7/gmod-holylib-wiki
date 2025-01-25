@@ -1,4 +1,4 @@
-<function name="CreatePolyObjectStatic" parent="IPhysicsEvironment" type="classfunc">
+<function name="CreatePolyObjectStatic" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Creates a new static IPhysicsObject in the environment.
 	</description>

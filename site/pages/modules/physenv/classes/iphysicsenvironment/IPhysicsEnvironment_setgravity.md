@@ -1,4 +1,4 @@
-<function name="SetGravity" parent="IPhysicsEvironment" type="classfunc">
+<function name="SetGravity" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Sets the new gravity in `source_unit/s^2`
 	</description>

@@ -1,4 +1,4 @@
-<function name="CleanupDeleteList" parent="IPhysicsEvironment" type="classfunc">
+<function name="CleanupDeleteList" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		<validate>
 			cleans the delete list?

@@ -1,6 +1,6 @@
-<function name="GetSimulationTimestep" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetAirDensity" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
-		returns the next simulation timestep.
+		Returns the current air density.
 	</description>
 	<realm>Server</realm>
 	<args>

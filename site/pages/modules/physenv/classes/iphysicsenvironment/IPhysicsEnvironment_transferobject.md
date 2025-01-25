@@ -1,4 +1,4 @@
-<function name="TransferObject" parent="IPhysicsEvironment" type="classfunc">
+<function name="TransferObject" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Transfers the physics object from this environment to the new environment.
 		<warning>

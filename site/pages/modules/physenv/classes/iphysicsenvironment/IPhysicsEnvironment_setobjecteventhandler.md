@@ -1,4 +1,4 @@
-<function name="SetObjectEventHandler" parent="IPhysicsEvironment" type="classfunc">
+<function name="SetObjectEventHandler" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Allows you to add callbacks when physics objects wake up or go to sleep in the environment.
 	</description>

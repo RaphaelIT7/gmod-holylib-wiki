@@ -1,4 +1,4 @@
-<function name="Simulate" parent="IPhysicsEvironment" type="classfunc">
+<function name="Simulate" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Simulates the given delta time in the environment.
 		If `onlyEntities` is set, it will only update the Entities, without simulating the physics environment.

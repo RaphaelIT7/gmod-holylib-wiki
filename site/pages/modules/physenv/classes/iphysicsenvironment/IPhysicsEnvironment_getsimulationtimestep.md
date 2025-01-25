@@ -1,6 +1,6 @@
-<function name="GetActiveObjectCount" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetSimulationTimestep" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
-		returns the number of active physics objects.
+		returns the next simulation timestep.
 	</description>
 	<realm>Server</realm>
 	<args>

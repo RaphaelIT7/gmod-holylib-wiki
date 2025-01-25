@@ -1,4 +1,4 @@
-<function name="CreateWorldPhysics" parent="IPhysicsEvironment" type="classfunc">
+<function name="CreateWorldPhysics" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Creates the world physics object and also adds all static props.
 	</description>

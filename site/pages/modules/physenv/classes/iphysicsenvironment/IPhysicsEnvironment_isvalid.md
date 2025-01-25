@@ -1,4 +1,4 @@
-<function name="IsValid" parent="IPhysicsEvironment" type="classfunc">
+<function name="IsValid" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Returns `true` if the collision query is still valid.
 	</description>

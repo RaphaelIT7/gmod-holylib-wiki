@@ -1,4 +1,4 @@
-<function name="GetObjectList" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetObjectList" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		returns a table containing all physics objects.
 	</description>

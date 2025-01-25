@@ -1,6 +1,6 @@
-<function name="GetAirDensity" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetActiveObjectCount" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
-		Returns the current air density.
+		returns the number of active physics objects.
 	</description>
 	<realm>Server</realm>
 	<args>

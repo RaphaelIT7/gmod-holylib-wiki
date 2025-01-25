@@ -1,4 +1,4 @@
-<function name="GetPerformanceSettings" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetPerformanceSettings" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Returns the current performance settings.
 		The table will use the [PhysEnvPerformanceSettings](https://wiki.facepunch.com/gmod/Structures/PhysEnvPerformanceSettings) structure.

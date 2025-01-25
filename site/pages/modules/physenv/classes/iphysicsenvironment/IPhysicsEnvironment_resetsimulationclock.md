@@ -1,4 +1,4 @@
-<function name="ResetSimulationClock" parent="IPhysicsEvironment" type="classfunc">
+<function name="ResetSimulationClock" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		resets the simulation clock.
 	</description>

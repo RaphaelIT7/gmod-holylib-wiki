@@ -1,4 +1,4 @@
-<function name="__tostring" parent="IPhysicsEvironment" type="classfunc">
+<function name="__tostring" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Returns `IPhysicsEnvironment NULL` if invalid.
 		Else it returns `IPhysicsEnvironment`.

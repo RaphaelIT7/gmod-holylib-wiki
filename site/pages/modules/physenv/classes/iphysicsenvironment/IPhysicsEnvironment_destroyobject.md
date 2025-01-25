@@ -1,4 +1,4 @@
-<function name="DestroyObject" parent="IPhysicsEvironment" type="classfunc">
+<function name="DestroyObject" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Destroys the given physics object.
 	</description>

@@ -1,4 +1,4 @@
-<function name="__newindex" parent="IPhysicsEvironment" type="classfunc">
+<function name="__newindex" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Internally implemented and will set the values into the lua table.
 	</description>

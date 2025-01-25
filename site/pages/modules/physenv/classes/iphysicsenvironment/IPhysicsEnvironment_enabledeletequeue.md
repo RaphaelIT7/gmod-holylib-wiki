@@ -1,4 +1,4 @@
-<function name="EnableDeleteQueue" parent="IPhysicsEvironment" type="classfunc">
+<function name="EnableDeleteQueue" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Enables/Disables the delete queue.
 	</description>

@@ -1,4 +1,4 @@
-<function name="GetTable" parent="IPhysicsEvironment" type="classfunc">
+<function name="GetTable" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Returns the lua table of this object.
 		You can store variables into it.

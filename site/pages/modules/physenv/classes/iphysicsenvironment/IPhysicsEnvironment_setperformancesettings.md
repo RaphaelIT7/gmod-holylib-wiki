@@ -1,4 +1,4 @@
-<function name="SetPerformanceSettings" parent="IPhysicsEvironment" type="classfunc">
+<function name="SetPerformanceSettings" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Sets the new performance settings.
 		Use the [PhysEnvPerformanceSettings](https://wiki.facepunch.com/gmod/Structures/PhysEnvPerformanceSettings) structure.

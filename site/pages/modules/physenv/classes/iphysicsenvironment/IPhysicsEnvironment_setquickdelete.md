@@ -1,4 +1,4 @@
-<function name="SetQuickDelete" parent="IPhysicsEvironment" type="classfunc">
+<function name="SetQuickDelete" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		<validate>
 			Sets quick delete?

@@ -1,4 +1,4 @@
-<function name="__index" parent="IPhysicsEvironment" type="classfunc">
+<function name="__index" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Internally seaches first in the metatable table for the key.
 		If it fails to find it, it will search in the lua table before returning.

@@ -1,4 +1,4 @@
-<function name="IsCollisionModelUsed" parent="IPhysicsEvironment" type="classfunc">
+<function name="IsCollisionModelUsed" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Returns true if it uses a collision model.
 		<validate>
