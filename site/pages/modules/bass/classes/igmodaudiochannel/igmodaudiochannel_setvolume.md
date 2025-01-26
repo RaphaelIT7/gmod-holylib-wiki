@@ -9,6 +9,4 @@
 	<args>
 		<arg name="playbackRate" type="number"></arg>
 	</args>
-	<rets>
-	</rets>
 </function>

@@ -6,8 +6,6 @@
 		</note>
 	</description>
 	<realm>Server</realm>
-	<args>
-	</args>
 	<rets>
 		<ret name="" type="number"></ret>
 	</rets>

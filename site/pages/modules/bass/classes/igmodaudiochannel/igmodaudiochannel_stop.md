@@ -3,8 +3,4 @@
 		Stops the channel.
 	</description>
 	<realm>Server</realm>
-	<args>
-	</args>
-	<rets>
-	</rets>
 </function>

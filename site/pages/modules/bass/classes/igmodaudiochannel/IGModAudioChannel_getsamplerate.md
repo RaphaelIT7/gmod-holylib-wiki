@@ -4,6 +4,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="" type=number"></ret>
+		<ret name="" type="number"></ret>
 	</rets>
 </function>

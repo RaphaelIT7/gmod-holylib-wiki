@@ -6,6 +6,4 @@
 	<args>
 		<arg name="looping" type="bool"></arg>
 	</args>
-	<rets>
-	</rets>
 </function>

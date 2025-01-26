@@ -3,8 +3,4 @@
 		Destroys the audio channel.
 	</description>
 	<realm>Server</realm>
-	<args>
-	</args>
-	<rets>
-	</rets>
 </function>

@@ -6,6 +6,4 @@
 	<args>
 		<arg name="time" type="number"></arg>
 	</args>
-	<rets>
-	</rets>
 </function>
