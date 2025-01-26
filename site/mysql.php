@@ -111,8 +111,15 @@
 				$stmt->execute();
 				$stmt->close();
 			} else {
-				$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=? WHERE filePath=?");
-				$stmt->bind_param("sssissisissis", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath);
+				$stmt = null;
+				if ($exists['filePath'] != $filePath)
+				{
+					$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=?, filePath=? WHERE address=?");
+					$stmt->bind_param("sssissisississ", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $address);
+				} else {
+					$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=? WHERE filePath=?");
+					$stmt->bind_param("sssissisissis", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath);
+				}
 				$stmt->execute();
 				$stmt->close();
 			}
