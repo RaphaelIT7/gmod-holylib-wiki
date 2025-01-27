@@ -497,10 +497,12 @@
 					$html .= '<div class="section">';
 						$path = $this->FindFile($type['name'], $type['name']);
 						if (isset($path) && $path != '') {
+							$fileName = substr($path, strripos($path, '/') + 1, strlen($path) - strripos($path, '/') - 4);
+							$mainDir = !strripos($path, $fileName . "/" . $fileName);
 							$path = substr($path, 0, strripos($path, '/'));
 							$files = array_diff(scandir($path), array('..', '.', strtolower($type['name']) . '.md'));
 							foreach($files as &$page2) {
-								$file = $this->OpenFile($path . '/' . $page2);
+								$file = $this->OpenFile($path . '/' . $page2 . ($mainDir ? ("/" . $page2) : ''));
 								if (!$file)
 									continue;
 
@@ -948,7 +950,8 @@
 			return $ret;
 		}
 
-		function text($text)
+		// preView is used in things like page lists, were we don't want to display notes.
+		function text($text, $preView = false)
 		{
 			$markup = '';
 

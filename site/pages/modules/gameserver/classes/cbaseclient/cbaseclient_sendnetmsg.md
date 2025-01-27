@@ -1,4 +1,4 @@
-<function name="SendNetMsg" parent="CBaseClient" type="libraryfunc">
+<function name="SendNetMsg" parent="CBaseClient" type="classfunc">
 	<description>
 		Same as <page>gameserver.BroadcastMessage</page> but it only sends it to the specific player.
 		<added version="0.7">
