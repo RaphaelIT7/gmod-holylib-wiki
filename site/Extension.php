@@ -212,29 +212,32 @@
 						$tags .= 'cm event f meth memb';
 					}
 				}
+			} else {
+				$tags .= 'cm';
+			}
 
-				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches2)) {
-					$realm = $matches2[1];
+			if (strlen($tags) != 0) {
+				$tags .= ' ';
+			}
 
-					if (strlen($tags) != 0) {
-						$tags .= ' ';
-					}
-					if ($realm === 'Client and Menu') {
-						$tags .= 'rc rm';
-					} elseif ($realm === 'Menu') {
-						$tags .= 'rm';
-					} elseif ($realm === 'Client') {
-						$tags .= 'rc';
-					} elseif ($realm === 'Server') {
-						$tags .= 'rs';
-					} elseif ($realm === 'Shared') {
-						$tags .= 'rs rc';
-					} elseif ($realm === 'Shared and Menu') {
-						$tags .= 'rs rc rm';
-					}
+			if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
+				$realm = $matches[1];
+
+				if ($realm === 'Client and Menu') {
+					$tags .= 'rc rm';
+				} elseif ($realm === 'Menu') {
+					$tags .= 'rm';
+				} elseif ($realm === 'Client') {
+					$tags .= 'rc';
+				} elseif ($realm === 'Server') {
+					$tags .= 'rs';
+				} elseif ($realm === 'Shared') {
+					$tags .= 'rs rc';
+				} elseif ($realm === 'Shared and Menu') {
+					$tags .= 'rs rc rm';
 				}
 			} else {
-				$tags .= 'cm e';
+				$tags .= 'e';
 			}
 
 			$tags .= $this->GetSpecialTags($text);
