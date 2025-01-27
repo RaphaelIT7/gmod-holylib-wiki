@@ -125,6 +125,17 @@
 			}
 		}
 
+		public function DeleteFilePage($filePath) {
+			$page = $this->GetFullPageByFile($filePath);
+			if (!isset($page))
+				return;
+
+			$stmt = $this->conn->prepare("DELETE FROM pages WHERE filePath=?");
+			$stmt->bind_param("s", $filePath);
+			$stmt->execute();
+			$stmt->close();
+		}
+
 		public function GetFullPage($address) {
 			$result = mysqli_query($this->conn, "SELECT * FROM pages WHERE address = '" . $this->SQLStr($address) . "' LIMIT 1");
 

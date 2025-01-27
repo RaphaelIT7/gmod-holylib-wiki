@@ -23,6 +23,12 @@
 				$page = strtolower($page);
 			}
 
+			if (str_ends_with($page, ".deleted"))
+			{
+				$this->MySQL->DeleteFilePage(str_ireplace(".deleted", ".md", $page));
+				return false;
+			}
+
 			$lastChanged = filemtime($page);
 			$sqlPage = $this->MySQL->GetFullPageByFile($page);
 			if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) # file wasn't updated
