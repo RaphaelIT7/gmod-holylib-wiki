@@ -151,9 +151,9 @@
 
 				<div class="footer" id="pagefooter">
 					<?php
-						echo 'Page views: ' . $MySQL->GetIncreasedViews($currentPage);
+						echo 'Page views: ' . (isset($currentSQLPage) ? $MySQL->GetIncreasedViews($currentPage) : 0);
 						echo '<br>';
-						echo 'Updated: ' . isset($currentSQLPage['updated']) ? $currentSQLPage['updated'] : 'Never';
+						echo 'Updated: ' . (isset($currentSQLPage['updated']) ? $currentSQLPage['updated'] : 'Never');
 					?>
 				</div>
 			</div>
