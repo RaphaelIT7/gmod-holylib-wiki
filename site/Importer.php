@@ -91,6 +91,8 @@
 		 * NOTE: This entire thing is utterly slow, we should minimize filesystem usage.
 		 */
 		public function ImportEverything($fullUpdate = false) {
+			$totalTime = floor(microtime(true) * 1000);
+
 			if (!$fullUpdate)
 				foreach($this->phpPages as &$phpPage)
 					if ($this->CheckPHP($phpPage))
@@ -128,6 +130,8 @@
 
 			#if ($fullUpdate)
 			#	echo 'Ran full update!';
+
+			//echo 'Took ' . ((floor(microtime(true) * 1000) - $totalTime) / 1000) . "s";
 		}
 
 		public function CreateGlobalCategory($category)
