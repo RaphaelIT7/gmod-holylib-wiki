@@ -9,7 +9,7 @@
 		<arg name="origin" type="Vector"></arg>
 		<arg name="angles" type="Angle"></arg>
 		<arg name="objectparams_t" type="table"></arg>
-		<arg name="static" type="bool" default="false"></arg>
+		<arg name="static" type="boolean" default="false"></arg>
 	</args>
 	<rets>
 		<ret name="" type="IPhysicsObject"></ret>

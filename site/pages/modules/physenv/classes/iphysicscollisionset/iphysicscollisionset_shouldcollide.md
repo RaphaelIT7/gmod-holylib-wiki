@@ -8,6 +8,6 @@
 		<arg name="index1" type="number"></arg>
 	</args>
 	<rets>
-		<ret name="" type="bool"></ret>
+		<ret name="" type="boolean"></ret>
 	</rets>
 </function>

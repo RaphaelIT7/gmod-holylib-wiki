@@ -4,7 +4,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="deleteQueue" type="bool"></arg>
+		<arg name="deleteQueue" type="boolean"></arg>
 	</args>
 	<rets>
 	</rets>

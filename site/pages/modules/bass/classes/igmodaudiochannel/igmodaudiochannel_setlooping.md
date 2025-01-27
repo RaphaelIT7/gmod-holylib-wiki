@@ -4,6 +4,6 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="looping" type="bool"></arg>
+		<arg name="looping" type="boolean"></arg>
 	</args>
 </function>

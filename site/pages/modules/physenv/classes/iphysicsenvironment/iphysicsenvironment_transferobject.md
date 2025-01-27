@@ -11,6 +11,6 @@
 		<arg name="newEnvironment" type="IPhysicsEnvironment"></arg>
 	</args>
 	<rets>
-		<ret name="" type="bool"></ret>
+		<ret name="" type="boolean"></ret>
 	</rets>
 </function>

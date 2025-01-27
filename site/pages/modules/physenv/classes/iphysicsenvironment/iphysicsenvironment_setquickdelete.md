@@ -6,7 +6,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="quickDelete" type="bool"></arg>
+		<arg name="quickDelete" type="boolean"></arg>
 	</args>
 	<rets>
 	</rets>

@@ -10,6 +10,6 @@
 		<arg name="collide" type="CPhysCollide"></arg>
 	</args>
 	<rets>
-		<ret name="" type="bool"></ret>
+		<ret name="" type="boolean"></ret>
 	</rets>
 </function>

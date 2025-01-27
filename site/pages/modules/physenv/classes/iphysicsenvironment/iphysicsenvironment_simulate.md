@@ -6,7 +6,7 @@
 	<realm>Server</realm>
 	<args>
 		<arg name="deltaTime" type="number"></arg>
-		<arg name="onlyEntities" type="bool" default="false"></arg>
+		<arg name="onlyEntities" type="boolean" default="false"></arg>
 	</args>
 	<rets>
 	</rets>

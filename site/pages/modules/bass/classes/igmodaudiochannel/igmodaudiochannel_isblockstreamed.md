@@ -4,6 +4,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="" type="bool"></ret>
+		<ret name="" type="boolean"></ret>
 	</rets>
 </function>

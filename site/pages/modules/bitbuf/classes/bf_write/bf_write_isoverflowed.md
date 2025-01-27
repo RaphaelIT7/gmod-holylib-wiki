@@ -4,6 +4,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="overflowed" type="bool"></ret>
+		<ret name="overflowed" type="boolean"></ret>
 	</rets>
 </function>
