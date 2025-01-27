@@ -154,7 +154,7 @@
 				$title = $matches[1];
 			}
 
-			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				if (isset($fullName))
 				{
 					if($matches[3] == 'classfunc' && $this->config['code_language'] == 'lua') {
@@ -169,7 +169,7 @@
 				}
 			}
 
-			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
+			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s', $text, $matches)) {
 				$title = $matches[1];
 			}
 
@@ -184,7 +184,7 @@
 		function GetTags($text)
 		{
 			$tags = '';
-			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				if (isset($matches[3]) && $matches[3] != '') {
 					if ($matches[3] == 'classfunc' || $matches[3] == 'libraryfunc') {
 						$tags .= 'cm f meth memb';
@@ -223,21 +223,21 @@
 				$tags .= 'cm e';
 			}
 
-			if (preg_match('/<deprecated>([\s\S]+?)<\/deprecated>/', $text, $matches)) {
+			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches)) {
 				if (strlen($tags) != 0) {
 					$tags .= ' ';
 				}
 				$tags .= 'depr';
 			}
 
-			if (preg_match('/<removed>([\s\S]+?)<\/removed>/', $text, $matches)) {
+			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches)) {
 				if (strlen($tags) != 0) {
 					$tags .= ' ';
 				}
 				$tags .= 'depr';
 			}
 
-			if (preg_match_all('/<internal>([\s\S]+?)<\/internal>/', $text, $matches)) {
+			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches)) {
 				if (strlen($tags) != 0) {
 					$tags .= ' ';
 				}
@@ -249,7 +249,7 @@
 
 		function LableRealm($text) 
 		{
-			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches2)) {
 					$realm = $matches2[1];
 
@@ -276,7 +276,7 @@
 
 		function FuncData($text) 
 		{
-			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				$function = array();
 				$function['name'] = $matches[1];
 				$function['parent'] = $matches[2];
@@ -550,7 +550,7 @@
 										}
 									$html .= '</div>';
 									$html .= '<div class="summary">';
-										$html .= $this->GetParentText(isset($func['desc']) ? $func['desc'] : '');
+										$html .= $this->GetPreviewText(isset($func['desc']) ? $func['desc'] : '');
 									$html .= '</div>';
 								$html .= '</div>';
 							}
@@ -620,8 +620,11 @@
 			return $html;
 		}
 
-		protected function buildNote($text)
+		protected function buildNote($text, $preView)
 		{
+			if ($preView)
+				return $this->GetPreviewText($text);
+
 			$html = '<div class="note">';
 				$html .= '<div class="inner">';
 					$html .= $this->text($text);
@@ -631,8 +634,11 @@
 			return $html;
 		}
 
-		protected function buildWarning($text)
+		protected function buildWarning($text, $preView)
 		{
+			if ($preView)
+				return $this->GetPreviewText($text);
+
 			$html = '<div class="warning">';
 				$html .= '<div class="inner">';
 					$html .= $this->text($text);
@@ -651,42 +657,51 @@
 			return $html;
 		}
 
-		protected function buildRemoved($text, $version)
+		protected function buildRemoved($text, $version, $preView)
 		{
-			$future = false;
+			$htmlText = '';
 			if ($version)
 			{
 				$version = (double)$version;
 				if ($version == 0 || $version > $this->config['version']) // If 0 then it failed to cast.
-					$future = true;
+					$htmlText .= '<p>This will be removed in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).</p>';
 			}
+
+			$htmlText .= $text;
+
+			if ($preView)
+				return $htmlText;
 
 			$html = '<div class="removed">';
 				$html .= '<div class="inner">';
-					if ($future)
-					{
-						$html .= '<p>This will be removed in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).</p>';
-					}
-					$html .= $text;
+					$html .= $htmlText;
 				$html .= '</div>';
 			$html .= '</div>';
 
 			return $html;
 		}
 
-		protected function buildDeprecated($text)
+		protected function buildDeprecated($text, $preView)
 		{
+			$htmlText = 'We advise against using this. It may be changed or removed in a future update. ' . $text;
+
+			if ($preView)
+				return $htmlText;
+
 			$html = '<div class="deprecated">';
 				$html .= '<div class="inner">';
-					$html .= 'We advise against using this. It may be changed or removed in a future update. ' . $text;
+					$html .= $htmlText;
 				$html .= '</div>';
 			$html .= '</div>';
 
 			return $html;
 		}
 
-		protected function buildValidate($text)
+		protected function buildValidate($text, $preView)
 		{
+			if ($preView)
+				return $text;
+
 			$html = '<div class="validate">';
 				$html .= '<div class="inner">';
 					$html .= $text;
@@ -696,7 +711,7 @@
 			return $html;
 		}
 
-		protected function buildInternal($text)
+		protected function buildInternal($text, $preView)
 		{
 			$html = '<div class="internal">';
 				$html .= '<div class="inner">';
@@ -730,8 +745,11 @@
 			return $html;
 		}
 
-		protected function buildAmbig($text, $page)
+		protected function buildAmbig($text, $page, $preView)
 		{
+			if ($preView)
+				return '';
+
 			$file = $this->FindFile($page);
 
 			$html = '<div class="ambig">';
@@ -746,7 +764,7 @@
 			return $html;
 		}
 
-		protected function buildBug($text, $issue)
+		protected function buildBug($text, $issue, $preView)
 		{
 			$html = '<div class="bug">';
 				$html .= '<div class="inner">';
@@ -844,10 +862,10 @@
 			return $html;
 		}
 
-		protected function buildAdded($text, $version)
+		protected function buildAdded($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
 				return '';
 
 			$html = '<h1>';
@@ -866,10 +884,10 @@
 			return $html;
 		}
 
-		protected function buildChanged($text, $version)
+		protected function buildChanged($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
 				return '';
 
 			$html = '<h1>';
@@ -966,104 +984,132 @@
 			$text = implode("\n", $lines);
 			$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
 
-			if (preg_match_all('/<note>([\s\S]+?)<\/note>/s', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<note>' . $match[1] . '</note>', $this->buildNote($match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<note>([\s\S]*?)<\/note>/',
+				function ($match) use ($preView) {
+					return $this->buildNote($match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<warning>([\s\S]+?)<\/warning>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<warning>' . $match[1] . '</warning>', $this->buildWarning($match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<warning>([\s\S]*?)<\/warning>/',
+				function ($match) use ($preView) {
+					return $this->buildWarning($match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<removed>([\s\S]+?)<\/removed>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<removed>' . $match[1] . '</removed>', $this->buildRemoved($match[1], null), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<removed>([\s\S]*?)<\/removed>/',
+				function ($match) use ($preView) {
+					return $this->buildRemoved($match[1], null, $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<deprecated>([\s\S]+?)<\/deprecated>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<deprecated>' . $match[1] . '</deprecated>', $this->buildDeprecated($match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<deprecated>([\s\S]*?)<\/deprecated>/',
+				function ($match) use ($preView) {
+					return $this->buildDeprecated($match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<validate>([\s\S]+?)<\/validate>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<validate>' . $match[1] . '</validate>', $this->buildValidate($match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<validate>([\s\S]*?)<\/validate>/',
+				function ($match) use ($preView) {
+					return $this->buildValidate($match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<internal>([\s\S]+?)<\/internal>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<internal>' . $match[1] . '</internal>', $this->buildInternal($match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<internal>([\s\S]*?)<\/internal>/',
+				function ($match) use ($preView) {
+					return $this->buildInternal($match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<key>([\s\S]+?)<\/key>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<key>' . $match[1] . '</key>', $this->buildKey(strtolower($match[1])), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<key>([\s\S]*?)<\/key>/',
+				function ($match) {
+					return $this->buildKey(strtolower($match[1]));
+				},
+				$text
+			);
 
-			if (preg_match_all('/\[([^]]+)\]\(([^)]+)\)/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('[' . $match[1] . '](' . $match[2] . ')', $this->buildURL($match[1], $match[2]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/\[([^]]+)\]\(([^)]+)\)/',
+				function ($match){
+					return $this->buildURL($match[1], $match[2]);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<ambig\s+page="([^"]+)">([\s\S]+?)<\/ambig>/s', $text, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<ambig\s+page="([^"]+)">([\s\S]*?)<\/ambig>/s', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
-					if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $_)) {
-						$markup .= $this->buildAmbig($match[2], $match[1]);
+					if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $_)) {
+						$markup .= $this->buildAmbig($match[2], $match[1], $preView);
 					}
-					$text = str_replace('<ambig page="' . $match[1] . '">' . $match[2] . '</ambig>', $this->buildAmbig($match[2], $match[1]), $text);
+					$text = str_replace('<ambig page="' . $match[1] . '">' . $match[2] . '</ambig>', $this->buildAmbig($match[2], $match[1], $preView), $text);
 				}
 			}
 
-			if (preg_match_all('/<bug\s+issue="([^"]+)">([\s\S]+?)<\/bug>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<bug issue="' . $match[1] . '">' . $match[2] . '</bug>', $this->buildBug($match[2], $match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<bug\s+issue="([^"]+)">([\s\S]*?)<\/bug>/',
+				function ($match) use ($preView) {
+					return $this->buildBug($match[2], $match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<added\s+version="([^"]+)">([\s\S]+?)<\/added>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<added version="' . $match[1] . '">' . $match[2] . '</added>', $this->buildAdded($match[2], $match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/',
+				function ($match) use ($preView) {
+					return $this->buildAdded($match[2], $match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<removed\s+version="([^"]+)">([\s\S]+?)<\/removed>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<removed version="' . $match[1] . '">' . $match[2] . '</removed>', $this->buildRemoved($match[2], $match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<removed\s+version="([^"]+)">([\s\S]*?)<\/removed>/',
+				function ($match) use ($preView) {
+					return $this->buildRemoved($match[2], $match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<changed\s+version="([^"]+)">([\s\S]+?)<\/changed>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<changed version="' . $match[1] . '">' . $match[2] . '</changed>', $this->buildChanged($match[2], $match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<changed\s+version="([^"]+)">([\s\S]*?)<\/changed>/',
+				function ($match) use ($preView) {
+					return $this->buildChanged($match[2], $match[1], $preView);
+				},
+				$text
+			);
 
-			if (preg_match_all('/<callback>([\s\S]+?)<\/callback>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<callback>' . $match[1] . '</callback>', $this->buildCallback($match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<callback>([\s\S]*?)<\/callback>/',
+				function ($match){
+					return $this->buildCallback($match[1]);
+				},
+				$text
+			);
 
-			//if (preg_match_all('/```([^"]+)\n([\s\S]+?)\n```/s', $text, $matches, PREG_SET_ORDER)) {
+			//if (preg_match_all('/```([^"]+)\n([\s\S]*?)\n```/s', $text, $matches, PREG_SET_ORDER)) {
 			//	foreach ($matches as $match) {
 			//		$text = str_replace('```' . $match[1] . '\n' . $match[2] . '```', $this->buildCode($match[1], $match[2]), $text);
 			//	}
 			//}
 
-			if (preg_match_all('/<code\s+language="([^"]+)">([\s\S]+?)<\/code>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					$text = str_replace('<code language="' . $match[1] . '">' . $match[2] . '</code>', $this->buildCode($match[2], $match[1]), $text);
-				}
-			}
+			$text = preg_replace_callback(
+				'/<code\s+language="([^"]+)">([\s\S]*?)<\/code>/',
+				function ($match){
+					return $this->buildCode($match[2], $match[1]);
+				},
+				$text
+			);
 
 			if (preg_match_all('/<page(?:\s+text="([^"]*)")?>([^<]+)<\/page>/', $text, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
@@ -1077,7 +1123,7 @@
 			}
 
 			$special = false;
-			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]+?)<\/function>/s', $text, $matches)) {
+			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
 				$special = true;
 				$function = array();
 				$function['name'] = $matches[1];
@@ -1118,7 +1164,7 @@
 				$markup .= $this->buildFunction($function);
 			}
 
-			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]+?)<\/type>/s', $text, $matches)) {
+			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s', $text, $matches)) {
 				$special = true;
 				$type = array();
 				$type['name'] = $matches[1];
@@ -1134,7 +1180,7 @@
 				$markup .= $this->buildType($type);
 			}
 
-			if (preg_match('/<structure>([\s\S]+?)<\/structure>/s', $text, $matches)) {
+			if (preg_match('/<structure>([\s\S]*?)<\/structure>/s', $text, $matches)) {
 				$special = true;
 				$structure = array();
 
@@ -1162,7 +1208,7 @@
 				$markup .= $this->buildStructure($structure);
 			}
 
-			if (preg_match('/<enum>([\s\S]+?)<\/enum>/s', $text, $matches)) {
+			if (preg_match('/<enum>([\s\S]*?)<\/enum>/s', $text, $matches)) {
 				$special = true;
 				$enums = array();
 
@@ -1219,11 +1265,11 @@
 			return $markup;
 		}
 
-		public function GetParentText($text)
+		public function GetPreviewText($text)
 		{
-			$markup = parent::text($text);
+			$markup = $this->text($text, true);
 
-			if (preg_match_all('/<p>([\s\S]+?)<\/p>/', $markup, $matches, PREG_SET_ORDER)) {
+			if (preg_match_all('/<p>([\s\S]*?)<\/p>/', $markup, $matches, PREG_SET_ORDER)) {
 				foreach ($matches as $match) {
 					$markup = str_replace('<p>' . $match[1] . '</p>', $match[1], $markup);
 				}
