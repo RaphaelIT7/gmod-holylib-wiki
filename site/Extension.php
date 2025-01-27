@@ -181,6 +181,20 @@
 			return $this->SafeLink($this->PageTitle($text, true));
 		}
 
+		function GetSpecialTags($text)
+		{
+			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches))
+				return ' depr';
+
+			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches))
+				return ' depr';
+
+			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches))
+				return ' intrn';
+
+			return '';
+		}
+
 		function GetTags($text)
 		{
 			$tags = '';
@@ -223,26 +237,7 @@
 				$tags .= 'cm e';
 			}
 
-			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches)) {
-				if (strlen($tags) != 0) {
-					$tags .= ' ';
-				}
-				$tags .= 'depr';
-			}
-
-			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches)) {
-				if (strlen($tags) != 0) {
-					$tags .= ' ';
-				}
-				$tags .= 'depr';
-			}
-
-			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches)) {
-				if (strlen($tags) != 0) {
-					$tags .= ' ';
-				}
-				$tags .= 'intrn';
-			}
+			$tags .= $this->GetSpecialTags($text);
 
 			return $tags;
 		}
@@ -515,7 +510,7 @@
 								$func['rets'] = isset($func['rets']) ? $func['rets'] : array();
 
 								$html .= '<div class="member_line">';
-									$html .= '<div class="syntax">';
+									$html .= '<div class="syntax' . $this->GetSpecialTags($file) . '">';
 										$func['name'] = '<a class="subject" href="/' . $this->PageAddress($file) . '">' . (isset($func['name']) ? $func['name'] : '_INVALID_FUNCTION_NAME_')  . '</a>';
 
 										if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
