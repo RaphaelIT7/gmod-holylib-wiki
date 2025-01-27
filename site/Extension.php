@@ -32,9 +32,11 @@
 			'virtual', 'void', 'volatile',
 			'wchar_t', 'while', 'xor', 'xor_eq'
 		);
+
 		#
 		# Utilities
 		#
+		private $fileCache = array();
 		function FindFile($file, $title = null) {
 			$file = $this->SafeLink($file);
 			$file = strtolower($file);
@@ -47,9 +49,16 @@
 
 			$file = str_replace(':', '_', $file);
 
-			$debug = false;
-			if ($file == 'stringtable.invalid_string_index')
-				$debug = true;
+			if (isset($title) && isset($this->fileCache[$title]))
+				return $this->fileCache[$title];
+
+			if (!isset($title) && isset($this->fileCache[$file]))
+			{
+				return $this->fileCache[$file];
+				//echo "<p>Cache hit " . $file . "</p>";
+			} else {
+				//echo "<p>Cache miss " . $file . "</p>";
+			}
 
 			foreach($this->categories as &$category) {
 				foreach ($category['categories'] as &$chapter) {
@@ -62,16 +71,20 @@
 					$files = array_diff(scandir($shortpath), array('..', '.'));
 					foreach($files as $file2) {
 						if (is_dir($shortpath . $file2)) {
-							if (file_exists($shortpath . $file2 . '/' . $file . '.md'))
+							$filePath = $shortpath . $file2 . '/' . $file . '.md';
+							if (file_exists($filePath))
 							{
 								if ($title)
 								{
-									$content = $this->OpenFile($shortpath . $file2 . '/' . $file . '.md');
+									$content = $this->OpenFile($filePath);
 									if ($title != $this->PageTitle($content, true))
 										continue;
+
+									$this->fileCache[$title] = $filePath;
 								}
 
-								return $shortpath . $file2 . '/' . $file . '.md';
+								$this->fileCache[$file] = $filePath;
+								return $filePath;
 							}
 						}
 					}
@@ -83,10 +96,15 @@
 							$path = $shortpath  . $matches[1] . '.md';
 						}
 
+						$this->fileCache[$file] = $path;
 						return $path;
 					}
 				}
 			}
+		}
+
+		function NukeCache() {
+
 		}
 
 		function SafeLink($url) {
