@@ -1,6 +1,7 @@
-<type name="sv_ramp_bumpcount" category="" is="convar">
-	<summary>
-		# sv_ramp_bumpcount = 8 (Max 32)
-		Helps with fixing surf/ramp bugs
-	</summary>
-</type>
+<function name="sv_ramp_fix" parent="" type="libraryfield">
+    <description>
+        If enabled, it will run additional checks to make sure that the player is not/won't get stuck in a ramp.
+    </description>
+    <value>1</value>
+    <realm>Server</realm>
+</function>
