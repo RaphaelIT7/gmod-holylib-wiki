@@ -767,8 +767,11 @@
 			$html = '<div class="bug">';
 				$html .= '<div class="inner">';
 					$html .= $text;
-					$html .= '<br><br>Issue Tracker: ';
-					$html .= '<a href=' . $this->config['issues_url'] . $issue . '>' . $issue . '</a>';
+					if (isset($issue))
+					{
+						$html .= '<br><br>Issue Tracker: ';
+						$html .= '<a href=' . $this->config['issues_url'] . $issue . '>' . $issue . '</a>';
+					}
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -1059,6 +1062,14 @@
 				'/<bug\s+issue="([^"]+)">([\s\S]*?)<\/bug>/',
 				function ($match) use ($preView) {
 					return $this->buildBug($match[2], $match[1], $preView);
+				},
+				$text
+			);
+
+			$text = preg_replace_callback(
+				'/<bug>([\s\S]*?)<\/bug>/',
+				function ($match) use ($preView) {
+					return $this->buildBug($match[2], null, $preView);
 				},
 				$text
 			);
