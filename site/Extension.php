@@ -764,6 +764,9 @@
 
 		protected function buildBug($text, $issue, $preView)
 		{
+			if ($preView)
+				return $text;
+
 			$html = '<div class="bug">';
 				$html .= '<div class="inner">';
 					$html .= $text;
@@ -1069,7 +1072,7 @@
 			$text = preg_replace_callback(
 				'/<bug>([\s\S]*?)<\/bug>/',
 				function ($match) use ($preView) {
-					return $this->buildBug($match[2], null, $preView);
+					return $this->buildBug($match[1], null, $preView);
 				},
 				$text
 			);
