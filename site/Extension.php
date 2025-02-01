@@ -833,7 +833,7 @@
 				$html .= '<div class="code">';
 					$html .= $this->processCode($exam['code']);
 				$html .= '</div>';
-				if (isset($exam['output'])) {
+				if (isset($exam['output']) && strlen($exam['output']) > 0) {
 					$html .= '<div class="output">';
 						$html .= '<div class="code">';
 							$html .= $this->processCode($exam['output']);

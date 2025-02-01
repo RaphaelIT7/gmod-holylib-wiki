@@ -25,4 +25,6 @@ hook.Add("HolyLib:GetGModTags", "Example", function()
 	return table.concat(tags, " ")
 end)
 	</code>
+	<output>
+	</output>
 </example>
