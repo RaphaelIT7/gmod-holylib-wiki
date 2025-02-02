@@ -7,6 +7,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="timeout" type="number"></ret>
+		<ret name="seconds" type="number"></ret>
 	</rets>
 </function>
