@@ -12,9 +12,11 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="code" type="string"></arg>
+		<arg name="signOnState" type="number"></arg>
+		<arg name="spawnCount" type="number"></arg>
+		<arg name="rawSet" type="boolean" default="false"></arg>
 	</args>
 	<rets>
-		<ret name="success" type="boolean">Returns `true` on success.</ret>
+		<ret name="success" type="boolean">returns `true` on success</ret>
 	</rets>
 </function>
