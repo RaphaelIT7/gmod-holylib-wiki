@@ -2,6 +2,12 @@
 	<description>
 		Called before the voicedata is processed.<br>
 		Return `true` to stop the engine from processing it.  
+		<note>
+			After the hook the `VoiceData` becomes **invalid**, if you want to store it call `VoiceData:CreateCopy()` and use the returned VoiceData.
+		</note>
+		<changed version="7.0">
+			The given voiceData becomes invalid after the hook, use <page>VoiceData:CreateCopy</page>
+		</changed>
 	</description>
 	<realm>Server</realm>
 	<args>
@@ -25,7 +31,7 @@ concommand.Add("record_me", function()
 			voiceTbl[ply] = {}
 		end
 
-		voiceTbl[ply][engine.TickCount() - voiceStartTick] = voiceData 
+		voiceTbl[ply][engine.TickCount() - voiceStartTick] = voiceData:CreateCopy()
 		-- We save the tick delays since the voice data isn't sent every frame and has random delays.
 	end)
 end)

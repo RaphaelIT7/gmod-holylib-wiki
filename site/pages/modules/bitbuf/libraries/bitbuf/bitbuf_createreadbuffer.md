@@ -2,6 +2,9 @@
 	<description>
 		Creates a read buffer from the given data.<br>
 		Useful if you want to read the userdata of the instancebaseline stringtable.
+		<note>
+			The size is clamped internally between a minimum of `4` bytes and a maximum of `262144` bytes.
+		</note>
 	</description>
 	<realm>Server</realm>
 	<args>

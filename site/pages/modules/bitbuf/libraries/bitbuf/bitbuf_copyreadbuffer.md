@@ -2,6 +2,9 @@
 	<description>
 		Copies the given buffer into a new one.<br>
 		Useful if you want to save the data received by a client.
+		<note>
+			The size is clamped internally between a minimum of `4` bytes and a maximum of `262144` bytes.
+		</note>
 	</description>
 	<realm>Server</realm>
 	<args>
