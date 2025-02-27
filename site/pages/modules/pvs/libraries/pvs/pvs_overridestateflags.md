@@ -2,7 +2,8 @@
 	<description>
 		Overrides the State flag for this Snapshot.
 		<note>
-			You should only use this inside the [SetupPlayerVisibility](https://wiki.facepunch.com/gmod/GM:SetupPlayerVisibility) hook.
+			You should only use this inside the [SetupPlayerVisibility](https://wiki.facepunch.com/gmod/GM:SetupPlayerVisibility) hook.<br>
+			Should be used inside the <page>HolyLib:PreCheckTransmit</page> or [SetupPlayerVisibility](https://wiki.facepunch.com/gmod/GM:SetupPlayerVisibility) hook as else it will affect the next transmit of any player!
 		</note>
 		<warning>
 			Only use the `engine` argument if you know what your doing
