@@ -298,11 +298,11 @@
 				#}
 
 				if (preg_match('/<args>(.*?)<\/args>/s', $text, $matches)) {
-					$function['args'] = $this->GetStuff($matches[1], 'args', 'arg');
+					$function['args'] = $this->getStuff($matches[1], 'args', 'arg');
 				}
 
 				if (preg_match('/<rets>(.*?)<\/rets>/s', $text, $matches)) {
-					$function['rets'] = $this->GetStuff($matches[1], 'rets', 'ret');
+					$function['rets'] = $this->getStuff($matches[1], 'rets', 'ret');
 				}
 
 				return $function;
@@ -374,7 +374,7 @@
 					if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 						$args = '';
 						foreach ($func['args'] as $arg) {
-							if (! str_ends_with($args, ',') && $args !== '')
+							if (!str_ends_with($args, ',') && $args !== '')
 							{
 								$args .= ',';
 							}
@@ -389,7 +389,7 @@
 
 						$rets = '';
 						foreach ($func['rets'] as $ret) {
-							if (! str_ends_with($rets, ',') && $rets !== '')
+							if (!str_ends_with($rets, ',') && $rets !== '')
 							{
 								$rets .= ',';
 							}
@@ -423,7 +423,7 @@
 				{
 					$html .= '<h1>Description</h1>';
 					$html .= '<div class="description_section function_description section">';
-						$html .= $func['desc'];
+						$html .= $this->text($func['desc']);
 					$html .= '</div>';
 				}
 
@@ -811,12 +811,17 @@
 				$code = preg_replace('#/\*(.*?)\*/#s', '<span class="multiline-comment">/* $1 */</span>', $code);
 			}
 
-			return $code;
+			$output = $code;
+
+			return $output;
 		}
 
 		protected function buildCode($code, $language)
 		{
 			$html = '<div class="code">';
+				$html .= '<copy onclick="CopyCode( event )">';
+					$html .= '<i class="mdi mdi-content-copy"></i>';
+				$html .= '</copy>';
 				$html .= $this->processCode($code);
 			$html .= '</div>';
 
@@ -825,19 +830,20 @@
 
 		protected function buildExample($exam)
 		{
-			$html = '<h2>Example</h2>';
+			$html = '<h2>' . (isset($exam['name']) ? ("Example: " . $exam['name']) : "Example") . '</h2>';
 			$html .= '<div class="example">';
-				$html .= '<div class="description">';
-					$html .= $exam['desc'];
-				$html .= '</div>';
-				$html .= '<div class="code">';
-					$html .= $this->processCode($exam['code']);
-				$html .= '</div>';
+				if (isset($exam['desc']))
+				{
+					$html .= '<div class="description">';
+						$html .= $exam['desc'];
+					$html .= '</div>';
+				}
+
+				$html .= $this->buildCode($exam['code'], $this->config['code_language']);
+
 				if (isset($exam['output']) && strlen($exam['output']) > 0) {
 					$html .= '<div class="output">';
-						$html .= '<div class="code">';
-							$html .= $this->processCode($exam['output']);
-						$html .= '</div>';
+						$html .= $this->buildCode($exam['output'], $this->config['code_language']);
 					$html .= '</div>';
 				}
 			$html .= '</div>';
@@ -849,7 +855,7 @@
 		{
 			$html = '<div class="callback_args">';
 				$html .= 'Function argument(s): ';
-				$args = $this->GetStuff($text, 'callback', 'arg');
+				$args = $this->getStuff($text, 'callback', 'arg');
 				$idx = 0;
 				foreach($args as $arg)
 				{
@@ -910,8 +916,10 @@
 			return $html;
 		}
 
-		function getrealm($realm) 
+		function getRealm($realm) 
 		{
+			$realm = trim($realm);
+
 			$data = array();
 			if ($realm === 'Client and Menu') {
 				$data['realm'] = 'realm-client realm-menu';
@@ -936,7 +944,7 @@
 			return $data;
 		}
 
-		function GetStuff($text, $name, $prefix)
+		function getStuff($text, $name, $prefix)
 		{
 			$ret = array();
 
@@ -975,8 +983,6 @@
 		// preView is used in things like page lists, were we don't want to display notes.
 		function text($text, $preView = false)
 		{
-			$markup = '';
-
 			$lines = explode("\n", $text);
 
 			foreach ($lines as &$line) {
@@ -988,125 +994,127 @@
 			$text = implode("\n", $lines);
 			$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
 
-			$text = preg_replace_callback(
+			/*
+			 * Helper function to make things easier.
+			 * handledElements is REQUIRED as we REMOVE the already processed elements and after markdown processed the remaining test, we insert the elements back.
+			 */
+			$handledElements = [];
+			$replaceCall = function ($pattern, $callback) use (&$handledElements, &$text)
+			{
+				$text = preg_replace_callback(
+					$pattern,
+					function ($match) use (&$handledElements, &$callback) {
+						$key = '%%ELEMENT_' . count($handledElements) . '%%';
+						$handledElements[$key] = $callback($match);
+						return $key;
+					},
+					$text
+				);
+			};
+
+			$replaceCall(
 				'/<note>([\s\S]*?)<\/note>/',
 				function ($match) use ($preView) {
 					return $this->buildNote($match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<warning>([\s\S]*?)<\/warning>/',
 				function ($match) use ($preView) {
 					return $this->buildWarning($match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<removed>([\s\S]*?)<\/removed>/',
 				function ($match) use ($preView) {
 					return $this->buildRemoved($match[1], null, $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<deprecated>([\s\S]*?)<\/deprecated>/',
 				function ($match) use ($preView) {
 					return $this->buildDeprecated($match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<validate>([\s\S]*?)<\/validate>/',
-				function ($match) use ($preView) {
+				function ($match) use ($preView, &$handleElement) {
 					return $this->buildValidate($match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<internal>([\s\S]*?)<\/internal>/',
 				function ($match) use ($preView) {
 					return $this->buildInternal($match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<key>([\s\S]*?)<\/key>/',
 				function ($match) {
 					return $this->buildKey(strtolower($match[1]));
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/\[([^]]+)\]\(([^)]+)\)/',
 				function ($match){
 					return $this->buildURL($match[1], $match[2]);
-				},
-				$text
+				}
 			);
 
-			if (preg_match_all('/<ambig\s+page="([^"]+)">([\s\S]*?)<\/ambig>/s', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $_)) {
-						$markup .= $this->buildAmbig($match[2], $match[1], $preView);
-					}
-					$text = str_replace('<ambig page="' . $match[1] . '">' . $match[2] . '</ambig>', $this->buildAmbig($match[2], $match[1], $preView), $text);
+			$replaceCall(
+				'/<ambig\s+page="([^"]+)">([\s\S]*?)<\/ambig>/s',
+				function ($match) use ($preView){
+					return $this->buildAmbig($match[2], $match[1], $preView);
 				}
-			}
+			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<bug\s+issue="([^"]+)">([\s\S]*?)<\/bug>/',
 				function ($match) use ($preView) {
 					return $this->buildBug($match[2], $match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<bug>([\s\S]*?)<\/bug>/',
 				function ($match) use ($preView) {
 					return $this->buildBug($match[1], null, $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/',
 				function ($match) use ($preView) {
 					return $this->buildAdded($match[2], $match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<removed\s+version="([^"]+)">([\s\S]*?)<\/removed>/',
 				function ($match) use ($preView) {
 					return $this->buildRemoved($match[2], $match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<changed\s+version="([^"]+)">([\s\S]*?)<\/changed>/',
 				function ($match) use ($preView) {
 					return $this->buildChanged($match[2], $match[1], $preView);
-				},
-				$text
+				}
 			);
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<callback>([\s\S]*?)<\/callback>/',
-				function ($match){
+				function ($match) {
 					return $this->buildCallback($match[1]);
-				},
-				$text
+				}
 			);
 
 			//if (preg_match_all('/```([^"]+)\n([\s\S]*?)\n```/s', $text, $matches, PREG_SET_ORDER)) {
@@ -1115,163 +1123,174 @@
 			//	}
 			//}
 
-			$text = preg_replace_callback(
+			$replaceCall(
 				'/<code\s+language="([^"]+)">([\s\S]*?)<\/code>/',
 				function ($match){
-					return $this->buildCode($match[2], $match[1]);
-				},
-				$text
+					return $this->buildCode(trim($match[2]), $match[1]);
+				}
 			);
 
-			if (preg_match_all('/<page(?:\s+text="([^"]*)")?>([^<]+)<\/page>/', $text, $matches, PREG_SET_ORDER)) {
-				foreach ($matches as $match) {
-					if (isset($match[1]) && $match[1] != '') {
-						$rep = '<page text="' . $match[1] . '">' . $match[2] . '</page>';
-					} else {
-						$rep = '<page>' . $match[2] . '</page>';
+			$replaceCall(
+				'/<page(?:\s+text="([^"]*)")?>([^<]+)<\/page>/', 
+				function ($match){	
+					return $this->buildPageURL($match[2], $match[1]);
+				}
+			);
+
+			$replaceCall(
+				'/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s',
+				function ($matches){
+					$function = array();
+					$function['name'] = $matches[1];
+					$function['parent'] = $matches[2];
+					$function['type'] = $matches[3];
+
+					$textContent = $matches[4];
+
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches)) {
+						$function['desc'] = trim($matches[1]);
 					}
-					$text = str_replace($rep, $this->buildPageURL($match[2], $match[1]), $text);
+
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $textContent, $matches)) {
+						$function['source'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $textContent, $matches)) { # Used by enums
+						$function['value'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<realm>(.*?)<\/realm>/s', $textContent, $matches)) {
+						$data = $this->getRealm($matches[1]);
+						$function['realm'] = $data['realm'];
+						$function['realmdesc'] = $data['realmdesc'];
+					} else {
+						$function['realm'] = '';
+						$function['realmdesc'] = "No";
+					}
+
+					if (preg_match('/<args>(.*?)<\/args>/s', $textContent, $matches)) {
+						$function['args'] = $this->getStuff(trim($matches[1]), 'args', 'arg');
+					}
+
+					if (preg_match('/<rets>(.*?)<\/rets>/s', $textContent, $matches)) {
+						$function['rets'] = $this->getStuff(trim($matches[1]), 'rets', 'ret');
+					}
+
+					return $this->buildFunction($function);
 				}
-			}
+			);
 
-			$special = false;
-			if (preg_match('/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s', $text, $matches)) {
-				$special = true;
-				$function = array();
-				$function['name'] = $matches[1];
-				$function['parent'] = $matches[2];
-				$function['type'] = $matches[3];
+			$replaceCall(
+				'/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s',
+				function ($matches){
+					$type = array();
+					$type['name'] = $matches[1];
+					$type['category'] = $matches[2];
+					$type['is'] = $matches[3];
 
-				$textContent = $matches[4];
+					$content = $matches[4];
 
-				if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
-					$function['desc'] = $matches[1];
+					if (preg_match('/<summary>\s*(.*?)\s*<\/summary>/s', $content, $matches2)) {
+						$type['summ'] = trim($matches2[1]);
+					}
+
+					return $this->buildType($type);
 				}
+			);
 
-				if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches)) {
-					$function['source'] = $matches[1];
+			$replaceCall(
+				'/<structure>([\s\S]*?)<\/structure>/s',
+				function ($matches){
+					$structure = array();
+					$content = $matches[1];
+
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $content, $matches)) {
+						$structure['desc'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $content, $matches)) {
+						$structure['src'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<realm>(.*?)<\/realm>/s', $content, $matches)) {
+						$data = $this->getRealm($matches[1]);
+						$structure['realm'] = $data['realm'];
+						$structure['realmdesc'] = $data['realmdesc'];
+					} else {
+						$structure['realm'] = '';
+						$structure['realmdesc'] = "No";
+					}
+
+					if (preg_match('/<fields>(.*?)<\/fields>/s', $content, $matches)) {
+						$structure['fields'] = $this->getStuff($matches[1], 'fields', 'item');
+					}
+
+					return $this->buildStructure($structure);
 				}
+			);
 
-				if (preg_match('/<value>\s*(.*?)\s*<\/value>/s', $text, $matches)) { # Used by enums
-					$function['value'] = $matches[1];
+			$replaceCall(
+				'/<enum>([\s\S]*?)<\/enum>/s',
+				function ($matches){
+					$enums = array();
+					$content = $matches[1];
+
+					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $content, $matches)) {
+						$enums['desc'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $content, $matches)) {
+						$enums['src'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<realm>(.*?)<\/realm>/s', $content, $matches)) {
+						$data = $this->getRealm($matches[1]);
+						$enums['realm'] = $data['realm'];
+						$enums['realmdesc'] = $data['realmdesc'];
+					} else {
+						$enums['realm'] = '';
+						$enums['realmdesc'] = "No";
+					}
+
+					if (preg_match('/<items>(.*?)<\/items>/s', $content, $matches)) {
+						$enums['items'] = $this->getStuff($matches[1], 'items', 'item');
+					}
+
+					return $this->buildEnums($enums);
 				}
+			);
 
-				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
-					$data = $this->getrealm($matches[1]);
-					$function['realm'] = $data['realm'];
-					$function['realmdesc'] = $data['realmdesc'];
-				} else {
-					$function['realm'] = '';
-					$function['realmdesc'] = "No";
+			$replaceCall(
+				'/<example(?:\s+name="([^"]*)")?>(?:\s*<description>(.*?)<\/description>)?\s*<code>(.*?)<\/code>(?:\s*<output>(.*?)<\/output>)?\s*<\/example>/s',
+				function ($matches) {
+					$example = array(
+						'name' => (isset($matches[1]) && strlen($matches[1]) > 0) ? $matches[1] : null,
+						'desc' => (isset($matches[2]) && strlen($matches[2]) > 0) ? $this->text(trim($matches[2])) : null,
+						'code' => trim($matches[3]),
+						'output' => (isset($matches[4]) && strlen($matches[4]) > 0) ? trim($matches[4]) : null,
+					);
+
+					return $this->buildExample($example);
 				}
+			);
 
-				if (preg_match('/<args>(.*?)<\/args>/s', $text, $matches)) {
-					$function['args'] = $this->GetStuff($matches[1], 'args', 'arg');
-				}
-
-				if (preg_match('/<rets>(.*?)<\/rets>/s', $text, $matches)) {
-					$function['rets'] = $this->GetStuff($matches[1], 'rets', 'ret');
-				}
-
-				$markup .= $this->buildFunction($function);
-			}
-
-			if (preg_match('/<type name="([^"]+)" category="([^"]*)" is="([^"]+)">([\s\S]*?)<\/type>/s', $text, $matches)) {
-				$special = true;
-				$type = array();
-				$type['name'] = $matches[1];
-				$type['category'] = $matches[2];
-				$type['is'] = $matches[3];
-
-				$content = $matches[4];
-
-				if (preg_match('/<summary>\s*(.*?)\s*<\/summary>/s', $text, $matches2)) {
-					$type['summ'] = $matches2[1];
-				}
-
-				$markup .= $this->buildType($type);
-			}
-
-			if (preg_match('/<structure>([\s\S]*?)<\/structure>/s', $text, $matches)) {
-				$special = true;
-				$structure = array();
-
-				if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
-					$structure['desc'] = $matches[1];
-				}
-
-				if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches)) {
-					$structure['src'] = $matches[1];
-				}
-
-				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
-					$data = $this->getrealm($matches[1]);
-					$structure['realm'] = $data['realm'];
-					$structure['realmdesc'] = $data['realmdesc'];
-				} else {
-					$structure['realm'] = '';
-					$structure['realmdesc'] = "No";
-				}
-
-				if (preg_match('/<fields>(.*?)<\/fields>/s', $text, $matches)) {
-					$structure['fields'] = $this->GetStuff($matches[1], 'fields', 'item');
-				}
-
-				$markup .= $this->buildStructure($structure);
-			}
-
-			if (preg_match('/<enum>([\s\S]*?)<\/enum>/s', $text, $matches)) {
-				$special = true;
-				$enums = array();
-
-				if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
-					$enums['desc'] = $matches[1];
-				}
-
-				if (preg_match('/<source>\s*(.*?)\s*<\/source>/s', $text, $matches)) {
-					$enums['src'] = $matches[1];
-				}
-
-				if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
-					$data = $this->getrealm($matches[1]);
-					$enums['realm'] = $data['realm'];
-					$enums['realmdesc'] = $data['realmdesc'];
-				} else {
-					$enums['realm'] = '';
-					$enums['realmdesc'] = "No";
-				}
-
-				if (preg_match('/<items>(.*?)<\/items>/s', $text, $matches)) {
-					$enums['items'] = $this->GetStuff($matches[1], 'items', 'item');
-				}
-
-				$markup .= $this->buildEnums($enums);
-			}
-
-			if (preg_match_all('/<example>\s*<description>(.*?)<\/description>\s*<code>(.*?)<\/code>(?:\s*<output>(.*?)<\/output>)?\s*<\/example>/s', $text, $matches, PREG_SET_ORDER)) {
-				$special = true;
-
-				foreach ($matches as $match) {
-					$markup .= $this->buildExample(array(
-						'output' => isset($match[3]) ? trim($match[3]) : '',
-						'code' => trim($match[2]),
-						'desc' => parent::text(trim($match[1])),
-					));
-				}
-			}
-
-			if (!$special) {
-				$markup .= parent::text($text);
-			}
-
-			$title = $this->config['name'];
-			if (preg_match('/<title>(.*?)<\/title>/', $text, $matches))
+			$markup = parent::text($text);
+			$tries = 0;
+			// Why a while loop?
+			// Because elements can be nested meaning if we insert ELEMENT_1 it could have contained ELEMENT_0 which we otherwise would have skipped now.
+			while (preg_match('/%%ELEMENT_\d+%%/', $markup))
 			{
-				$title = $matches[1];
+				$tries++;
+				if ($tries > 1000) // As a failsafe in case it somehow happened
+				{
+					error_log("while loop reached 1000 tries. What did you do...");
+					break;
+				}
+
+				$markup = str_replace(array_keys($handledElements), array_values($handledElements), $markup);
 			}
 
 			$markup = preg_replace('!^<p>(.*?)</p>$!i', '$1', $markup);
-
 			#$text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
 
 			return $markup;
@@ -1306,7 +1325,6 @@
 			return $html;
 		}
 
-		private $desc = false;
 		protected function blockMarkup($Line)
 		{
 			$Block = parent::blockMarkup($Line);
@@ -1324,8 +1342,8 @@
 			return $Block;
 		}
 
-		protected function blockCode($Line, $Block = null)
-		{
+		protected function blockCode($Excerpt,  $Block = null) {
+			return; // Parsedown should NEVER handle code itself as else it randomly wraps things with <pre> or <pre><code> or just <code>.
 		}
 	}
 ?>

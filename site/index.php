@@ -364,21 +364,17 @@
 	} elseif ($_GET["format"] === 'html') {
 		echo $MySQL->GetHTML($currentPage);
 	} elseif ($_GET["format"] === 'json') {
-		function escapeForJson($string) {
-			return json_encode(str_replace(array("\n", "\r", "\t"), '', $string));
-		}
-
 echo '{
 	"title": "' . $title .'",
 	"wikiName": "' . $config['name'] . '",
 	"wikiIcon": "' . $config['icon'] . '",
 	"wikiUrl": "gmod",
 	"tags": "' . $MySQL->GetSearchTags($currentPage) . '",
-	"address": ' . escapeForJson($currentPage) . ',
+	"address": ' . json_encode($currentPage) . ',
 	"createdTime": "2020-01-21T17:09:42.1+00:00",
 	"updateCount": ' . $MySQL->GetUpdateCount($currentPage) . ',
 	"markup":' . json_encode($MySQL->GetMarkup($currentPage)) . ',
-	"html":' . escapeForJson($MySQL->GetHTML($currentPage)) . ',
+	"html":' . json_encode($MySQL->GetHTML($currentPage)) . ',
 	"footer": "Page views: ' . $MySQL->GetViews($currentPage) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($currentPage) . '",
 	"revisionId": ' . $MySQL->GetRevision($currentPage) . ',
 	"pageLinks":[
