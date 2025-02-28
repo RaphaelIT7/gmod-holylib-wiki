@@ -20,8 +20,9 @@
 </function>
 
 <example>
-	<description>Example to record and play back voices</description>
+	<description>Example to record, save and play back voices</description>
 	<code>
+voiceTbl = {}
 concommand.Add("record_me", function()
 	hook.Remove("Think", "VoiceChat_Example") -- Doesn't like to play back while recording :^
 	voiceTbl = {}
@@ -66,6 +67,59 @@ concommand.Add("play_me", function(ply)
 			voicechat.ProcessVoiceData(player.GetBots()[1], voiceData)
 		end 
 	end)
+end)
+
+-- VoiceStream examples
+
+-- NOTE
+--
+-- A VoiceStream internally uses the format our "voiceTbl" already has, the key is a number/tick and the value is a VoiceData.
+-- Because of this the VoiceStream:SetData / VoiceStream:GetData functions seamlessly with our code.
+
+concommand.Add("save_record", function(ply)
+	local voiceStream = voicechat.CreateVoiceStream()
+	voiceStream:SetData(voiceTbl[ply] or {})
+
+	voicechat.SaveVoiceStream(voiceStream, "voiceData_" .. ply:SteamID64() .. ".dat", "DATA")
+
+	ply:ChatPrint("Saved the VoiceStream")
+end)
+
+concommand.Add("load_record", function(ply)
+	local voiceStream, status = voicechat.LoadVoiceStream("voiceData_" .. ply:SteamID64() .. ".dat", "DATA")
+
+	if voiceStream then
+		voiceTbl[ply] = voiceStream:GetData()
+		ply:ChatPrint("Loaded the VoiceStream")
+	else
+		ply:ChatPrint("Failed to load VoiceStream. You probably don't have a save.")
+	end
+end)
+
+-- Async VoiceStream examples
+
+concommand.Add("async_save_record", function(ply)
+	local voiceStream = voicechat.CreateVoiceStream()
+	voiceStream:SetData(voiceTbl[ply] or {})
+
+	voicechat.SaveVoiceStream(voiceStream, "voiceData_" .. ply:SteamID64() .. ".dat", "DATA", async, function(voiceStream, status)
+		if !IsValid(ply) then return end
+
+		ply:ChatPrint("Saved the VoiceStream")
+	end)
+end)
+
+concommand.Add("async_load_record", function(ply)
+	voicechat.LoadVoiceStream("voiceData_" .. ply:SteamID64() .. ".dat", "DATA", true, function(voiceStream, status)
+		if !IsValid(ply) then return end
+
+		if voiceStream then
+			voiceTbl[ply] = voiceStream:GetData()
+			ply:ChatPrint("Loaded the VoiceStream")
+		else
+			ply:ChatPrint("Failed to load VoiceStream. You probably don't have a save.")
+		end
+	 end)
 end)
 	</code>
 </example>

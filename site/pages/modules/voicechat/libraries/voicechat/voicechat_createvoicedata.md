@@ -1,6 +1,6 @@
 <function name="CreateVoiceData" parent="voicechat" type="libraryfunc">
 	<description>
-		Sends the given voice data to the given client.
+		Creates a new VoiceData with the given data.
 	</description>
 	<realm>Server</realm>
 	<args>
