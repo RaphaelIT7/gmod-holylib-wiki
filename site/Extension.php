@@ -801,6 +801,39 @@
 				$code = preg_replace('/--\[\[(.*?)\]\]/s', '<span class="multiline-comment">--[[$1]]</span>', $code);
 
 				$code = preg_replace('/local function (\w+)\(/', 'local function <span class="methoddef">$1</span>(', $code);
+			
+				$code = preg_replace_callback(
+					'/(?<=\s)([a-zA-Z0-9_]+(?:[.:][a-zA-Z0-9_]+)+)/',
+					function($match) {
+						$name = $match[1];
+						$functionFile = $this->FindFile($name);
+						$parentFile = null; // the class/library file
+
+						$pos = stripos($name, ":");
+						if (!$pos)
+						{
+							$pos = stripos($name, ".");
+						}
+
+						$parentFile = $this->FindFile(substr($name, 0, $pos));
+						if ($functionFile && $parentFile && ($pos !== false))
+						{
+							$output = '<span class="className">';
+								$output .= '<a href="/' . $this->PageAddress($this->OpenFile($parentFile)) . '">' . substr($name, 0, $pos) . '</a>';
+							$output .= '</span>';
+							$output .= substr($name, $pos, 1);
+							$output .= '<span class="method">';
+								$output .= '<a href="/' . $this->PageAddress($this->OpenFile($functionFile)) . '">' . substr($name, $pos + 1) . '</a>';
+							$output .= '</span>';
+
+							return $output;
+						} else {
+							return $name; // don't replace it
+						}
+					},
+					$code
+				);
+				
 			} elseif ($this->config['code_language'] == 'c++') {
 				foreach($this->cpp_keywords as $keyword)
 				{
@@ -1329,7 +1362,7 @@
 		{
 			$Block = parent::blockMarkup($Line);
 
-			if (! isset($Block['name']))
+			if (!isset($Block['name']))
 			{
 				return;
 			}
