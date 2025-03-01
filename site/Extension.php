@@ -803,7 +803,7 @@
 				$code = preg_replace('/local function (\w+)\(/', 'local function <span class="methoddef">$1</span>(', $code);
 			
 				$code = preg_replace_callback(
-					'/(?<=\s)([a-zA-Z0-9_]+(?:[.:][a-zA-Z0-9_]+)+)/',
+					'/(?<=\s)([a-zA-Z0-9_]+(?:[.:][a-zA-Z0-9_]+)+)/', // Matches any "classname.function(" or "classname:function("
 					function($match) {
 						$name = $match[1];
 						$functionFile = $this->FindFile($name);
@@ -844,9 +844,7 @@
 				$code = preg_replace('#/\*(.*?)\*/#s', '<span class="multiline-comment">/* $1 */</span>', $code);
 			}
 
-			$output = $code;
-
-			return $output;
+			return $code;
 		}
 
 		protected function buildCode($code, $language)
@@ -1375,7 +1373,7 @@
 			return $Block;
 		}
 
-		protected function blockCode($Excerpt,  $Block = null) {
+		protected function blockCode($Excerpt, $Block = null) {
 			return; // Parsedown should NEVER handle code itself as else it randomly wraps things with <pre> or <pre><code> or just <code>.
 		}
 	}
