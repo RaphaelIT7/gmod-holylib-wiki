@@ -5,6 +5,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="client" type="CBaseClient">Found <page>CBaseClient</page> or a NULL client.</ret>
+		<ret name="client" type="CBaseClient">Found <page>CBaseClient</page> or `nil`.</ret>
 	</rets>
 </function>

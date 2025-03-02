@@ -5,6 +5,6 @@
 	</description>
 	<realm>Server</realm>
 	<rets>
-		<ret name="player" type="Player">Found <page>Player</page> or a NULL Entity.</ret>
+		<ret name="player" type="Player">Found <page>Player</page> or `nil`.</ret>
 	</rets>
 </function>
