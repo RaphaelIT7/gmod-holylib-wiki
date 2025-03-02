@@ -22,15 +22,15 @@
 			$file = strtolower($file);
 			$file = str_replace('.', '_', $file);
 
-			if ($this->config['xampp'])
-			{
+			if ($this->config['xampp']) {
 				$file = str_replace('/:', ':', $file); // Apache hates it
 			}
 
 			$file = str_replace(':', '_', $file);
 
-			if (isset($title) && isset($this->fileCache[$title]))
+			if (isset($title) && isset($this->fileCache[$title])) {
 				return $this->fileCache[$title];
+			}
 
 			if (!isset($title) && isset($this->fileCache[$file]))
 			{
@@ -45,8 +45,9 @@
 					$shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
 					$path = $shortpath  . $file . '.md';
 
-					if (!file_exists($shortpath))
+					if (!file_exists($shortpath)) {
 						continue;
+					}
 
 					$files = array_diff(scandir($shortpath), array('..', '.'));
 					foreach($files as $file2) {
@@ -57,8 +58,9 @@
 								if ($title)
 								{
 									$content = $this->OpenFile($filePath);
-									if ($title != $this->parser->PageTitle($content, true))
+									if ($title != $this->parser->PageTitle($content, true)) {
 										continue;
+									}
 
 									$this->fileCache[$title] = $filePath;
 								}
@@ -94,8 +96,7 @@
 			$url = str_replace(['../', './'], '', $url);
 			$url = preg_replace('/[^a-zA-Z0-9_\-.:]/', '', $url);
 
-			if ($this->config['xampp'])
-			{
+			if ($this->config['xampp']) {
 				$url = str_replace(':', '/:', $url); // Apache hates it
 			}
 
@@ -105,13 +106,13 @@
 		public function OpenFile($path) {
 			$path = strtolower($path);
 
-			if ($this->config['xampp'])
-			{
+			if ($this->config['xampp']) {
 				$path = str_replace('/:', ':', $path); // Apache hates it
 			}
 
-			if (!file_exists($path))
+			if (!file_exists($path)) {
 				return null;
+			}
 
 			return file_get_contents($path);
 		}
@@ -119,8 +120,7 @@
 		public function FileExists($path) {
 			$path = strtolower($path);
 
-			if ($this->config['xampp'])
-			{
+			if ($this->config['xampp']) {
 				$path = str_replace('/:', ':', $path); // Apache hates it
 			}
 

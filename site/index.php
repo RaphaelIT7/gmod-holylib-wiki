@@ -21,16 +21,17 @@
 	if (isset($contentType))
 	{
 		header("Content-Type: $contentType");
-		if ($contentType == 'font/ttf')
+		if ($contentType == 'font/ttf') {
 			readfile("fonts/materialdesignicons-webfont.ttf");
-		else if ($contentType == 'font/woff')
+		} else if ($contentType == 'font/woff') {
 			readfile("fonts/materialdesignicons-webfont.woff");
-		else if ($contentType == 'font/woff2')
+		} else if ($contentType == 'font/woff2') {
 			readfile("fonts/materialdesignicons-webfont.woff2");
-		else if ($contentType == 'text/css')
+		} else if ($contentType == 'text/css') {
 			readfile("gmod_style.css");
-		else if ($contentType == 'text/javascript')
+		} else if ($contentType == 'text/javascript') {
 			readfile("gmod_script.js");
+		}
 		exit(0);
 	}
 
@@ -245,15 +246,19 @@
 									if (tagClasses[str] != null && !child.classList.contains(tagClasses[str])) {
 										found = null;
 									}
+
 									if (tagNotClasses[str] != null && child.classList.contains(tagNotClasses[str])) {
 										found = null;
 									}
+
 									if (str == "is:global" && child.getAttribute("href").indexOf("Global.") == -1) {
 										found = null;
 									}
+
 									if (str == "is:enum" && child.getAttribute("href").indexOf("Enums/") == -1) {
 										found = null;
 									}
+
 									if (str == "is:struct" && child.getAttribute("href").indexOf("Structures/") == -1) {
 										found = null;
 									}

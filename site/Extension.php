@@ -49,8 +49,9 @@
 
 			$file = str_replace(':', '_', $file);
 
-			if (isset($title) && isset($this->fileCache[$title]))
+			if (isset($title) && isset($this->fileCache[$title])) {
 				return $this->fileCache[$title];
+			}
 
 			if (!isset($title) && isset($this->fileCache[$file]))
 			{
@@ -65,8 +66,9 @@
 					$shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
 					$path = $shortpath  . $file . '.md';
 
-					if (!file_exists($shortpath))
+					if (!file_exists($shortpath)) {
 						continue;
+					}
 
 					$files = array_diff(scandir($shortpath), array('..', '.'));
 					foreach($files as $file2) {
@@ -77,8 +79,9 @@
 								if ($title)
 								{
 									$content = $this->OpenFile($filePath);
-									if ($title != $this->PageTitle($content, true))
+									if ($title != $this->PageTitle($content, true)) {
 										continue;
+									}
 
 									$this->fileCache[$title] = $filePath;
 								}
@@ -130,8 +133,9 @@
 				$path = str_replace('/:', ':', $path); // Apache hates it
 			}
 
-			if (!file_exists($path))
+			if (!file_exists($path)) {
 				return null;
+			}
 
 			return file_get_contents($path);
 		}
@@ -183,14 +187,17 @@
 
 		function GetSpecialTags($text)
 		{
-			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches))
+			if (preg_match('/<deprecated>([\s\S]*?)<\/deprecated>/', $text, $matches)) {
 				return ' depr';
+			}
 
-			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches))
+			if (preg_match('/<removed>([\s\S]*?)<\/removed>/', $text, $matches)) {
 				return ' depr';
+			}
 
-			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches))
+			if (preg_match_all('/<internal>([\s\S]*?)<\/internal>/', $text, $matches)) {
 				return ' intrn';
+			}
 
 			return '';
 		}
@@ -340,17 +347,19 @@
 
 		protected function getFunctionName($func)
 		{
-			if (!isset($func['parent']) || strlen($func['parent']) == 0)
+			if (!isset($func['parent']) || strlen($func['parent']) == 0) {
 				return $func['name'];
+			}
 
 			$outPut = $func['parent'];
 
-			if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield'))
+			if (isset($func['type']) && ($func['type'] == 'libraryfunc' || $func['type'] == 'libraryfield')) {
 				$outPut .= '.';
-			else if (isset($func['type']) && $func['type'] == 'hook')
+			} else if (isset($func['type']) && $func['type'] == 'hook') {
 				$outPut = '(hook) ' . ((strlen($func['parent']) != 0) ? ($outPut . ':') : '');
-			else
+			} else {
 				$outPut .= $this->config['code_funcseparator'];
+			}
 
 			$outPut .= $func['name'];
 
@@ -501,8 +510,9 @@
 							$files = array_diff(scandir($path), array('..', '.', strtolower($type['name']) . '.md'));
 							foreach($files as &$page2) {
 								$file = $this->OpenFile($path . '/' . $page2 . ($mainDir ? ("/" . $page2) : ''));
-								if (!$file)
+								if (!$file) {
 									continue;
+								}
 
 								$pagetitle = $this->PageTitle($file); 
 
@@ -519,7 +529,7 @@
 										if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 											$args = '';
 											foreach ($func['args'] as $arg) {
-												if (! str_ends_with($args, ',') && $args !== '')
+												if (!str_ends_with($args, ',') && $args !== '')
 												{
 													$args .= ',';
 												}
@@ -534,7 +544,7 @@
 
 											$rets = '';
 											foreach ($func['rets'] as $ret) {
-												if (! str_ends_with($rets, ',') && $rets !== '')
+												if (!str_ends_with($rets, ',') && $rets !== '')
 												{
 													$rets .= ',';
 												}
@@ -620,8 +630,9 @@
 
 		protected function buildNote($text, $preView)
 		{
-			if ($preView)
+			if ($preView) {
 				return $this->GetPreviewText($text);
+			}
 
 			$html = '<div class="note">';
 				$html .= '<div class="inner">';
@@ -634,8 +645,9 @@
 
 		protected function buildWarning($text, $preView)
 		{
-			if ($preView)
+			if ($preView) {
 				return $this->GetPreviewText($text);
+			}
 
 			$html = '<div class="warning">';
 				$html .= '<div class="inner">';
@@ -661,14 +673,16 @@
 			if ($version)
 			{
 				$version = (double)$version;
-				if ($version == 0 || $version > $this->config['version']) // If 0 then it failed to cast.
+				if ($version == 0 || $version > $this->config['version'])  { // If 0 then it failed to cast.
 					$htmlText .= '<p>This will be removed in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).</p>';
+				}
 			}
 
 			$htmlText .= $text;
 
-			if ($preView)
+			if ($preView) {
 				return $htmlText;
+			}
 
 			$html = '<div class="removed">';
 				$html .= '<div class="inner">';
@@ -683,8 +697,9 @@
 		{
 			$htmlText = 'We advise against using this. It may be changed or removed in a future update. ' . $text;
 
-			if ($preView)
+			if ($preView) {
 				return $htmlText;
+			}
 
 			$html = '<div class="deprecated">';
 				$html .= '<div class="inner">';
@@ -697,8 +712,9 @@
 
 		protected function buildValidate($text, $preView)
 		{
-			if ($preView)
+			if ($preView) {
 				return $text;
+			}
 
 			$html = '<div class="validate">';
 				$html .= '<div class="inner">';
@@ -745,8 +761,9 @@
 
 		protected function buildAmbig($text, $page, $preView)
 		{
-			if ($preView)
+			if ($preView) {
 				return '';
+			}
 
 			$file = $this->FindFile($page);
 
@@ -764,8 +781,9 @@
 
 		protected function buildBug($text, $issue, $preView)
 		{
-			if ($preView)
+			if ($preView) {
 				return $text;
+			}
 
 			$html = '<div class="bug">';
 				$html .= '<div class="inner">';
@@ -906,8 +924,9 @@
 		protected function buildAdded($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) { // If 0 then it failed to cast.
 				return '';
+			}
 
 			$html = '<h1>';
 				$html .= 'Recently Added';
@@ -928,8 +947,9 @@
 		protected function buildChanged($text, $version, $preView)
 		{
 			$version = (double)$version;
-			if ($preView || $version == 0 || $version < $this->config['version']) // If 0 then it failed to cast.
+			if ($preView || $version == 0 || $version < $this->config['version']) { // If 0 then it failed to cast.
 				return '';
+			}
 
 			$html = '<h1>';
 				$html .= 'Recently Changed';
@@ -1346,7 +1366,7 @@
 			if (preg_match('/<title>(.*?)<\/title>/', $text, $matches))
 			{
 				$title = $matches[1];
-			}   
+			}
 
 			$html = '<h1 class="pagetitle" id="pagetitle">' . $title .'</h1>';
 			$html .= '<div class="markdown" id="pagecontent">';
@@ -1365,7 +1385,7 @@
 				return;
 			}
 
-			if (strcmp($Block['name'], 'image') == 0 && ! str_contains($Line['text'], 'class="image"'))
+			if (strcmp($Block['name'], 'image') == 0 && !str_contains($Line['text'], 'class="image"'))
 			{
 				$Block['element']['rawHtml'] = substr($Line['text'], 0, -2) . ' class="image"/>';
 			}

@@ -14,10 +14,10 @@
 				// Makes testing with XAMPP easier.
 			}
 
-		   $this->conn = mysqli_connect($this->servername, $this->username, $this->password);
+			$this->conn = mysqli_connect($this->servername, $this->username, $this->password);
 	
 			if (!$this->conn) {
-			  die("Connection failed: " . mysqli_connect_error());
+				die("Connection failed: " . mysqli_connect_error());
 			}
 		}
 
@@ -127,8 +127,9 @@
 
 		public function DeleteFilePage($filePath) {
 			$page = $this->GetFullPageByFile($filePath);
-			if (!isset($page))
+			if (!isset($page)) {
 				return;
+			}
 
 			$stmt = $this->conn->prepare("DELETE FROM pages WHERE filePath=?");
 			$stmt->bind_param("s", $filePath);

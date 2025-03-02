@@ -5,16 +5,18 @@
 
 		function getTextBeforeLastSlash($input) {
 			$lastSlashPosition = strrpos($input, '/');
-			if ($lastSlashPosition !== false)
-			   return substr($input, 0, $lastSlashPosition);
+			if ($lastSlashPosition !== false) {
+				return substr($input, 0, $lastSlashPosition);
+			}
 
 			return $input;
 		}
 
 		// Returns true if it ran a full update
 		public function ImportPage($page, $category, $fullUpdate = false, $view_count = 0, $addressOverride = NULL) {
-			if (!file_exists($page))
+			if (!file_exists($page)) {
 				return false;
+			}
 
 			// Enfoce lowercase as out stuff expects it
 			if (strtolower($page) != $page)
@@ -31,8 +33,9 @@
 
 			$lastChanged = filemtime($page);
 			$sqlPage = $this->MySQL->GetFullPageByFile($page);
-			if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) # file wasn't updated
+			if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) { # file wasn't updated
 				return false;
+			}
 
 			$file = $this->Parser->OpenFile($page);
 
@@ -50,8 +53,9 @@
 			$fileTime = $lastChanged;
 			$filePath = $page;
 			$updateCount = isset($sqlPage) ? ($sqlPage['updateCount'] + ($fullUpdate ? ($sqlPage['html'] != $html ? 1 : 0) : 1)) : 0; # If were in a fullUpdate, then we only raise the updateCount if our HTML content actually changed.
-			if (!$fullUpdate)
+			if (!$fullUpdate) {
 				echo '<p>' . $filePath . '</p>'; # Debugging which files update.
+			}
 
 			$this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
 
@@ -99,10 +103,13 @@
 		public function ImportEverything($fullUpdate = false) {
 			$totalTime = floor(microtime(true) * 1000);
 
-			if (!$fullUpdate)
-				foreach($this->phpPages as &$phpPage)
-					if ($this->CheckPHP($phpPage))
+			if (!$fullUpdate) {
+				foreach($this->phpPages as &$phpPage) {
+					if ($this->CheckPHP($phpPage)) {
 						$fullUpdate = true;
+					}
+				}
+			}
 
 			foreach ($this->Parser->categories as &$category) {
 				foreach ($category['categories'] as &$chapter) {
@@ -110,25 +117,27 @@
 					$files = file_exists($path) ? array_diff(scandir($path), array('..', '.')) : array();
 					foreach ($files as &$page) {
 						if (is_dir($path . $page)) {
-							if ($this->ImportPage($path . $page . '/' . $page . '.md', $page, $fullUpdate) && !$fullUpdate)
+							if ($this->ImportPage($path . $page . '/' . $page . '.md', $page, $fullUpdate) && !$fullUpdate) {
 								break;
+							}
 
 							$fullpath = $path . $page;
 							$subFiles = array_diff(scandir($fullpath), array('..', '.', $page . '.md'));
 							foreach($subFiles as &$subPage) {
-								if ($this->ImportPage($fullpath . '/' . $subPage, $page, $fullUpdate) && !$fullUpdate)
+								if ($this->ImportPage($fullpath . '/' . $subPage, $page, $fullUpdate) && !$fullUpdate) {
 									break;
+								}
 							}
 						} else {
-							if ($this->ImportPage($path . $page, $chapter['path'], $fullUpdate) && !$fullUpdate)
+							if ($this->ImportPage($path . $page, $chapter['path'], $fullUpdate) && !$fullUpdate) {
 								break;
+							}
 						}
 					}
 				}
 			}
 
-			if ($fullUpdate)
-			{
+			if ($fullUpdate) {
 				$this->UpdateSideBar();
 			}
 
@@ -172,10 +181,11 @@
 							$html .= '<details class="level2 cm type e">';
 								$html .= '<summary>';
 									$sqlPage = $this->MySQL->GetPageForSidebarByFile($folderPath . $page . '/' . $page . '.md');
-									if (isset($sqlPage))
+									if (isset($sqlPage)) {
 										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
-									else
+									} else {
 										$html .= '<p>' . $folderPath . $page . '/' . $page . '.md' . '</p>';
+									}
 								$html .= '</summary>';
 								$html .= '<ul>';
 									$fullpath = $folderPath . $page;
@@ -186,10 +196,11 @@
 										$page2 = substr($page2, 0, strripos($page2, '.'));
 
 										$html .= '<li>';
-											if (isset($sqlPage))
+											if (isset($sqlPage)) {
 												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
-											else
+											} else {
 											   $html .= '<p>' . $fullpath . '/' . $page2 . '</p>';
+											}
 										$html .= '</li>';
 									}
 								$html .= '</ul>';
@@ -244,10 +255,11 @@
 							$html .= '<details class="level2 cm type e">';
 								$html .= '<summary>';
 									$sqlPage = $this->MySQL->GetPageForSidebarByFile($path . $page . '/' . $page . '.md');
-									if (isset($sqlPage))
+									if (isset($sqlPage)) {
 										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
-									else
+									} else {
 										$html .= '<p>' . $path . $page . '/' . $page . '.md' . '</p>';
+									}
 								$html .= '</summary>';
 								$html .= '<ul>';
 									$fullpath = $path . $page;
@@ -258,10 +270,11 @@
 										$page2 = substr($page2, 0, strripos($page2, '.'));
 
 										$html .= '<li>';
-											if (isset($sqlPage))
+											if (isset($sqlPage)) {
 												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
-											else
+											} else {
 											   $html .= '<p>' . $fullpath . '/' . $page2 . '</p>';
+											}
 										$html .= '</li>';
 									}
 								$html .= '</ul>';
