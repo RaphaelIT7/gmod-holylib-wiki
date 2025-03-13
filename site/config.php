@@ -372,6 +372,12 @@ function GetConfig()
 					'path' => 'modules/steamworks/hooks',
 					'tags' => 'true',
 				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/steamworks/convars',
+					'tags' => 'true',
+				),
 			),
 		),
 		array(
