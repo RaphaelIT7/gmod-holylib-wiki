@@ -6,6 +6,7 @@
 			modifying them won't affect the internally stored VoiceData.<br>
 			Call <page>VoiceStream:SetData</page> or <page>VoiceStream:SetIndex</page> after you modified it to update it.
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

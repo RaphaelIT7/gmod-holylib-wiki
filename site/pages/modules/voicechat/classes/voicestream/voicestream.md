@@ -4,6 +4,8 @@
 
 This class represents the VoiceStream that contains <page>VoiceData</page><br>
 
+<added version="0.7"></added>
+
 | Metatable function | Description |
 |-------|------|
 | `__tostring` | Returns a formated string of the VoiceStream -> `VoiceStream [number of VoiceData]` |

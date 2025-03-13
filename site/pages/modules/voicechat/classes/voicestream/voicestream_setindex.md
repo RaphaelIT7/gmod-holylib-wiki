@@ -1,6 +1,7 @@
 <function name="SetIndex" parent="VoiceStream" type="classfunc">
 	<description>
 		Create a copy of the given VoiceData and sets it onto the specific index and overrides any data thats already present.  
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

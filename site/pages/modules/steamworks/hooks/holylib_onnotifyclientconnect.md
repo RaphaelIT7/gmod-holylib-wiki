@@ -4,6 +4,7 @@
 		<warning>
 			The steamID64 may be spoofed, so don't rely on it!
 		</warning>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

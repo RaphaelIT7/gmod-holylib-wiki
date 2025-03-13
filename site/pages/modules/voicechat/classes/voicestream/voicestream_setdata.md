@@ -1,6 +1,7 @@
 <function name="SetData" parent="VoiceStream" type="classfunc">
 	<description>
 		Sets the VoiceStream from the given table.<br>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

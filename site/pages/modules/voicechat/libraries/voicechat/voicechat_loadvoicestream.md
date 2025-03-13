@@ -14,6 +14,7 @@
 		<note>
 			If `async` was used, it **won't** return anything.
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

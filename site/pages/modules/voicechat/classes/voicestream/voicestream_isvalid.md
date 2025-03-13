@@ -1,6 +1,7 @@
 <function name="IsValid" parent="VoiceStream" type="classfunc">
 	<description>
 		Returns whether this VoiceStream is valid.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>
