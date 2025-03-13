@@ -10,6 +10,13 @@
 	<args>
 		<arg name="nextUserID" type="number">The userID the client would receive after authenticating</arg>
 		<arg name="ipAddress" type="string">The IP address of the client</arg>
-		<arg name="steamID64" type="number">The SteamID64 the client sent</arg>
+		<arg name="steamID64" type="string">The SteamID64 the client sent</arg>
 	</args>
+	<rets>
+		<ret name="override" type="boolean" default="nil">
+			Return `true` to forcefully authenticate his steamid.  
+			Return `false` to block his authentication.  
+			Return nothing to let the server normally handle it.  
+		</ret>
+	</rets>
 </function>
