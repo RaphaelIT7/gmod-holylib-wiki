@@ -1,4 +1,4 @@
-<function name="COUNTER_GROUP_TEXTURE_GLOBAL" parent="stringtable" type="libraryfield">
+<function name="COUNTER_GROUP_TEXTURE_GLOBAL" parent="vprof" type="libraryfield">
 	<description>
 	</description>
 	<value>2</value>

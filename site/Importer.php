@@ -149,6 +149,18 @@
 			//echo 'Took ' . ((floor(microtime(true) * 1000) - $totalTime) / 1000) . "s";
 		}
 
+		public function GetFullTitle($sqlPage)
+		{
+			$address = $sqlPage['address'];
+
+			if ($this->Parser->config['xampp'])
+			{
+				$address = str_replace('/:', ':', $address); // Apache hates it
+			}
+
+			return $address;
+		}
+
 		public function CreateGlobalCategory($category)
 		{
 			$html = '';
@@ -182,7 +194,7 @@
 								$html .= '<summary>';
 									$sqlPage = $this->MySQL->GetPageForSidebarByFile($folderPath . $page . '/' . $page . '.md');
 									if (isset($sqlPage)) {
-										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $sqlPage['title'] . '</a>';
 									} else {
 										$html .= '<p>' . $folderPath . $page . '/' . $page . '.md' . '</p>';
 									}
@@ -197,7 +209,7 @@
 
 										$html .= '<li>';
 											if (isset($sqlPage)) {
-												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $sqlPage['title'] . '</a>';
 											} else {
 											   $html .= '<p>' . $fullpath . '/' . $page2 . '</p>';
 											}
@@ -213,7 +225,7 @@
 								continue;
 							}
 
-							$html .= '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+							$html .= '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $sqlPage['title'] . '</a>';
 						}
 
 						$html .= '</li>';
@@ -256,7 +268,7 @@
 								$html .= '<summary>';
 									$sqlPage = $this->MySQL->GetPageForSidebarByFile($path . $page . '/' . $page . '.md');
 									if (isset($sqlPage)) {
-										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '">' . $sqlPage['title'] . '</a>';
+										$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $sqlPage['title'] . '</a>';
 									} else {
 										$html .= '<p>' . $path . $page . '/' . $page . '.md' . '</p>';
 									}
@@ -271,7 +283,7 @@
 
 										$html .= '<li>';
 											if (isset($sqlPage)) {
-												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+												$html .= '<a class="' . $sqlPage['tags'] . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $sqlPage['title'] . '</a>';
 											} else {
 											   $html .= '<p>' . $fullpath . '/' . $page2 . '</p>';
 											}
@@ -287,7 +299,7 @@
 								continue;
 							}
 
-							$html .= '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $sqlPage['title'] . '">' . $sqlPage['title'] . '</a>';
+							$html .= '<a class="' . (isset($chapter['tags']) ? $sqlPage['tags'] : '') . '" href="/' . $sqlPage['address'] . '" search="' . $this->GetFullTitle($sqlPage)  . '">' . $sqlPage['title'] . '</a>';
 						}
 
 						$html .= '</li>';

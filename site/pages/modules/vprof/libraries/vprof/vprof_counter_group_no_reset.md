@@ -1,4 +1,4 @@
-<function name="COUNTER_GROUP_NO_RESET" parent="stringtable" type="libraryfield">
+<function name="COUNTER_GROUP_NO_RESET" parent="vprof" type="libraryfield">
 	<description>
 	</description>
 	<value>1</value>
