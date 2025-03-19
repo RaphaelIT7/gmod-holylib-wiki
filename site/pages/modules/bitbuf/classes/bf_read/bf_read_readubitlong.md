@@ -5,7 +5,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="bits" type="number">How many bits to read<args>
+		<arg name="bits" type="number">How many bits to read</arg>
 	</args>
 	<rets>
 		<ret name="value" type="number"></ret>

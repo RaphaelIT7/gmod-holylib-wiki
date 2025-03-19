@@ -7,7 +7,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="bits" type="number">How many bits to read<args>
+		<arg name="bits" type="number">How many bits to read</arg>
 		<arg name="signed" type="boolean" default="false"></arg>
 	</args>
 	<rets>

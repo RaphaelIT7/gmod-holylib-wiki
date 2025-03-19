@@ -6,8 +6,8 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="integral" type="boolean" default="false"><args>
-		<arg name="lowprecision" type="boolean" default="false"><args>
+		<arg name="integral" type="boolean" default="false"></arg>
+		<arg name="lowprecision" type="boolean" default="false"></arg>
 	</args>
 	<rets>
 		<ret name="value" type="number"></ret>

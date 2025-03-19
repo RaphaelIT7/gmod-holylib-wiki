@@ -5,7 +5,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="pos" type="number">position to seek to<args>
+		<arg name="pos" type="number">position to seek to</arg>
 	</args>
 	<rets>
 		<ret name="success" type="boolean">Returns `true` on success. </ret>

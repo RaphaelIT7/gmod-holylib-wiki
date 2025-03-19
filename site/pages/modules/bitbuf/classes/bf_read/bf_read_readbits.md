@@ -4,7 +4,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="bits" type="number"><args>
+		<arg name="bits" type="number"></arg>
 	</args>
 	<rets>
 		<ret name="value" type="string"></ret>

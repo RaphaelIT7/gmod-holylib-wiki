@@ -4,7 +4,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="bits" type="number">How many bits to peek forward<args>
+		<arg name="bits" type="number">How many bits to peek forward</arg>
 	</args>
 	<rets>
 		<ret name="value" type="number"></ret>
