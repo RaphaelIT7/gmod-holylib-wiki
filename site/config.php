@@ -538,6 +538,12 @@ function GetConfig()
 					'path' => 'modules/gameserver/hooks',
 					'tags' => 'true',
 				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/gameserver/convars',
+					'tags' => 'true',
+				),
 			),
 		),
 	)

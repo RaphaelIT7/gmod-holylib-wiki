@@ -380,7 +380,7 @@ echo '{
 	"updateCount": ' . $MySQL->GetUpdateCount($currentPage) . ',
 	"markup":' . json_encode($MySQL->GetMarkup($currentPage)) . ',
 	"html":' . json_encode($MySQL->GetHTML($currentPage)) . ',
-	"footer": "Page views: ' . $MySQL->GetViews($currentPage) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($currentPage) . '",
+	"footer": "Page views: ' . $MySQL->GetIncreasedViews($currentPage) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($currentPage) . '",
 	"revisionId": ' . $MySQL->GetRevision($currentPage) . ',
 	"pageLinks":[
 		{
