@@ -14,7 +14,7 @@
 		<arg name="callback" type="function">
 			the callback that is called after we finished compressing it
 			<callback>
-				<arg name="data" type="string">The compressed data</arg>
+				<arg name="data" type="string">The compressed data or `nil` on failure</arg>
 			</callback>
 		</arg>
 	</args>
