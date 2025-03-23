@@ -1,6 +1,6 @@
-<function name="IsValid" parent="CBaseClient" type="classfunc">
+<function name="IsValid" parent="CNetChan" type="classfunc">
 	<description>
-		Returns `true` if the client is valid.
+		Returns `true` if the channel is valid.
 		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
