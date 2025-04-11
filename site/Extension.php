@@ -421,9 +421,19 @@
 					if (isset($func['source']) && $func['source'] != '')
 					{
 						$html .= '<a href="' . $func['source'] . '">';
-							$html .= '<i class=mdi mdi-source-branch">';
+							$html .= '<i class="mdi mdi-source-branch">';
 							$html .= '</i>';
 							$html .= ' View Source';
+						$html .= '</a>';
+					}
+
+					$pageVersion = $this->getAdded(isset($func['sourceText']) ? $func['sourceText'] : "");
+					# if (isset($pageVersion))
+					{
+						$html .= '<a title="Version this feature was added in" target="_blank">';
+							$html .= '<i class="mdi mdi-source-pull">';
+							$html .= '</i>';
+							$html .= ' ' . $pageVersion;
 						$html .= '</a>';
 					}
 				$html .= '</div>';
@@ -875,7 +885,7 @@
 			$html .= '</div>';
 
 			return $html;
-		}
+		} 
 
 		protected function buildExample($exam)
 		{
@@ -942,6 +952,17 @@
 			$html .= '</div>';
 
 			return $html;
+		}
+
+		// Figures out & returns the version the given page was added, it searches for the <added> tag
+		protected function getAdded($text)
+		{
+			echo $text;
+			if (preg_match('/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/', $text, $matches)) {
+				return $matches[1];
+			}
+
+			return null;
 		}
 
 		protected function buildChanged($text, $version, $preView)
@@ -1044,6 +1065,7 @@
 
 			$text = implode("\n", $lines);
 			$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
+			$sourceText = $text;
 
 			/*
 			 * Helper function to make things easier.
@@ -1190,11 +1212,12 @@
 
 			$replaceCall(
 				'/<function name="([^"]+)" parent="([^"]*)" type="([^"]+)">([\s\S]*?)<\/function>/s',
-				function ($matches){
+				function ($matches) use ($sourceText) {
 					$function = array();
 					$function['name'] = $matches[1];
 					$function['parent'] = $matches[2];
 					$function['type'] = $matches[3];
+					$function['sourceText'] = $sourceText;
 
 					$textContent = $matches[4];
 
