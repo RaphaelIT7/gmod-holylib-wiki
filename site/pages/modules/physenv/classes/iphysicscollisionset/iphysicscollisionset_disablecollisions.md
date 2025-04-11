@@ -1,6 +1,7 @@
 <function name="DisableCollisions" parent="IPhysicsCollisionSet" type="classfunc">
 	<description>
 		Marks collisions to be disabled for the two indexes.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

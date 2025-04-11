@@ -1,6 +1,7 @@
 <function name="IsDir" parent="filesystem" type="libraryfunc">
 	<description>
 		Checks if the give folder exists in the given path.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

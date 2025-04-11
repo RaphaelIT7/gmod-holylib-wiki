@@ -7,5 +7,6 @@
 			Will soon have support for Windows & Linux64
 			Windows currently likes to crash :(
 		</note>
+		<added version="0.7"></added>
 	</summary>
 </type>

@@ -1,6 +1,7 @@
 <function name="RemoveListener" parent="gameevent" type="libraryfunc">
 	<description>
 		Removes the Lua gameevent listener from the specific gameevent.
+		<added version="0.1"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

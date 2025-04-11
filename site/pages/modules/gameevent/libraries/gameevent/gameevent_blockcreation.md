@@ -1,6 +1,7 @@
 <function name="BlockCreation" parent="gameevent" type="libraryfunc">
 	<description>
 		Blocks/Unblocks the creation of the specified gameevent.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

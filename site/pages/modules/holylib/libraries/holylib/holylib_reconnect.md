@@ -1,6 +1,7 @@
 <function name="Reconnect" parent="HolyLib" type="libraryfunc">
 	<description>
 		Reconnects the given player without him losing his slot
+		<added version="0.1"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

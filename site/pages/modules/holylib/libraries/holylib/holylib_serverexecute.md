@@ -3,9 +3,10 @@
 		Forces all queried commands to be executed/processed.<br>
 		A direct engine bind to `IVEngineServer::ServerExecute`
 		<note>
-			This function won't work if it's already active.<br>
+			This function won't work if it's already active/running.<br>
 			This means that using it inside a concommand callback will do nothing.
 		</note>
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 </function>

@@ -2,6 +2,7 @@
 	<description>
 		Returns the level of the channel.
 		First value is left, second is right.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

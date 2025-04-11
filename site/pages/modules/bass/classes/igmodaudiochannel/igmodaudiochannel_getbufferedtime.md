@@ -4,6 +4,7 @@
 		<note>
 			If it's playing a file, it will just return the length of it.
 		</note>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

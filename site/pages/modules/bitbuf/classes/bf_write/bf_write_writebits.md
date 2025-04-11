@@ -1,6 +1,7 @@
 <function name="WriteBits" parent="bf_write" type="classfunc">
 	<description>
-		Writes the given number of bits from the data into this buffer.  
+		Writes the given number of bits from the data into this buffer.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

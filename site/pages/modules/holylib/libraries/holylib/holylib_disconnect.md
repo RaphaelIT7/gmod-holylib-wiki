@@ -3,8 +3,9 @@
 		Disconnects the given player from the server.
 		<note>
 			Unlike Gmod's version which internally calls the `kickid` command,<br>
-			we directly call the `Disconnect` function with no delay.  
+			we directly call the `Disconnect` function with no delay.
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

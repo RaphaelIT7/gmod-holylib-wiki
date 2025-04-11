@@ -4,6 +4,7 @@
 		<note>
 			We don't validate if you pass valid clusters!
 		</note>
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

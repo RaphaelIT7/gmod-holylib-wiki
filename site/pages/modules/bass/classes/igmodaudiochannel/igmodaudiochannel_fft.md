@@ -1,7 +1,8 @@
 <function name="FFT" parent="IGModAudioChannel" type="classfunc">
 	<description>
-		Computes the DFT of the sound channel.
+		Computes the DFT of the sound channel.<br>
 		What even is that.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="SetBool" parent="IGameEvent" type="classfunc">
 	<description>
 		Stores the boolean with the specific key.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

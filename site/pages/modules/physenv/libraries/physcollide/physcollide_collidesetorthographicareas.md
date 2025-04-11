@@ -4,6 +4,7 @@
 		<note>
 		RaphaelIT7 doing gods work - Mr. Saxobeat
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

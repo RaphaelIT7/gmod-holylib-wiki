@@ -1,7 +1,8 @@
 <function name="GetListeners" parent="gameevent" type="libraryfunc">
 	<description>
 		Returns the number of Listeners a specific gameevent has.<br>
-		If not given a eventName, it will return a table containing all events and listener numbers.  
+		If not given a eventName, it will return a table containing all events and listener numbers.
+		<added version="0.1"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

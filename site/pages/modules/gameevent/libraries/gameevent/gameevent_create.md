@@ -1,6 +1,7 @@
 <function name="Create" parent="gameevent" type="libraryfunc">
 	<description>
 		Creates the given gameevent and returns it.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

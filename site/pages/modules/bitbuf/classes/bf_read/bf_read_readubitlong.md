@@ -2,6 +2,7 @@
 	<description>
 		Reads a unsigned number with the given number of bits.<br>
 		If you want to read a signed number use <page>bf_read:ReadBitLong</page> or <page>bf_read:ReadSBitLong</page>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

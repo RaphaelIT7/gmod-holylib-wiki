@@ -1,6 +1,7 @@
 <function name="FireClientEvent" parent="gameevent" type="libraryfunc">
 	<description>
 		Fires the given gameevent only for the specific player
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

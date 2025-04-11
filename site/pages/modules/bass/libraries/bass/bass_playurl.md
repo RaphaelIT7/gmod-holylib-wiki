@@ -1,6 +1,7 @@
 <function name="PlayURL" parent="bass" type="libraryfunc">
 	<description>
 		Creates a IGMODAudioChannel using the given url.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

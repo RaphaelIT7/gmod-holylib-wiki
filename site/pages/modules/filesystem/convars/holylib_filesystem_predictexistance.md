@@ -8,6 +8,7 @@
 		<note>
 			Enabling this can cause issues like models having no collisions when their `.phy` file is in a different path than their `.mdl` file.
 		</note>
+		<added version="0.3"></added>
     </description>
     <value>0</value>
     <realm>Server</realm>

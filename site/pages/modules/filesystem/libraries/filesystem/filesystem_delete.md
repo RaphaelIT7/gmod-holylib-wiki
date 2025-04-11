@@ -1,6 +1,7 @@
 <function name="Delete" parent="filesystem" type="libraryfunc">
 	<description>
 		Deletes the given file or folder.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

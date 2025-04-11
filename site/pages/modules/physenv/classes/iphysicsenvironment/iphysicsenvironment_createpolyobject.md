@@ -1,6 +1,7 @@
 <function name="CreatePolyObject" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Creates a new IPhysicsObject in the environment.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

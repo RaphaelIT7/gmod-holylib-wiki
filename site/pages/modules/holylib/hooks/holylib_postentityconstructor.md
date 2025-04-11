@@ -1,7 +1,8 @@
 <function name="HolyLib:PostEntityConstructor" parent="" type="hook">
 	<description>
 		Called before `CBaseEntity::PostConstructor` is called.<br>
-		This should allow you to set the `EFL_SERVER_ONLY` flag properly allowing you to create serverside-only entities.  
+		This should allow you to set the `EFL_SERVER_ONLY` flag properly allowing you to create serverside-only entities.
+		<added version="0.6"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

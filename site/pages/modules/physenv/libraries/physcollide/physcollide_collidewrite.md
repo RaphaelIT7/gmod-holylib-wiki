@@ -1,6 +1,7 @@
 <function name="CollideWrite" parent="physcollide" type="libraryfunc">
 	<description>
 		Serializes the CPhysCollide and returns the data containing it.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

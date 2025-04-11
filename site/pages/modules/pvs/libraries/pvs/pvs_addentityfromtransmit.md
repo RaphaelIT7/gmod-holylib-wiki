@@ -7,6 +7,7 @@
 		<verfiy>
 			Verify that the `always` works as intented.
 		</verfiy>
+		<added version="0.3"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

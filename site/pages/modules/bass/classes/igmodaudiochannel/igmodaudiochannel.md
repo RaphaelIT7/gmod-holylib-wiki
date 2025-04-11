@@ -2,6 +2,8 @@
 	<summary>
 		# IGModAudioChannel
 
+		<added version="0.4"></added>
+
 		| Metatable function | Description |
 		|-------|------|
 		| `__tostring` | Returns a formated string of the IGModAudioChannel -> `IGModAudioChannel [file name/url]` |

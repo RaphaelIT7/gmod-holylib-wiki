@@ -4,6 +4,7 @@
 		<validate>
 			This function is internally use for debugging?
 		</validate>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

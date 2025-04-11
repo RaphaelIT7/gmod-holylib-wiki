@@ -1,6 +1,7 @@
 <function name="FireEvent" parent="gameevent" type="libraryfunc">
 	<description>
 		Fires the given gameevent and networks it to all players.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

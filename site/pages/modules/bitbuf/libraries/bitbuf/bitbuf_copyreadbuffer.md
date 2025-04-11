@@ -5,6 +5,7 @@
 		<note>
 			The size is clamped internally between a minimum of `4` bytes and a maximum of `262144` bytes.
 		</note>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="Open" parent="filesystem" type="libraryfunc">
 	<description>
 		Opens the given file from the given game path.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

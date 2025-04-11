@@ -1,6 +1,7 @@
 <function name="TestPAS" parent="pas" type="libraryfunc">
 	<description>
 		Tests if the give hear position is inside the given pas.
+		<added version="0.3"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

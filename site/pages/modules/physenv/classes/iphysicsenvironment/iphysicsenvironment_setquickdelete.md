@@ -3,6 +3,7 @@
 		<validate>
 			Sets quick delete?
 		</validate>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

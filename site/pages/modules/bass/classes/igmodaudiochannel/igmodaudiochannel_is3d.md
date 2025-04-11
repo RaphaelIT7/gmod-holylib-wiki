@@ -1,6 +1,7 @@
 <function name="Is3D" parent="IGModAudioChannel" type="classfunc">
 	<description>
 		Returns true if the channel is a 3D one.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

@@ -1,6 +1,7 @@
 <function name="CollideSize" parent="physcollide" type="libraryfunc">
 	<description>
 		Returns the memory size of the CPhysCollide.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

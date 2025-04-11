@@ -1,6 +1,7 @@
 <function name="HolyLib:OnGenericPrecacheFail" parent="" type="hook">
 	<description>
 		Called when a generic(model, sound, ...) failed to precached.
+		<added version="0.3"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

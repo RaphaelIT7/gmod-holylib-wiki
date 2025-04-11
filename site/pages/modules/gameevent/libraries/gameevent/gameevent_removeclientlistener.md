@@ -2,6 +2,7 @@
 	<description>
 		Removes the player from listening to the given gameevent.<br>
 		If the given gameevent is nil it will remove the player from all gameevents.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

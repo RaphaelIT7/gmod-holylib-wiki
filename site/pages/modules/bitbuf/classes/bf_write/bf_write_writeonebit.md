@@ -1,6 +1,7 @@
 <function name="WriteOneBit" parent="bf_write" type="classfunc">
 	<description>
 		Writes one bit.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

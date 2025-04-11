@@ -1,6 +1,7 @@
 <function name="PlayFile" parent="bass" type="libraryfunc">
 	<description>
 		Creates a IGMODAudioChannel using the given file.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

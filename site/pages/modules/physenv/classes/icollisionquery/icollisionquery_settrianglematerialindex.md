@@ -1,6 +1,7 @@
 <function name="SetTriangleMaterialIndex" parent="ICollisionQuery" type="classfunc">
 	<description>
 		Sets the material index of the given triangle index.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

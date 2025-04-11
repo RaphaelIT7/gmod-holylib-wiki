@@ -1,6 +1,7 @@
 <function name="GetAll" parent="cvar" type="libraryfunc">
 	<description>
 		Returns a table containing all registered ConVars.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

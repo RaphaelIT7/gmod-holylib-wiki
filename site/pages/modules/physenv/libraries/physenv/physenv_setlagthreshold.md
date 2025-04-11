@@ -4,6 +4,7 @@
 		<note>
 			Only works on Linux32
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

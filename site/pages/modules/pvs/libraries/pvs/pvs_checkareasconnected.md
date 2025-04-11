@@ -5,6 +5,7 @@
 		<note>
 			We don't validate if you pass valid areas!
 		</note>
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="IsValid" parent="EntityList" type="classfunc">
 	<description>
 		Returns weather this object is valid or not.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

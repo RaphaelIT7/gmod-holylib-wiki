@@ -1,6 +1,7 @@
 <function name="DuplicateEvent" parent="gameevent" type="libraryfunc">
 	<description>
 		Duplicates the given event
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

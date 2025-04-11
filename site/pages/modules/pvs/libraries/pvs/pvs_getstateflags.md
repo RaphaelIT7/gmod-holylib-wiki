@@ -4,6 +4,7 @@
 		<warning>
 			Only use the `engine` argument if you know what your doing
 		</warning>
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

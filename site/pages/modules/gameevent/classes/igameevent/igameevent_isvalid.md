@@ -1,6 +1,7 @@
 <function name="IsValid" parent="IGameEvent" type="classfunc">
 	<description>
 		Returns whether this IGameEvent is valid.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

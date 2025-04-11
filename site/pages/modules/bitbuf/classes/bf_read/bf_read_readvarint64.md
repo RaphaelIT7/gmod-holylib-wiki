@@ -1,5 +1,6 @@
 <function name="ReadVarInt64" parent="bf_read" type="classfunc">
 	<description>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

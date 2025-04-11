@@ -4,6 +4,7 @@
 		<note>
 			It's serverside... how does volume even play a role
 		</note>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="FindInPAS" parent="pas" type="libraryfunc">
 	<description>
 		Returns a sequential table containing all entities in that PAS.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="RemoveSearchPath" parent="filesystem" type="libraryfunc">
 	<description>
-		Removes the given folder from the given gamepath. 
+		Removes the given folder from the given gamepath.
+		<added version="0.4"></added> 
 	</description>
 	<realm>Server</realm>
 	<args>

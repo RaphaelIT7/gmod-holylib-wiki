@@ -1,6 +1,7 @@
 <function name="CheckBoxInPAS" parent="pas" type="libraryfunc">
 	<description>
 		Checks if the given pox is inside the PAS.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

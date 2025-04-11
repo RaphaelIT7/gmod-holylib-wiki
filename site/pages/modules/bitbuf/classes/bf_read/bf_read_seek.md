@@ -1,6 +1,7 @@
 <function name="Seek" parent="bf_read" type="classfunc">
 	<description>
-		Sets the current position to the given position.  
+		Sets the current position to the given position.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

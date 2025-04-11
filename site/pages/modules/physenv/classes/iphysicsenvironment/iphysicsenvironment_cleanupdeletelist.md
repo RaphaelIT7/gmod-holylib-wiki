@@ -3,6 +3,7 @@
 		<validate>
 			cleans the delete list?
 		</validate>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

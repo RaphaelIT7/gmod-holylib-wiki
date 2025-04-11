@@ -1,6 +1,7 @@
 <function name="CollideGetExtent" parent="physcollide" type="libraryfunc">
 	<description>
 		Get the support map for a collide in the given direction.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -2,6 +2,7 @@
 	<description>
 		Hides the server from the serverlist.<br>
 		Will just set the hide_server convar in the future.
+		<added version="0.1"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

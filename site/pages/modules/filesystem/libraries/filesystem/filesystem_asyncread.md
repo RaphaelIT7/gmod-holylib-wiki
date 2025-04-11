@@ -1,6 +1,7 @@
 <function name="AsyncRead" parent="filesystem" type="libraryfunc">
 	<description>
 		Reads a file async and calls the callback with the contents.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

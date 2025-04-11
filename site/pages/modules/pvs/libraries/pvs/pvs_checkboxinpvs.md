@@ -1,6 +1,7 @@
 <function name="CheckBoxInPVS" parent="pvs" type="libraryfunc">
 	<description>
 		Returns whether or not the given box is inside the PVS.
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -18,6 +18,7 @@
 		- `postprocess/` -> `LUA_POSTPROCESS`<br>
 		- `matproxy/` -> `LUA_MATPROXY`<br>
 		- `autorun/` -> `LUA_AUTORUN`<br>
+		<added version="0.3"></added>
     </description>
     <value>0</value>
     <realm>Server</realm>

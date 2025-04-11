@@ -1,6 +1,7 @@
 <function name="CreatePolyObjectStatic" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Creates a new static IPhysicsObject in the environment.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

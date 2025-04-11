@@ -1,6 +1,7 @@
 <function name="TestPVS" parent="pvs" type="libraryfunc">
 	<description>
 		Tests if the give origin position is inside the given pvs.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

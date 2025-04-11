@@ -4,6 +4,7 @@
 		<note>
 			Only use this function inside the <page>HolyLib:PreCheckTransmit</page> or <page>HolyLib:PostCheckTransmit</page> hook!
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

@@ -1,6 +1,7 @@
 <function name="RelativePathToFullPath" parent="filesystem" type="libraryfunc">
 	<description>
 		Returns the full path of the given file/folder relative to the given game path.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

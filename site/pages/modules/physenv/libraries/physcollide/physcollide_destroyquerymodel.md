@@ -1,6 +1,7 @@
 <function name="DestroyQueryModel" parent="physcollide" type="libraryfunc">
 	<description>
 		Destroys the given ICollisionQuery.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

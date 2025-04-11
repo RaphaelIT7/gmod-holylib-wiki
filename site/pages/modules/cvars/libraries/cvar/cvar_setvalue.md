@@ -1,6 +1,7 @@
 <function name="SetValue" parent="cvar" type="libraryfunc">
 	<description>
 		Sets the value of the given ConVar even if it's blocked behind cheats.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

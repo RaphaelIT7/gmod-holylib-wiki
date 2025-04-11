@@ -1,6 +1,7 @@
 <function name="Find" parent="filesystem" type="libraryfunc">
 	<description>
 		Finds and returns a table containing all files and folders in the given path.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

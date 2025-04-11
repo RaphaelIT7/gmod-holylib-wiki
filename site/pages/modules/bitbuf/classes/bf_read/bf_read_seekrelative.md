@@ -1,7 +1,8 @@
 <function name="SeekRelative" parent="bf_read" type="classfunc">
 	<description>
 		Sets the current position to the given position relative to the current position.<br>
-		Basicly `newPosition = currentPosition + iPos`    
+		Basicly `newPosition = currentPosition + iPos`
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

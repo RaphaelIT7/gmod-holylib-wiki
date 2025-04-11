@@ -9,6 +9,7 @@
 		Here we can check if the `example.mdl` file is in the searchcache.<br>
 		If so, we try to use the searchpath of that file for the `.phy` file and since all model files should be in the same folder, this will work for most cases.<br>
 		If we fail to predict a path, it will end up using one additional search path.<br>
+		<added version="0.3"></added>
     </description>
     <value>1</value>
     <realm>Server</realm>

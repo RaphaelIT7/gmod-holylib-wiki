@@ -22,6 +22,7 @@
 		- `cfg/` -> `CONTENT_CONFIGS`<br>
 		- `gamemodes/` -> `LUA_GAMEMODES`<br>
 		- `lua/includes/` -> `LUA_INCLUDES`<br>
+		<added version="0.3"></added>
     </description>
     <value>1</value>
     <realm>Server</realm>

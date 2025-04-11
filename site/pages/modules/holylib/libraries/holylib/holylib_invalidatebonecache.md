@@ -4,6 +4,7 @@
 		<note>
 			Only uses this on Entities that are Animated / Inherit the CBaseAnimating class or else it will throw a Lua error.
 		</note>
+		<added version="0.6"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

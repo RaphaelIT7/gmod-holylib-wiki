@@ -4,6 +4,7 @@
 		<note>
 			Only use this function inside the <page>HolyLib:PreCheckTransmit</page> or <page>HolyLib:PostCheckTransmit</page> hook!
 		</note>
+		<added version="0.3"></added>
 		<removed>
 			This function was removed since I can't get it to work / It would be a bit more complicated than first anticipated.
 		</removed>

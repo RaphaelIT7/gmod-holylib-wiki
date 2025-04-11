@@ -2,5 +2,6 @@
 	<summary>
 		# holylib_gameserver_connectionlesspackethook = 1
 		If enabled, the <page>HolyLib:ProcessConnectionlessPacket</page> hook is active and will be called.
+		<added version="0.7"></added>
 	</summary>
 </type>

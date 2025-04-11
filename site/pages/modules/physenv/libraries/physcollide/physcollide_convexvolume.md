@@ -1,6 +1,7 @@
 <function name="ConvexVolume" parent="physcollide" type="libraryfunc">
 	<description>
 		Computes the volume of the CPhysCollide.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

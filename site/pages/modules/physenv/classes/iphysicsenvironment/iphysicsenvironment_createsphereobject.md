@@ -1,6 +1,7 @@
 <function name="CreateSphereObject" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Creates a new perfect sphere IPhysicsObject in the environment.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

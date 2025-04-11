@@ -1,6 +1,7 @@
 <function name="GetBool" parent="IGameEvent" type="classfunc">
 	<description>
 		Returns the boolean stored in the specific key.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

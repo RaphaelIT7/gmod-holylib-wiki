@@ -2,6 +2,7 @@
 	<description>
 		Called when the physics simulaton is taking longer than the set lag threshold.<br>
 		You can freeze all props here and then return `physenv.IVP_SkipSimulation` to skip the simulation for this tick if someone is trying to crash the server.
+		<added version="0.5"></added>
 		<changed version="0.7">This was renamed from `HolyLib:PhysicsLag` to `HolyLib:OnPhysicsLag`</changed>
 	</description>
 	<realm>Server</realm>

@@ -2,6 +2,7 @@
 	<description>
 		Returns a table containing all gameevents the specific client is listening to.<br>
 		If not given a valid player, it will return a table containing all players as a key and all gameevents their listening to as the value.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

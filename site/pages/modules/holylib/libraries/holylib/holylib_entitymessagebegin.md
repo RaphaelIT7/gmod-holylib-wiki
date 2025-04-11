@@ -5,6 +5,7 @@
 		<note>
 			If the bitbuf module is disabled, it will throw a lua error!
 		</note>
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

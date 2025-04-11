@@ -1,6 +1,7 @@
 <function name="SetTriangleVerts" parent="ICollisionQuery" type="classfunc">
 	<description>
 		Sets the three Vectors that build the triangle at the given index.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

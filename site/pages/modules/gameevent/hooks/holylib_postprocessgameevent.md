@@ -2,6 +2,7 @@
 	<description>
 		Called after the engine processed the received gameevent list.<br>
 		See <page>HolyLib:PreProcessGameEvent</page> if you want to cancel it.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

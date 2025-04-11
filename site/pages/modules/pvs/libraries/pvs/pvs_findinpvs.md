@@ -1,6 +1,7 @@
 <function name="FindInPVS" parent="pvs" type="libraryfunc">
 	<description>
 		Returns a sequential table containing all entities in the PVS.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

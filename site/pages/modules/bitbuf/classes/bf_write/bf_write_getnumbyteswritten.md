@@ -1,6 +1,7 @@
 <function name="GetNumBytesWritten" parent="bf_write" type="classfunc">
 	<description>
 		Returns the number of bytes written.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

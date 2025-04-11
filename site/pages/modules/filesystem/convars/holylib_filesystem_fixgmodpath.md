@@ -4,6 +4,7 @@
 		Currently it fixes these paths:<br>
 		- `[Active gamemode]/gamemode/[anything]/[active gamemode]/gamemode/` -> (Example: `sandbox/gamemode/spawnmenu/sandbox/gamemode/spawnmenu/`)<br>
 		- `include/include/`<br>
+        <added version="0.3"></added>
     </description>
     <value>1</value>
     <realm>Server</realm>

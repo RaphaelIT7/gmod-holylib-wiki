@@ -1,6 +1,7 @@
 <function name="HolyLib:OnModelPrecacheFail" parent="" type="hook">
 	<description>
 		Called when a model failed to precached.
+		<added version="0.3"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

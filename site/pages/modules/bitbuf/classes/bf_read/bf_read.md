@@ -2,6 +2,11 @@
 	<summary>
 		# bf_read
 
+		<added version="0.4"></added>
+		<changed version="0.7">
+			`__newindex` was added
+		</changed>
+
 		| Metatable function | Description |
 		|-------|------|
 		| `__tostring` | Returns a formated string of the bf_read -> `bf_read [size in bits]` |

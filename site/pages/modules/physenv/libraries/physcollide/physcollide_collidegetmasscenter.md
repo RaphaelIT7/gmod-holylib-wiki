@@ -1,6 +1,7 @@
 <function name="CollideGetMassCenter" parent="physcollide" type="libraryfunc">
 	<description>
 		Gets the mass center of the CPhysCollide.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

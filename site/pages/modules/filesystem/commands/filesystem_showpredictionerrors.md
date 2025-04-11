@@ -5,5 +5,6 @@
 		<note>
 			Prediction Errors are only checked when the filesystem module has debug enabled.
 		</note>
+		<added version="0.5"></added>
 	</summary>
 </type>

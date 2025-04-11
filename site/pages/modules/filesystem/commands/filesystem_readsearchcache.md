@@ -2,5 +2,6 @@
 	<summary>
 		# holylib_filesystem_readsearchcache
 		Reads the search cache from a file.
+		<added version="0.7"></added>
 	</summary>
 </type>

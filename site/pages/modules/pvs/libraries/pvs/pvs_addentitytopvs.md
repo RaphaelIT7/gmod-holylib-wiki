@@ -4,6 +4,7 @@
 		<note>
 			You should only use this inside the [SetupPlayerVisibility](https://wiki.facepunch.com/gmod/GM:SetupPlayerVisibility) hook.
 		</note>
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

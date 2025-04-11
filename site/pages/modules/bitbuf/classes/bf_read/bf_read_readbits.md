@@ -1,6 +1,7 @@
 <function name="ReadBits" parent="bf_read" type="classfunc">
 	<description>
 		Reads the given number of bits.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -9,6 +9,7 @@
 			I don't know if this has any bugs, but while using this for ~1 Month on a server, I didn't find any issues.<br>
 			It will also improve the `MOD` search path since it also has multiple search paths.<br>
 		</note>
+		<added version="0.2"></added>
     </description>
     <value>1</value>
     <realm>Server</realm>

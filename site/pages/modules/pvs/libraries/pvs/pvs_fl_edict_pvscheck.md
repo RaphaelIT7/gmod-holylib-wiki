@@ -2,6 +2,7 @@
 	<description>
 		The Entity will be networked when inside the pvs.<br>
 		Used by <page>pvs.OverrideStateFlags</page>,  <page>pvs.GetStateFlags</page> and <page>pvs.SetStateFlags</page>.
+		<added version="0.2"></added>
 		<changed version="0.7">
 			Changed value from `8` to `4`
 		</changed>

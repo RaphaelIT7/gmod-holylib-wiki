@@ -1,12 +1,10 @@
 <function name="GetTable" parent="IPhysicsCollisionSet" type="classfunc">
 	<description>
-		Returns the lua table of this object.
-		You can store variables into it.
+		Returns the lua table used by `__newindex` and `__index`<br>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
-	<args>
-	</args>
 	<rets>
-		<ret name="" type="table"></ret>
+		<ret name="luaTable" type="table">Returns the Lua table</ret>
 	</rets>
 </function>

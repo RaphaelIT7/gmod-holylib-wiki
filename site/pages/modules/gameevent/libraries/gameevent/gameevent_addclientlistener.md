@@ -4,7 +4,7 @@
 		<removed>
 			Was removed/disabled since it was broken.
 		</removed>
-		<added version="0.7"></added>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

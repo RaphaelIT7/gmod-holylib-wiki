@@ -2,6 +2,7 @@
 	<description>
 		Calls the Entity's `ShouldTransmit` function to receive a new FL_EDICT flag for networking.<br>
 		Used by <page>pvs.OverrideStateFlags</page>,  <page>pvs.GetStateFlags</page> and <page>pvs.SetStateFlags</page>.
+		<added version="0.2"></added>
 		<changed version="0.7">
 			Changed value from `16` to `8`
 		</changed>

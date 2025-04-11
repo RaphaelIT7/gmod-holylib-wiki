@@ -1,6 +1,7 @@
 <function name="Time" parent="filesystem" type="libraryfunc">
 	<description>
 		Returns the time when the given file was last modified in unix time.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

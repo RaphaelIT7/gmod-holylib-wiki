@@ -1,6 +1,7 @@
 <function name="FullPathToRelativePath" parent="filesystem" type="libraryfunc">
 	<description>
 		Returns the relative path of the given file/folder.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

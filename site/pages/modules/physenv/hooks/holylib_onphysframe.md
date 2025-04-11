@@ -4,6 +4,7 @@
 		<note>
 			This hook first needs to be enabled by calling <page text="physenv.EnablePhysHook(true)">physenv.EnablePhysHook</page>
 		</note>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

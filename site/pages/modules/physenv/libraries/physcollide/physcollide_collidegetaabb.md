@@ -1,6 +1,7 @@
 <function name="CollideGetAABB" parent="physcollide" type="libraryfunc">
 	<description>
-		Returns the AABB of the given `CPhysCollide`.
+		Returns the AABB of the given `CPhysCollide`
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

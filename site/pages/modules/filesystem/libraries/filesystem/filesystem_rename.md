@@ -1,6 +1,7 @@
 <function name="Rename" parent="filesystem" type="libraryfunc">
 	<description>
 		Renames the given file/folder to the new name.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

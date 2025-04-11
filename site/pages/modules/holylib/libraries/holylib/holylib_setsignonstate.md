@@ -2,6 +2,7 @@
 	<description>
 		Sets the SignOnState for the given client.<br>
 		Returns `true` on success.
+		<added version="0.6"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

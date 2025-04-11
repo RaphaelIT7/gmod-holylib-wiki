@@ -2,6 +2,7 @@
 	<description>
 		Returns the number of clusters that exist.<br>
 		Direct bind to `IVEngineServer::GetClusterCount`
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

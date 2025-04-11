@@ -3,6 +3,7 @@
 		If enabled, it will check if the file contains a `.` after the last `/`.<br>
 		If so it will cause `CBaseFileSystem::IsDirectory` to return false since we assume it's a file.<br>
 		This will cause `file.IsDir` to fail on folders with names like these `test/test1.23`.
+    <added version="0.2"></added>
     </description>
     <value>0</value>
     <realm>Server</realm>

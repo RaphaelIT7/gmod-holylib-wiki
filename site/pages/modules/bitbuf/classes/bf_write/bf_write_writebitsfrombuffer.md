@@ -4,6 +4,7 @@
 		<note>
 			The current position for the given buffer will change as we internally read from it!
 		</note>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

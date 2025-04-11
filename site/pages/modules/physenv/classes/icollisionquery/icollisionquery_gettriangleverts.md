@@ -1,6 +1,7 @@
 <function name="GetTriangleVerts" parent="ICollisionQuery" type="classfunc">
 	<description>
 		Returns the three vectors that bukd the triangle at the given index.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

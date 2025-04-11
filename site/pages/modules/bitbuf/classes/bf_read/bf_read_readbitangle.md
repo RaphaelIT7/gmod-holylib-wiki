@@ -1,6 +1,7 @@
 <function name="ReadBitAngle" parent="bf_read" type="classfunc">
 	<description>
 		Peaks to the given bit(doesn't change current position) and returns the value.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

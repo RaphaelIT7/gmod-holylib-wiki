@@ -1,6 +1,7 @@
 <function name="AddSearchPath" parent="filesystem" type="libraryfunc">
 	<description>
 		Adds the given folder to the given game paths.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

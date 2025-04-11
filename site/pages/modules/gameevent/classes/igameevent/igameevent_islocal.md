@@ -2,6 +2,7 @@
 	<description>
 		Returns whether this IGameEvent is local / serverside only.<br>
 		If this returns `true` this event won't be networked when broadcasted.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

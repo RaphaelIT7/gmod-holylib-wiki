@@ -4,6 +4,8 @@
 
 This class directly represents the IGameEvent object in c++<br>
 
+<added version="0.5"></added>
+
 | Metatable function | Description |
 |-------|------|
 | `__tostring` | Returns a formated string of the IGameEvent -> `IGameEvent [eventName]` |

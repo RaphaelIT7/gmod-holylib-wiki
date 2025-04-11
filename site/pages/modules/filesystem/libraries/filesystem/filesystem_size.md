@@ -1,6 +1,7 @@
 <function name="Size" parent="filesystem" type="libraryfunc">
 	<description>
 		Returns the size of the given file.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

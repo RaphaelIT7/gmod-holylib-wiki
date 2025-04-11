@@ -2,5 +2,6 @@
 	<summary>
 		# holylib_filesystem_nukesearchcache
 		Nukes the searchcache.   
+		<added version="0.3"></added>
 	</summary>
 </type>

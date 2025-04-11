@@ -1,6 +1,7 @@
 <function name="CollideSurfaceArea" parent="physcollide" type="libraryfunc">
 	<description>
 		Computes the surface area of the CPhysCollide.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

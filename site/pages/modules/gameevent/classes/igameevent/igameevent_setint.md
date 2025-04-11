@@ -1,6 +1,7 @@
 <function name="SetInt" parent="IGameEvent" type="classfunc">
 	<description>
 		Stores the integer with the specific key.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="SetObjectEventHandler" parent="IPhysicsEnvironment" type="classfunc">
 	<description>
 		Allows you to add callbacks when physics objects wake up or go to sleep in the environment.
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

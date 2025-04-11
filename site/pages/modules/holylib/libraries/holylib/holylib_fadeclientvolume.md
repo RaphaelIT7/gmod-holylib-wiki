@@ -3,6 +3,7 @@
 		Fades out the clients volume.<br>
 		Internally just runs soundfade with the given settings on the client.<br>
 		A direct engine bind to `IVEngineServer::FadeClientVolume`
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

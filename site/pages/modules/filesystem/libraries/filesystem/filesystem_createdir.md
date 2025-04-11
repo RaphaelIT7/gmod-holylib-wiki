@@ -1,6 +1,7 @@
 <function name="CreateDir" parent="filesystem" type="libraryfunc">
 	<description>
 		Creates a directory in the given path.
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

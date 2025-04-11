@@ -1,5 +1,6 @@
 <function name="WriteUBitVar" parent="bf_write" type="classfunc">
 	<description>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

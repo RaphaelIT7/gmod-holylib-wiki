@@ -1,6 +1,7 @@
 <function name="HolyLib:PreProcessGameEvent" parent="" type="hook">
 	<description>
 		Called when the client sends the gameevent list it wants to listen to.<br>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

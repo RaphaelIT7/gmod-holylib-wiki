@@ -1,6 +1,7 @@
 <function name="CheckOriginInPVS" parent="pvs" type="libraryfunc">
 	<description>
 		Checks if the given position is inside the current PVS.
+		<added version="0.2"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

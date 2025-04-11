@@ -2,8 +2,10 @@
 	<description>
 		Transfers the physics object from this environment to the new environment.
 		<warning>
-			You shouldn't transfer players or vehicles.
+			You shouldn't transfer players or vehicles.<br>
+			It currently is quite buggy and shouldn't really be used.
 		</warning>
+		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

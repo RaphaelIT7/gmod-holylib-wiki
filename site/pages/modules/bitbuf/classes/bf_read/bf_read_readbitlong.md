@@ -4,6 +4,7 @@
 		<note>
 			This is only available for the 32x!
 		</note>
+		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

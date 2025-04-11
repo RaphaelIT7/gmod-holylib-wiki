@@ -7,6 +7,7 @@
 		<warning>
 			This is a noticeable improvement, but it seems to break .bsp files :/
 		</warning>
+		<added version="0.4"></added>
     </description>
     <value>0</value>
     <realm>Server</realm>
