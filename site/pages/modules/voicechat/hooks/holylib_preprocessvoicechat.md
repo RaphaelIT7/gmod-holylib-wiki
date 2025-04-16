@@ -127,7 +127,7 @@ end)
 <example>
 	<description>The Engine's voicechat but in Lua</description>
 	<code>
-hook.Add("HolyLib:PreProcessVoiceChat", "VoiceCHat_Engine", function(pClient, voiceData)
+hook.Add("HolyLib:PreProcessVoiceChat", "VoiceChat_Engine", function(pClient, voiceData)
 	if GetConVar("voice_debugfeedbackfrom"):GetBool() then
 		print(string.format("Sending voice from: %s - playerslot: %d", pClient:Name(), pClient:EntIndex()))
 	end
@@ -145,7 +145,7 @@ hook.Add("HolyLib:PreProcessVoiceChat", "VoiceCHat_Engine", function(pClient, vo
 
 		if !bHearsPlayer then
 			-- Still send something, just zero length (this is so the client
-			-- can display something that shows knows the server knows it's talking).
+			-- can display something that shows that the server knows it's talking).
 			voiceData:SetLength(0)
 		end
 
