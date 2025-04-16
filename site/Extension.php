@@ -428,7 +428,7 @@
 					}
 
 					$pageVersion = $this->getAdded(isset($func['sourceText']) ? $func['sourceText'] : "");
-					# if (isset($pageVersion))
+					if (isset($pageVersion))
 					{
 						$html .= '<a title="Version this feature was added in" target="_blank">';
 							$html .= '<i class="mdi mdi-source-pull">';
