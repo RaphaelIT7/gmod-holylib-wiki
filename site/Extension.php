@@ -957,7 +957,6 @@
 		// Figures out & returns the version the given page was added, it searches for the <added> tag
 		protected function getAdded($text)
 		{
-			echo $text;
 			if (preg_match('/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/', $text, $matches)) {
 				return $matches[1];
 			}
@@ -1036,17 +1035,17 @@
 					$default = '""';
 				}
 
-				$aArray = array(
+				$retArray = array(
 					'name' => $name,
 					'type' => $type,
 					'desc' => $desc,
 				);
 
 				if ($default !== null) {
-					$aArray['default'] = $default;
+					$retArray['default'] = $default;
 				}
 
-				$ret[] = $aArray;
+				$ret[] = $retArray;
 			}
 
 			return $ret;
