@@ -6,7 +6,6 @@
 
 	class Extension extends Parsedown
 	{
-
 		private $baseImagePath = '';
 		public $config;
 		public $categories;
@@ -101,6 +100,68 @@
 
 						$this->fileCache[$file] = $path;
 						return $path;
+					}
+				}
+			}
+		}
+
+		// Unlike the other function, this one guesses the page so it could return wrong results.
+		function FindFileMatch($file, $match) {
+			$file = $this->SafeLink($file);
+			$file = strtolower($file);
+			$file = str_replace('.', '_', $file);
+			$match = strtolower($match);
+
+			if ($this->config['xampp'])
+			{
+				$file = str_replace('/:', ':', $file); // Apache hates it
+			}
+
+			$file = str_replace(':', '_', $file);
+			foreach($this->categories as &$category) {
+				foreach ($category['categories'] as &$chapter) {
+					$shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
+					$path = $shortpath  . $file . '.md';
+
+					if (!file_exists($shortpath)) {
+						continue;
+					}
+
+					$files = array_diff(scandir($shortpath), array('..', '.'));
+					foreach($files as $file2) {
+						if (is_dir($shortpath . $file2)) {
+							$files2 = array_diff(scandir($shortpath . $file2), array('..', '.'));
+							foreach($files2 as $file3) {
+								if (str_contains($file3, $file))
+								{
+									$filePath = $shortpath . $file2 . '/' . $file3;
+									if (!str_contains($filePath, $match))
+									{
+										$content = $this->OpenFile($filePath);
+										if (!str_contains($this->PageTitle($content, true), $match)) {
+											continue;
+										}
+									}
+
+									return $filePath; # We don't add it to the case since it could be wrong
+								}
+							}
+						} else {
+							$filePath = $shortpath . $file2;
+							if (str_contains($file2, $file))
+							{
+								$filePath = $shortpath . $file2;
+								if (!str_contains($filePath, $match))
+								{
+									$content = $this->OpenFile($filePath);
+									if (!str_contains($this->PageTitle($content, true), $match)) {
+										continue;
+									}
+								}
+
+								return $filePath; # We don't add it to the case since it could be wrong
+							}
+						}
 					}
 				}
 			}
@@ -364,6 +425,17 @@
 			$outPut .= $func['name'];
 
 			return $outPut;
+		}
+
+		protected function findParent($file)
+		{
+			$content = $this->OpenFile($file);
+			if (preg_match('/parent="([^"]*)"/s', $content, $matches)) {
+				echo '<p>Match: ' . $matches[1] . ' - ' . $this->FindFile($matches[1]) . '</p>';
+				return $this->FindFile($matches[1]);
+			}
+
+			return null;
 		}
 
 		protected function buildFunction($func)
@@ -843,12 +915,30 @@
 							$pos = stripos($name, ".");
 						}
 
-						$parentFile = $this->FindFile(substr($name, 0, $pos));
-						if ($functionFile && $parentFile && ($pos !== false))
+						if (!isset($functionFile))
 						{
-							$output = '<span class="className">';
-								$output .= '<a href="/' . $this->PageAddress($this->OpenFile($parentFile)) . '">' . substr($name, 0, $pos) . '</a>';
-							$output .= '</span>';
+							# Try to guess the function.
+							$functionFile = $this->FindFileMatch(substr($name, $pos + 1), substr($name, 0, $pos));
+						}
+
+						$parentFile = $this->FindFile(substr($name, 0, $pos));
+						if (!isset($parentFile) && $functionFile)
+						{
+							# If we found the function page, then we can figure out the parent
+							$parentFile = $this->findParent($functionFile);
+						}
+
+						if ($functionFile && ($pos !== false))
+						{
+							$output = '';
+							if ($parentFile)
+							{
+								$output = '<span class="className">';
+									$output .= '<a href="/' . $this->PageAddress($this->OpenFile($parentFile)) . '">' . substr($name, 0, $pos) . '</a>';
+								$output .= '</span>';
+							} else {
+								$output = substr($name, 0, $pos);
+							}
 							$output .= substr($name, $pos, 1);
 							$output .= '<span class="method">';
 								$output .= '<a href="/' . $this->PageAddress($this->OpenFile($functionFile)) . '">' . substr($name, $pos + 1) . '</a>';
@@ -885,7 +975,7 @@
 			$html .= '</div>';
 
 			return $html;
-		} 
+		}
 
 		protected function buildExample($exam)
 		{

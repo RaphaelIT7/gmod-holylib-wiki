@@ -38,11 +38,11 @@ hook.Add("HolyLib:ProcessConnectionlessPacket", "ProcessResponse", function(bf, 
 
 	local status = bf:ReadByte()
 
-	local netChannel = gameserver.CreateNetChannel(ip)
-    netChannel:SetMessageCallback(function(bf, length)
-    	IncomingNetMessage(netChannel, bf, length)
+	local netChan = gameserver.CreateNetChannel(ip)
+    netChan:SetMessageCallback(function(bf, length)
+    	IncomingNetMessage(netChan, bf, length)
     end)
-    table.insert(netChannels, netChannel)
+    table.insert(netChannels, netChan)
 
     if status == 0 then
     	print("Created a requested net channel to " .. ip)
@@ -56,22 +56,22 @@ hook.Add("HolyLib:ProcessConnectionlessPacket", "ProcessResponse", function(bf, 
 end)
 
 function SendNetMessage(target, bf, reliable)
-	for _, channel in ipairs(netChannels) do
-		if not channel:IsValid() then continue end
-		if channel:GetName() != target then continue end
+	for _, netChan in ipairs(netChannels) do
+		if not netChan:IsValid() then continue end
+		if netChan:GetName() != target then continue end
 
-		return channel:SendMessage(bf, reliable)
+		return netChan:SendMessage(bf, reliable)
 	end
 
 	return false
 end
 
 hook.Add("Think", "UpdateNetChannels", function()
-	for _, channel in ipairs(netChannels) do
-		if not channel:IsValid() then continue end
+	for _, netChan in ipairs(netChannels) do
+		if not netChan:IsValid() then continue end
 
-		channel:ProcessStream() -- process any incomming messages
-		channel:Transmit() -- Transmit out a update.
+		netChan:ProcessStream() -- process any incomming messages
+		netChan:Transmit() -- Transmit out a update.
 	end
 end)
 
