@@ -431,7 +431,6 @@
 		{
 			$content = $this->OpenFile($file);
 			if (preg_match('/parent="([^"]*)"/s', $content, $matches)) {
-				echo '<p>Match: ' . $matches[1] . ' - ' . $this->FindFile($matches[1]) . '</p>';
 				return $this->FindFile($matches[1]);
 			}
 
