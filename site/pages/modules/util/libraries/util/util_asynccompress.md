@@ -5,6 +5,7 @@
 			Instead of copying the given data, we keep a reference to it.<br>
 			So don't modify it, while were compressing it!
 		</warning>
+		<added version="0.3"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

@@ -1,6 +1,7 @@
 <function name="FancyTableToJSON" parent="util" type="libraryfunc">
 	<description>
-		It's <a href="https://wiki.facepunch.com/gmod/util.TableToJSON">util.TableToJSON</a> but faster and it will turn numbers into integers if they fit as one.  
+		It's <a href="https://wiki.facepunch.com/gmod/util.TableToJSON">util.TableToJSON</a> but faster and it will turn numbers into integers if they fit as one.
+		<added version="0.5"></added>
 	</description>
 	<realm>Server</realm>
 	<args>

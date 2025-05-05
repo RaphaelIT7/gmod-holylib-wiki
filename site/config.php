@@ -9,8 +9,8 @@ function GetConfig()
 	'issues_url' => 'https://github.com/RaphaelIT7/gmod-holylib/issues/',
 	'code_language' => 'lua', // lua or c++
 	'icon' => '',
-	'version' => 0.61,
-	'next_version' => 0.7,
+	'version' => 0.72,
+	'next_version' => 0.8,
 	'description' => 'Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;',
 	'xampp' => str_contains($_SERVER['SERVER_SOFTWARE'], "Apache"),
 	'categories' => array(

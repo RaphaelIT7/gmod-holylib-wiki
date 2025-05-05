@@ -2,11 +2,16 @@
 	<description>
 		Creates a net channel for the given ip.
 		<added version="0.7"></added>
+		<changed version="0.8">
+			The `protocolVersion` and `socket` arguments were added.  
+		</changed>
 	</description>
 	<realm>Server</realm>
 	<args>
 		<arg name="ip" type="string">The IP of the target, format `ip:port`</arg>
 		<arg name="useDNS" type="boolean">If `true` it will try to resolve the IP</arg>
+		<arg name="protocolVersion" type="number" default="1">The protocol version to use</arg>
+		<arg name="socket" type="number" default="NS_SERVER">The socket to use for the creation</arg>
 	</args>
 	<rets>
 		<ret name="channel" type="CNetChan">Returns the channel or `nil` on failure</ret>
