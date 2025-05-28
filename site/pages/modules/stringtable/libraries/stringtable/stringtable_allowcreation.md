@@ -7,6 +7,6 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="creationAllowed" type="boolean">Set to `true` to allow stringtable creation</arg>
+		<arg name="creationAllowed" type="boolean" default="false">Set to `true` to allow stringtable creation</arg>
 	</args>
 </function>

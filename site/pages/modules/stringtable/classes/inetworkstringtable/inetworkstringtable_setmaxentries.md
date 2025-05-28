@@ -13,6 +13,6 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="maxStrings" type="number">The new max string limit. **This needs to be to the power of 2!**</ret>
+		<arg name="maxStrings" type="number">The new max string limit. **This needs to be to the power of 2!**</arg>
 	</args>
 </function>
