@@ -546,6 +546,34 @@ function GetConfig()
 				),
 			),
 		),
+		array(
+			'name' => 'networking', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/networking/convars',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'luajit', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/luajit/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'Configs',
+					'path' => 'modules/luajit/configs',
+					'tags' => 'true',
+				),
+			),
+		),
 	)
 	);
 }

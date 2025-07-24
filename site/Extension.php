@@ -574,7 +574,7 @@
 				#$html .= '<div class="section">';
 				#	$html .= $this->text($type['summ']);
 				#$html .= '</div>';
-				if ($type['is'] == 'convar')
+				if ($type['is'] == 'convar' || $type['is'] == 'config')
 				{
 					$html .= '</div>';
 					return $html;

@@ -1088,6 +1088,9 @@ hr {
 .markdown div.callback_args .numbertag {
   background-color: #a9a9a9;
 }
+.markdown div.description_section {
+  padding-top: 2px;
+}
 
 #sidebar a.intrn:after {
   content: "internal";

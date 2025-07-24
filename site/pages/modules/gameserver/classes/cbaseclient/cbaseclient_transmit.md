@@ -9,6 +9,7 @@
 			Transmitting data to the client causes the client's prediction to **reset and cause prediction errors!**
 		</warning>
 		<added version="0.7"></added>
+		<changed version="0.8">The second argument `fragments` was removed</changed>
 	</description>
 	<realm>Server</realm>
 	<args>

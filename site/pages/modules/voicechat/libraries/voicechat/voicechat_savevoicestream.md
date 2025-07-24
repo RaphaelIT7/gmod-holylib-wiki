@@ -14,6 +14,12 @@
 		<note>
 			If `async` was used, it **won't** return anything.
 		</note>
+
+		<note>
+			This function also supports `.wav` files to write the data into since `0.8`.<br>
+			You should **always** inform your players if you save their voice!
+		</note>
+
 		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>

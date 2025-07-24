@@ -14,6 +14,9 @@
 		<note>
 			If `async` was used, it **won't** return anything.
 		</note>
+		<note>
+			This function also supports `.wav` files to load from since `0.8`
+		</note>
 		<added version="0.7"></added>
 	</description>
 	<realm>Server</realm>
