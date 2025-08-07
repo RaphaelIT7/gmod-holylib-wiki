@@ -72,6 +72,16 @@
 		}
 	}
 
+	if (strcmp($currentPage, "api/check_version") == 0)
+	{
+		// ToDo: HolyLib provides three headers we can use to check their version. HolyLib_Branch | HolyLib_RunNumber | HolyLib_Version
+		header("Content-Type: text/plain");
+		echo(json_encode(array(
+			'status' => 'ok',
+		)));
+		return;
+	}
+
 	$currentSQLPage = $MySQL->GetFullPage($currentPage);
 	$title = isset($currentSQLPage) ? $currentSQLPage['title'] : null;
 	if (!isset($title))

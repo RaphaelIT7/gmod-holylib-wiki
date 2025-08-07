@@ -434,6 +434,13 @@
 				fileTime BIGINT,
 				INDEX idx_titles (title)
 			);");
+
+			$this->Query("CREATE TABLE IF NOT EXISTS builds (
+				branch VARCHAR(32),
+				runnumber VARCHAR(32),
+				fileTime BIGINT,
+				filePath VARCHAR(255)
+			);");
 		}
 	}
 ?>
