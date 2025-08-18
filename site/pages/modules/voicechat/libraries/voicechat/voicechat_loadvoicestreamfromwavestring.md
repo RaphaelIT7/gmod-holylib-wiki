@@ -1,6 +1,6 @@
-<function name="LoadVoiceStream" parent="voicechat" type="libraryfunc">
+<function name="LoadVoiceStreamFromWaveString" parent="voicechat" type="libraryfunc">
 	<description>
-		Tries to load a VoiceStream from the given file.
+		Tries to load a VoiceStream from the given data.
 		<br>
 		Meaning of the `statusCode`:
 
@@ -14,25 +14,20 @@
 		<note>
 			If `async` was used, it **won't** return anything.
 		</note>
-		<note>
-			This function also supports `.wav` files to load from since `0.8`
-		</note>
-		<added version="0.7"></added>
-		<changed version="0.8">
-			The `async` argument was removed and the behavior was changed<br>
-			If a `callback` is specified it **WONT** return **anything** and the `callback` will be called, as it will execute everythign **async**.
-		</changed>
+		<added version="0.8"></added>
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="fileName" type="string">the fileName to use</arg>
-		<arg name="gamePath" type="string" default="DATA">the gamePath to use</arg>
+		<arg name="waveData" type="string">the fileName to use</arg>
 		<arg name="callback" type="function" default="nil">
 			the callback function to use
 			<callback>
 				<arg name="voiceStream" type="VoiceStream">the loaded VoiceStream or `nil` on failure</arg>
 				<arg name="statusCode" type="number">the statusCode. `1` on success</arg>
 			</callback>
+		</arg>
+		<arg name="promiseToNeverModify" type="boolean" default="false">
+			If set to `true`, it will reference the waveData instead of copying it reducing memory usage and improving speed though you need to keep your promise of never modifying it while it's in use!
 		</arg>
 	</args>
 	<rets>
