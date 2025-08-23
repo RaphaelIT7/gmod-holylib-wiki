@@ -6,6 +6,9 @@
 		<added version="0.7">
 			This function was formerly known as `HolyLib.BroadcastCustomMessage`
 		</added>
+		<changed version="0.8">
+			This function will now check if the given buffer is overflowed and throw a error if it is
+		</changed>
 	</description>
 	<realm>Server</realm>
 	<args>
@@ -18,7 +21,7 @@
 <example>
 	<description>Example usage, we enable `sv_cheats` clientside while having it disabled serverside.</description>
 	<code>
-local bf = bitbuf.CreateWriteBuffer(8) -- Create a 8 bytes / 64 bits buffer.
+local bf = bitbuf.CreateWriteBuffer(64) -- Create a 64 bytes buffer.
 
 bf:WriteByte(1) -- How many convars were sending
 bf:WriteString("sv_cheats") -- ConVar name

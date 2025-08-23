@@ -4,6 +4,9 @@
 		<added version="0.7">
 			This function was formerly known as `HolyLib.SendCustomMessage`
 		</added>
+		<changed version="0.8">
+			This function will now check if the given buffer is overflowed and throw a error if it is
+		</changed>
 	</description>
 	<realm>Server</realm>
 	<args>
