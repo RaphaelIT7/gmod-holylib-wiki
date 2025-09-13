@@ -1,7 +1,7 @@
 <function name="GetClientByUserID" parent="gameserver" type="libraryfunc">
 	<description>
 		Returns the CGameClient for the given `userID` or `nil` on failure.
-		<added version="0.7"></added>
+		<added version="0.73"></added>
 	</description>
 	<realm>Server</realm>
 	<args>
