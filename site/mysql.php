@@ -86,39 +86,39 @@
 			return rtrim($display);
 		}
 
-		public function AddPageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $updateCount = 0) {
+		public function AddPageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $updateCount = 0) {
 			$exists = $this->GetFullPage($address);
 			if (!isset($exists)) {
-				$stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, views, updated, revisionId, category, searchTags, fileTime, filePath) 
-				VALUES (?, ?, ?, ?, $updateCount, ?, ?, $views, ?, $revisionId, ?, ?, 0, '')");
-				$stmt->bind_param("sssssssss", $title, $tags, $address, $createdTime, $markup, $html, $updated, $category, $searchTags);
+				$stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, description, views, updated, revisionId, category, searchTags, fileTime, filePath) 
+				VALUES (?, ?, ?, ?, $updateCount, ?, ?, ?, $views, ?, $revisionId, ?, ?, 0, '')");
+				$stmt->bind_param("sssssssss", $title, $tags, $address, $createdTime, $markup, $html, $description, $updated, $category, $searchTags);
 				$stmt->execute();
 				$stmt->close();
 			} else {
-				$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=? category=?, searchTags=? WHERE address=?");
-				$stmt->bind_param("sssissisisss", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $address);
+				$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, description=?, views=?, updated=?, revisionId=? category=?, searchTags=? WHERE address=?");
+				$stmt->bind_param("sssissisisss", $title, $tags, $createdTime, $updateCount, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $address);
 				$stmt->execute();
 				$stmt->close();
 			}
 		}
 
-		public function AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount = 0) {
+		public function AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount = 0) {
 			$exists = $this->GetFullPage($address);
 			if (!isset($exists)) {
-				$stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, views, updated, revisionId, category, searchTags, fileTime, filePath) 
-				VALUES (?, ?, ?, ?, $updateCount, ?, ?, $views, ?, $revisionId, ?, ?, $fileTime, ?)");
-				$stmt->bind_param("ssssssssss", $title, $tags, $address, $createdTime, $markup, $html, $updated, $category, $searchTags, $filePath);
+				$stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, description, views, updated, revisionId, category, searchTags, fileTime, filePath) 
+				VALUES (?, ?, ?, ?, $updateCount, ?, ?, ?, $views, ?, $revisionId, ?, ?, $fileTime, ?)");
+				$stmt->bind_param("sssssssssss", $title, $tags, $address, $createdTime, $markup, $html, $description, $updated, $category, $searchTags, $filePath);
 				$stmt->execute();
 				$stmt->close();
 			} else {
 				$stmt = null;
 				if ($exists['filePath'] != $filePath)
 				{
-					$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=?, filePath=? WHERE address=?");
-					$stmt->bind_param("sssissisississ", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $address);
+					$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, description=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=?, filePath=? WHERE address=?");
+					$stmt->bind_param("sssisssisississ", $title, $tags, $createdTime, $updateCount, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $address);
 				} else {
-					$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=? WHERE filePath=?");
-					$stmt->bind_param("sssissisissis", $title, $tags, $createdTime, $updateCount, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath);
+					$stmt = $this->conn->prepare("UPDATE pages SET title=?, tags=?, createdTime=?, updateCount=?, markup=?, html=?, description=?, views=?, updated=?, revisionId=?, category=?, searchTags=?, fileTime=? WHERE filePath=?");
+					$stmt->bind_param("sssisssisissis", $title, $tags, $createdTime, $updateCount, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath);
 				}
 				$stmt->execute();
 				$stmt->close();
@@ -416,6 +416,7 @@
 				updateCount INT DEFAULT 0,
 				markup TEXT,
 				html TEXT,
+				description TEXT,
 				views BIGINT DEFAULT 0,
 				updated VARCHAR(32),
 				revisionId BIGINT DEFAULT 0,

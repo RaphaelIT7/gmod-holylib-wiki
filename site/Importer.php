@@ -45,6 +45,7 @@
 			$createdTime = isset($sqlPage) ? $sqlPage['createdTime'] : '';
 			$markup = $file;
 			$html = $this->Parser->text($file);
+			$description = $this->Parser->description($file);
 			$views = isset($sqlPage) ? $sqlPage['views'] : 0;
 			$updated = 'Unknown';
 			$revisionId = 0;
@@ -57,7 +58,7 @@
 				echo '<p>' . $filePath . '</p>'; # Debugging which files update.
 			}
 
-			$this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
+			$this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
 
 			#$categoryFilePath = $this->getTextBeforeLastSlash($page) . '/' . $category . ".md";
 			#if (!$this->Parser->FileExists($categoryFilePath) || $page == $categoryFilePath)

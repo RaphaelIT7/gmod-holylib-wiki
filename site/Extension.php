@@ -1140,6 +1140,15 @@
 			return $ret;
 		}
 
+		function description($text)
+		{
+			if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $text, $matches)) {
+				return strip_tags($this->text($matches[1], true));
+			}
+
+			return 'No description? Have a cookie :3';
+		}
+
 		// preView is used in things like page lists, were we don't want to display notes.
 		function text($text, $preView = false)
 		{
@@ -1152,7 +1161,12 @@
 			}
 
 			$text = implode("\n", $lines);
-			$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
+			if ($preView)
+			{
+				$text = preg_replace('/`(.*?)`/', '$1', $text);
+			} else {
+				$text = preg_replace('/`(.*?)`/', '<code>$1</code>', $text);
+			}
 			$sourceText = $text;
 
 			/*
@@ -1286,7 +1300,7 @@
 
 			$replaceCall(
 				'/<code\s+language="([^"]+)">([\s\S]*?)<\/code>/',
-				function ($match){
+				function ($match) {
 					return $this->buildCode(trim($match[2]), $match[1]);
 				}
 			);

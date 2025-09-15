@@ -106,7 +106,7 @@
 		<meta property="og:title" name="og:title" content="<?php echo $config['name']; ?>">
 		<meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
 		<meta property="og:type" name="og:type" content="website">
-		<meta property="og:description" name="og:description" content="<?php echo $config['description']; ?>">
+		<meta property="og:description" name="og:description" content="<?php echo htmlspecialchars(isset($currentSQLPage) ? $currentSQLPage['description'] : $config['description'], ENT_QUOTES | ENT_HTML5, 'UTF-8'); ?>">
 		<script>WikiRealm = "gmod";</script>
 	</head>
 	<body>
