@@ -203,6 +203,7 @@
 			</div>
 		</div>
 		<script>
+			var SeenResults = new Set();
 			function InitSearch() {
 				SearchInput = document.getElementById("search");
 				SearchResults = document.getElementById("searchresults");
@@ -213,7 +214,7 @@
 				});
 			}
 			// We removed enter. (We don't support it yet.)
-			function AddSearchTitle() {
+			function AddSearchTitle(skipHref = null) {
 				if (Titles.length == 0)
 					return;
 				if (SectionHeader != null) {
@@ -223,8 +224,17 @@
 				}
 				for (var i = 0; i < Titles.length; i++) {
 					var cpy = Titles[i].cloneNode(true);
-					if (cpy.href)
-						cpy.onclick = e => location.replace(cpy.href);
+					var href = cpy.href || null;
+					if (skipHref != null && href === skipHref)
+						continue;
+					if (href) {
+						const targetHref = href;
+						cpy.addEventListener('click', e => {
+							e.preventDefault();
+							Navigate.ToPage(targetHref, true);
+							return false;
+						});
+					}
 					cpy.className = "node" + ((TitleCount - Titles.length) + i);
 					SearchResults.appendChild(cpy);
 				}
@@ -275,14 +285,30 @@
 								});
 							}
 							if (found) {
-								if (ResultCount < MaxResultCount) {
-									AddSearchTitle();
-									var copy = child.cloneNode(true);
-									copy.onclick = e => location.replace(cpy.href);
-									copy.classList.add("node" + TitleCount);
-									SearchResults.appendChild(copy);
+								var dedupKey = txt || child.href || child.innerText || null;
+								var shouldAdd = true;
+								if (dedupKey && SeenResults.has(dedupKey)) {
+									shouldAdd = false;
+								} else if (dedupKey) {
+									SeenResults.add(dedupKey);
 								}
-								ResultCount++;
+								if (shouldAdd) {
+									if (ResultCount < MaxResultCount) {
+										AddSearchTitle(child.href || null);
+										var copy = child.cloneNode(true);
+										if (copy.href) {
+											const targetHref = copy.href;
+											copy.addEventListener('click', e => {
+												e.preventDefault();
+												Navigate.ToPage(targetHref, true);
+												return false;
+											});
+										}
+										copy.classList.add("node" + TitleCount);
+										SearchResults.appendChild(copy);
+									}
+									ResultCount++;
+								}
 							}
 						}
 					}
@@ -331,6 +357,7 @@
 				Titles = [];
 				TitleCount = 0;
 				SectionHeader = null;
+				SeenResults = new Set();
 				if (string.toUpperCase() == string && string.indexOf("_") != -1) {
 					string = string.substring(0, string.indexOf("_"));
 				}
