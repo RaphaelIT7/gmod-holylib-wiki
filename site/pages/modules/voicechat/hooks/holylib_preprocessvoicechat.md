@@ -1,11 +1,11 @@
 <function name="HolyLib:PreProcessVoiceChat" parent="" type="hook">
 	<description>
 		Called before the voicedata is processed.<br>
-		Return `true` to stop the engine from processing it.  
+		Return `true` to stop the engine from processing it.<br>
 		<note>
 			After the hook the `VoiceData` becomes **invalid**, if you want to store it call `VoiceData:CreateCopy()` and use the returned VoiceData.
 		</note>
-		<changed version="7.0">
+		<changed version="0.7">
 			The given voiceData becomes invalid after the hook, use <page>VoiceData:CreateCopy</page>
 		</changed>
 	</description>

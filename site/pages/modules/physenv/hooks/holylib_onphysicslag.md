@@ -5,6 +5,10 @@
 		<added version="0.5"></added>
 		<changed version="0.7">This was renamed from `HolyLib:PhysicsLag` to `HolyLib:OnPhysicsLag`</changed>
 		<changed version="0.8">The arguments `phys1`, `phys2`, `recalcPhys` and `callerFunction` were added</changed>
+		<warning>
+			Changing the physics simulation in here is not safe, you can abort it using the return value but you shouldn't modify it.<br>
+			After the simulation ended, the <page>HolyLib:PostPhysicsLag</page> hook will be called in which you can safely modify physics objects<br>
+		</warning>
 	</description>
 	<realm>Server</realm>
 	<args>

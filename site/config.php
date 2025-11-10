@@ -574,6 +574,34 @@ function GetConfig()
 				),
 			),
 		),
+		array(
+			'name' => 'soundscape', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/soundscape/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'modules/soundscape/hooks',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'networkthreading', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/networkthreading/convars',
+					'tags' => 'true',
+				),
+			),
+		),
 	)
 	);
 }

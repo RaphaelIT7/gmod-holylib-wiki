@@ -1,10 +1,13 @@
-<function name="HolyLib:OnPhysFrame" parent="" type="hook">
+<function name="HolyLib:PrePhysFrame" parent="" type="hook">
 	<description>
 		Called when the physics are about to be simulated.
 		<note>
 			This hook first needs to be enabled by calling <page text="physenv.EnablePhysHook(true)">physenv.EnablePhysHook</page>
 		</note>
 		<added version="0.7"></added>
+		<changed version="0.8">
+			This previously was `HolyLib:OnPhysFrame` but was split into <page>HolyLib:PrePhysFrame</page> and <page>HolyLib:PostPhysFrame</page>
+		</changed>
 	</description>
 	<realm>Server</realm>
 	<args>
@@ -20,7 +23,7 @@
 	<code>
 physenv.EnablePhysHook(true)
 local mainEnv = physenv.GetActiveEnvironmentByIndex(0)
-hook.Add("HolyLib:OnPhysFrame", "Example", function(deltaTime)
+hook.Add("HolyLib:PrePhysFrame", "Example", function(deltaTime)
 	mainEnv:Simulate(deltaTime, true) -- the second argument will only cause the entities to update.
 	return true -- We stop the engine from running the simulation itself again as else it will result in issue like "Reset physics clock" being spammed
 end)
