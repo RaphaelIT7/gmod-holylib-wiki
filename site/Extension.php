@@ -454,12 +454,23 @@
 					if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 						$args = '';
 						foreach ($func['args'] as $arg) {
-							if (!str_ends_with($args, ',') && $args !== '')
+							if (!str_ends_with($args, ', ') && $args !== '')
 							{
-								$args .= ',';
+								$args .= ', ';
 							}
 
-							$args .= ' ' . '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
+							$argParts = explode('|', $arg['type']);
+							$totalParts = count($argParts);
+							foreach ($argParts as $index => $argPart)
+							{
+								$args .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								if($index !== $totalParts - 1)
+								{
+									$args .= ' or ';
+								}
+							}
+
+							$args .= ' ' . $arg['name'];
 
 							if (isset($arg['default']) && $arg['default'] !== '')
 							{
@@ -471,7 +482,7 @@
 						foreach ($func['rets'] as $ret) {
 							if (!str_ends_with($rets, ',') && $rets !== '')
 							{
-								$rets .= ',';
+								$rets .= ', ';
 							}
 
 							$rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
@@ -482,7 +493,7 @@
 							#}
 						}
 
-						$html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
+						$html .= $rets . ' ' . $this->getFunctionName($func) . '( ' . $args .' )';
 					} else {
 						$html .= ' ' . $this->getFunctionName($func) . (($func['type'] == 'libraryfield') ? (isset($func['value']) ? (" = " . $func['value']) : '') : "()");
 					}
@@ -527,8 +538,18 @@
 						$i = $i + 1;
 						$html .='<div>';
 							$html .= '<span class="numbertag">' . $i . '</span>';
-							$html .= '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
-							$html .= '<span class="name"> ' . $arg['name'] . '</span>';
+							$argParts = explode('|', $arg['type']);
+							$totalParts = count($argParts);
+							foreach ($argParts as $index => $argPart)
+							{
+								$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								if($index === $totalParts - 1)
+								{
+									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
+								} else {
+									$html .= ' or ';
+								}
+							}
 							if(isset($arg['default']) && $arg['default'] != '') {
 								$html .= '<span class="default"> = ' . $arg['default'] . '</span>';
 							}

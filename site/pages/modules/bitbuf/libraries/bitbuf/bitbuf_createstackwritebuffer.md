@@ -12,7 +12,7 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="data" type="string">string to created the buffer from or a number as size</arg>
+		<arg name="data" type="string|number">string to created the buffer from or a number as size</arg>
 		<arg name="callback" type="function">
 			the callback inside which you can use the buffer, the buffer will become invalid once the call is over!
 			<callback>
