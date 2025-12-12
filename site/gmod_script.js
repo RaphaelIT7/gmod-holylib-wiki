@@ -241,6 +241,19 @@ class Navigate {
             this.prevLoc = this.prevLoc.substring(0, this.prevLoc.indexOf("#"));
         }
     }
+    static RemoveUnessesaryFields(json) {
+        // RaphaelIT7: To save some memory & storage.
+        json.markup = null;
+        json.createdTime = null;
+    }
+    static AddCachePage(address, json) {
+        this.RemoveUnessesaryFields(json);
+        this.cache[address] = json;
+        PageCache.AddCachePage(address, json);
+    }
+    static GetCachePage(address) {
+        return this.cache[address];
+    }
     static ToPage(address, push = true) {
         this.Init();
         this.prevLoc = address;
@@ -248,9 +261,10 @@ class Navigate {
             window.location.href = address;
             return true;
         }
-        if (this.cache[address] != null) {
+        var cacheJson = this.GetCachePage(address);
+        if (cacheJson != null) {
             window.scrollTo(0, 0);
-            this.UpdatePage(this.cache[address]);
+            this.UpdatePage(cacheJson);
             this.pageContent.parentElement.classList.remove("loading");
         }
         else {
@@ -269,7 +283,7 @@ class Navigate {
                     return;
                 }
                 let json = JSON.parse(text);
-                this.cache[address] = json;
+                this.AddCachePage(address, json);
                 window.scrollTo(0, 0);
                 this.UpdatePage(json);
                 this.pageContent.parentElement.classList.remove("loading");
@@ -306,12 +320,12 @@ class Navigate {
         var a = document.createElement("a");
         a.classList.add("parent");
         a.text = "Home";
-        a.href = `/${json.wikiUrl}/`;
+        a.href = `/`;
         this.pageTitle2.appendChild(a);
         this.pageTitle2.append("/");
         var a2 = document.createElement("a");
         a2.text = json.title;
-        a2.href = `/${json.wikiUrl}/${json.address}`;
+        a2.href = `/${json.address}`;
         this.pageTitle2.appendChild(a2);
         var siteTitle = document.title.substring(document.title.lastIndexOf(" - "));
         document.title = json.title + siteTitle;
@@ -332,6 +346,7 @@ class Navigate {
             this.pageLinks.appendChild(li);
         }
         this.InstallLinks(this.pageContent);
+        this.InstallLinks(this.pageTitle2); // RaphaelIT7: The GMod wiki forgot to install links on the page title URLs, we gotta install them here again since they were just changed.
     }
     static UpdateSidebar() {
         let links = this.sideBar.getElementsByTagName("a");
@@ -395,6 +410,7 @@ class Navigate {
             return true;
         this.InstallLinks(this.pageContent);
         this.InstallLinks(this.sideBar);
+        this.InstallLinks(this.pageTitle2); // RaphaelIT7: The GMod wiki forgot to install links on the page title URLs
     }
 }
 Navigate.cache = {};

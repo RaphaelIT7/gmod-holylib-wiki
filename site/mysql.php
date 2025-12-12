@@ -397,10 +397,25 @@
 			$stmt->execute();
 			$result = $stmt->get_result();
 			if ($row = $result->fetch_assoc()) {
-				 return $row['fileTime'];
+				return $row['fileTime'];
 			} else {
 				return null;
 			}
+		}
+
+		public function GetAllPages() {
+			$result = mysqli_query($this->conn, "SELECT address, updateCount, updated, html, revisionId, views, title FROM pages");
+			$pages = [];
+			if ($result) {
+				while ($row = mysqli_fetch_assoc($result)) {
+					$pages[] = $row;
+				}
+				mysqli_free_result($result);
+			} else {
+				echo "Error: " . mysqli_error($this->conn);
+			}
+
+			return $pages;
 		}
 
 		public function Init() {

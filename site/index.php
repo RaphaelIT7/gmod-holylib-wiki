@@ -30,6 +30,12 @@
 		} else if ($contentType == 'text/css') {
 			readfile("gmod_style.css");
 		} else if ($contentType == 'text/javascript') {
+			if (str_contains($_SERVER['REQUEST_URI'], 'serviceworker')) {
+				header("Content-Type: application/javascript");
+				readfile("serviceworker.js");
+				exit(0);
+			}
+
 			readfile("gmod_script.js");
 		}
 		exit(0);
@@ -82,6 +88,64 @@
 		return;
 	}
 
+	function CreateJSONResponse($wikiName, $wikiIcon, $wikiRealm, $sqlPage)
+	{
+		return [
+			"title" => $sqlPage['title'],
+			"wikiName" => $wikiName,
+			"wikiIcon" => $wikiIcon,
+			"wikiUrl" => $wikiRealm,
+			"tags" => isset($sqlPage['tags']) ? $sqlPage['tags'] : null,
+			"address" => $sqlPage['address'],
+			"createdTime" => isset($sqlPage['createdTime']) ? $sqlPage['createdTime'] : null,
+			"updateCount" => $sqlPage['updateCount'],
+			"markup" => isset($sqlPage['tags']) ? $sqlPage['tags'] : null,
+			"html" => $sqlPage['html'],
+			"footer" => "Page views: " . $sqlPage['views'] . "<br>Updated: " . $sqlPage['updated'],
+			"revisionId" => $sqlPage['revisionId'],
+			"pageLinks" => [
+				[
+					"url" => $sqlPage['address'],
+					"label" => "View",
+					"icon" => "file",
+					"description" => ""
+				],
+				[
+					"url" => $sqlPage['address'] . "~edit",
+					"label" => "Edit",
+					"icon" => "pencil",
+					"description" => ""
+				],
+				[
+					"url" => $sqlPage['address'] . "~history",
+					"label" => "History",
+					"icon" => "history",
+					"description" => ""
+				]
+			]
+		];
+	}
+
+	if (strcmp($currentPage, "api/getAllPages") == 0)
+	{
+		header("Content-Type: text/plain");
+		$outJson = [];
+		$allPages = $MySQL->GetAllPages();
+		foreach ($allPages as $page) {
+			$outJson[] = CreateJSONResponse($config['name'], $config['icon'], $config['realm'], $page);
+		}
+		echo json_encode($outJson);
+		return;
+	}
+
+	# We just modify the gmod_script.js to remove the modification in UpdatePage
+	#if (str_starts_with($currentPage, $config['realm'] . '/'))
+	#	$currentPage = substr($currentPage, strlen($config['realm']) + 1);
+
+	$lastupdate = $MySQL->GetCacheTime('lastupdate');
+	header('Cache-Control: public, max-age=3600, stale-while-revalidate=86400');
+	header('ETag: ' . $lastupdate);
+
 	$currentSQLPage = $MySQL->GetFullPage($currentPage);
 	$title = isset($currentSQLPage) ? $currentSQLPage['title'] : null;
 	if (!isset($title))
@@ -107,7 +171,10 @@
 		<meta property="og:site_name" name="og:site_name" content="<?php echo $config['name']; ?>">
 		<meta property="og:type" name="og:type" content="website">
 		<meta property="og:description" name="og:description" content="<?php echo htmlspecialchars(isset($currentSQLPage) ? $currentSQLPage['description'] : $config['description'], ENT_QUOTES | ENT_HTML5, 'UTF-8'); ?>">
-		<script>WikiRealm = "gmod";</script>
+		<script>
+			WikiRealm = "<?php echo $config['realm']; ?>";
+			WikiLastUpdated = "<?php echo $lastupdate; ?>";
+		</script>
 	</head>
 	<body>
 		<div id="toolbar">
@@ -394,8 +461,133 @@
 				active[0].scrollIntoView( { smooth: true, block: "center" } );
 			}
 
+			const PageDB = (() => {
+				function openDB() {
+					return new Promise((resolve, reject) => {
+						const request = indexedDB.open('wikiCache', 1);
+						request.onupgradeneeded = e => {
+							const db = e.target.result;
+							if (!db.objectStoreNames.contains('pages'))
+								db.createObjectStore('pages', { keyPath: 'address' });
+						};
+						request.onsuccess = e => resolve(e.target.result);
+						request.onerror = e => reject(e.target.error);
+					});
+				}
+
+				async function savePage(address, json, version) {
+					const db = await openDB();
+					return new Promise((resolve, reject) => {
+						const tx = db.transaction('pages', 'readwrite');
+						tx.objectStore('pages').put({ address, json, version });
+						tx.oncomplete = () => resolve();
+						tx.onerror = e => reject(e.target.error);
+					});
+				}
+
+				async function getPage(address) {
+					const db = await openDB();
+					return new Promise((resolve, reject) => {
+						const tx = db.transaction('pages', 'readonly');
+						const req = tx.objectStore('pages').get(address);
+						req.onsuccess = e => resolve(e.target.result);
+						req.onerror = e => reject(e.target.error);
+					});
+				}
+
+				return { savePage, getPage };
+			})();
+
+			async function PreloadAllPages() {
+				const storedLastUpdated = localStorage.getItem("wiki_lastupdated");
+				if (storedLastUpdated === WikiLastUpdated) {
+					console.log("Preload skipped – cache is already up to date.");
+					return;
+				}
+				localStorage.setItem("wiki_lastupdated", WikiLastUpdated);
+
+				try {
+					const response = await fetch('/api/getAllPages');
+					if (!response.ok)
+						return;
+
+					const pages = await response.json();
+					if (!Array.isArray(pages))
+						return;
+
+					for (const page of pages) {
+						if (!page.address)
+							continue;
+
+						await PageDB.savePage(page.address, page, page.updateCount);
+					}
+
+					console.log(`Cached ${pages.length} pages successfully!`);
+				} catch (err) {
+					console.error('Error preloading pages:', err);
+				}
+			}
+
+			navigator.serviceWorker.register('/serviceworker.js');
+			//	.then(reg => console.log('Service Worker registered:', reg.scope))
+			//	.catch(err => console.error('Service worker registration failed:', err));
+
+			const PageCache = {
+				async AddCachePage(address, json) {
+					await PageDB.savePage(address, json, json.updateCount);
+					console.log('Cached page:', address, 'version:', json.updateCount);
+				},
+			};
+
+			Navigate.AddCachePage = PageCache.AddCachePage;
+			// We don't change GetCachePage since our service worker catches and handles the request / it never leaves the network.
+
+			(function() {
+				const pendingPreloadTimers = new Map();
+				document.addEventListener("mouseover", (e) => {
+					const address = e.target.closest("a[href]")?.getAttribute("href");
+					if (!address || !address.startsWith("/") || address.endsWith("~edit") || address.endsWith("~history"))
+						return;
+
+					if (Navigate.GetCachePage(address) || Navigate.preloadPending?.has(address) || pendingPreloadTimers.has(address))
+						return;
+
+					const timer = setTimeout(() => {
+						pendingPreloadTimers.delete(address);
+
+						Navigate.preloadPending = Navigate.preloadPending ? Navigate.preloadPending : new Set();
+						Navigate.preloadPending.add(address);
+						fetch(address + "?format=json")
+							.then(r => r.text())
+							.then(text => {
+								if (text.startsWith("<"))
+									return;
+
+								Navigate.AddCachePage(address, JSON.parse(text));
+								Navigate.preloadPending.delete(address);
+							})
+							.catch(() => {
+								Navigate.preloadPending.delete(address);
+							});
+					}, 100); // 100 ms - if you hovered over an url for > 100 ms it'll be preloaded
+
+					pendingPreloadTimers.set(address, timer);
+				});
+
+				document.addEventListener("mouseout", (e) => {
+					const address = e.target.closest("a[href]")?.getAttribute("href");
+					if (!address || !pendingPreloadTimers.has(address))
+						return;
+
+					clearTimeout(pendingPreloadTimers.get(address));
+					pendingPreloadTimers.delete(address);
+				});
+			})();
+
 			InitSearch();
 			Navigate.Install();
+
+			PreloadAllPages();
 		</script>
 	</body>
 </html>
@@ -406,40 +598,7 @@
 	} elseif ($_GET["format"] === 'html') {
 		echo $MySQL->GetHTML($currentPage);
 	} elseif ($_GET["format"] === 'json') {
-echo '{
-	"title": "' . $title .'",
-	"wikiName": "' . $config['name'] . '",
-	"wikiIcon": "' . $config['icon'] . '",
-	"wikiUrl": "gmod",
-	"tags": "' . $MySQL->GetSearchTags($currentPage) . '",
-	"address": ' . json_encode($currentPage) . ',
-	"createdTime": "2020-01-21T17:09:42.1+00:00",
-	"updateCount": ' . $MySQL->GetUpdateCount($currentPage) . ',
-	"markup":' . json_encode($MySQL->GetMarkup($currentPage)) . ',
-	"html":' . json_encode($MySQL->GetHTML($currentPage)) . ',
-	"footer": "Page views: ' . $MySQL->GetIncreasedViews($currentPage) . '\u003Cbr\u003EUpdated: ' . $MySQL->GetLastUpdated($currentPage) . '",
-	"revisionId": ' . $MySQL->GetRevision($currentPage) . ',
-	"pageLinks":[
-		{
-			"url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'",
-			"label":"View",
-			"icon":"file",
-			"description":""
-		},
-		{
-			"url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'~edit",
-			"label":"Edit",
-			"icon":"pencil",
-			"description":""
-		},
-		{
-			"url":"' . (isset($_GET['url']) ? $_GET['url'] : $currentPage) .'~history",
-			"label":"History",
-			"icon":"history",
-			"description":""
-		}
-	]
-}';
+		echo json_encode(CreateJSONResponse($config['name'], $config['icon'], $config['realm'], $currentSQLPage));
 	}
 
 	endif;

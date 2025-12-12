@@ -39,7 +39,7 @@
 
 			$file = $this->Parser->OpenFile($page);
 
-			$title = $this->Parser->PageTitle($file);
+			$title = $this->Parser->PageTitle($file, true);
 			$tags = $this->Parser->GetTags($file);
 			$address = isset($addressOverride) ? $addressOverride : $this->Parser->PageAddress($file);
 			$createdTime = isset($sqlPage) ? $sqlPage['createdTime'] : '';
@@ -53,7 +53,7 @@
 			$searchTags = '';
 			$fileTime = $lastChanged;
 			$filePath = $page;
-			$updateCount = isset($sqlPage) ? ($sqlPage['updateCount'] + ($fullUpdate ? ($sqlPage['html'] != $html ? 1 : 0) : 1)) : 0; # If were in a fullUpdate, then we only raise the updateCount if our HTML content actually changed.
+			$updateCount = isset($sqlPage) ? ($html !== $sqlPage['html'] ? ($sqlPage['updateCount'] + 1) : $sqlPage['updateCount']) : 0; # If were in a fullUpdate, then we only raise the updateCount if our HTML content actually changed.
 			if (!$fullUpdate) {
 				echo '<p>' . $filePath . '</p>'; # Debugging which files update.
 			}
@@ -140,6 +140,7 @@
 
 			if ($fullUpdate) {
 				$this->UpdateSideBar();
+				$this->MySQL->SetCachePage('lastupdate', '', time());
 			}
 
 			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, "");
