@@ -263,6 +263,33 @@
 			return '';
 		}
 
+		function getRealmTagsByName($realm, $fallbackRealm = null)
+		{
+			if ($realm === null || $realm === '')
+			{
+				if ($fallbackRealm === null)
+					return '';
+
+				$realm = $fallbackRealm;
+			}
+
+			if ($realm === 'Client and Menu') {
+				return 'rc rm';
+			} elseif ($realm === 'Menu') {
+				return 'rm';
+			} elseif ($realm === 'Client') {
+				return 'rc';
+			} elseif ($realm === 'Server') {
+				return 'rs';
+			} elseif ($realm === 'Shared') {
+				return 'rs rc';
+			} elseif ($realm === 'Shared and Menu') {
+				return 'rs rc rm';
+			}
+
+			return '';
+		}
+
 		function GetTags($text)
 		{
 			$tags = '';
@@ -291,19 +318,7 @@
 			if (preg_match('/<realm>(.*?)<\/realm>/s', $text, $matches)) {
 				$realm = $matches[1];
 
-				if ($realm === 'Client and Menu') {
-					$tags .= 'rc rm';
-				} elseif ($realm === 'Menu') {
-					$tags .= 'rm';
-				} elseif ($realm === 'Client') {
-					$tags .= 'rc';
-				} elseif ($realm === 'Server') {
-					$tags .= 'rs';
-				} elseif ($realm === 'Shared') {
-					$tags .= 'rs rc';
-				} elseif ($realm === 'Shared and Menu') {
-					$tags .= 'rs rc rm';
-				}
+				$tags .= $this->getRealmTagsByName($realm);
 			} else {
 				$tags .= 'e';
 			}
@@ -683,12 +698,12 @@
 					foreach ($structure['fields'] as $field) {
 						$html .='<div class="parameter">';
 							$html .= '<a class="link-page ' . ($this->FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
-							$html .= '<strong> ' . $field['name'] . '</strong>';
+							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . $this->SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
 							$html .= '<div class="description numbertagindent">';
 								$html .= $this->text($field['desc']);
 								if(isset($field['default']) && $field['default'] != '') {
 									$html .= '<p>';
-										$html .= '<strong>Default:</strong>';
+										$html .= '<strong>Default: </strong>';
 										$html .= '<code>' . $field['default'] . '</code>';
 									$html .= '</p>';
 								}
@@ -1132,13 +1147,14 @@
 			// Solves a bug, as callback also uses <arg> & in a function list it would falsely add these args
 			$text = preg_replace('/<callback>[\s\S]+?<\/callback>/', '', $text);
 
-			preg_match_all('/<' . $prefix . ' name="([^"]*)" type="([^"]+)"(?: default="([^"]*)")?>(.*?)<\/' . $prefix . '>/s', $text, $matches, PREG_SET_ORDER);
+			preg_match_all('/<' . $prefix . ' name="([^"]*)" type="([^"]+)"(?: default="([^"]*)")?(?: realm="([^"]*)")?>(.*?)<\/' . $prefix . '>/s', $text, $matches, PREG_SET_ORDER);
 
 			foreach ($matches as $match) {
 				$name = $match[1];
 				$type = $match[2];
 				$default = isset($match[3]) ? $match[3] : null;
-				$desc = trim($match[4]);
+				$realm = isset($match[4]) ? $match[4] : null;
+				$desc = trim($match[5]);
 
 				if (isset($default) && $default == ' ')
 				{
@@ -1153,6 +1169,10 @@
 
 				if ($default !== null) {
 					$retArray['default'] = $default;
+				}
+
+				if ($realm !== null) {
+					$retArray['realm'] = $realm;
 				}
 
 				$ret[] = $retArray;
@@ -1413,6 +1433,7 @@
 						$data = $this->getRealm($matches[1]);
 						$structure['realm'] = $data['realm'];
 						$structure['realmdesc'] = $data['realmdesc'];
+						$structure['realmname'] = $matches[1];
 					} else {
 						$structure['realm'] = '';
 						$structure['realmdesc'] = "No";
