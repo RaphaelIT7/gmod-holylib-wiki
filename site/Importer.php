@@ -143,9 +143,9 @@
 				$this->MySQL->SetCachePage('lastupdate', '', time());
 			}
 
-			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, "");
+			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, NULL);
 
-			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['cache_page'], '', $fullUpdate, NULL, "");
+			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['cache_page'], '', $fullUpdate, NULL, NULL);
 
 			#if ($fullUpdate)
 			#	echo 'Ran full update!';
