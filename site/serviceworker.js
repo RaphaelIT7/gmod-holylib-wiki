@@ -8,12 +8,11 @@ self.addEventListener('activate', event => {
 	(async () => {
 		try {
 			const cache = await caches.open('wiki');
-			const response = await fetch('/');
-			if (response.ok) {
-				await cache.put('/', response.clone());
-			}
+			const response = await fetch('/cache');
+			if (response.ok)
+				await cache.put('/cache', response.clone());
 		} catch (err) {
-			console.error('Error caching / page in background:', err);
+			console.error('Error caching /cache page in background:', err);
 		}
 	})();
 });
@@ -36,9 +35,8 @@ self.addEventListener('fetch', event => {
 	if (event.request.method !== 'GET')
 		return;
 
-	if (url.pathname === '/api/getAllPages') {
+	if (url.pathname === '/api/getAllPages')
 		return fetch(event.request);
-	}
 
 	if (event.request.url.includes('?format=json')) {
 		event.respondWith((async () => {
@@ -73,14 +71,16 @@ self.addEventListener('fetch', event => {
 			(async () => {
 				const cache = await caches.open('wiki');
 				const cachedPage = await cache.match(event.request);
-				if (cachedPage) return cachedPage;
+				if (cachedPage)
+					return cachedPage;
 
 				try {
 					const networkResponse = await fetch(event.request);
 					return networkResponse;
 				} catch (err) {
-					const fallback = await cache.match('/');
-					if (fallback) return fallback;
+					const fallback = await cache.match('/cache');
+					if (fallback)
+						return fallback;
 
 					return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
 				}

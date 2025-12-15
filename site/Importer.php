@@ -145,6 +145,8 @@
 
 			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['front_page'], '', $fullUpdate, NULL, "");
 
+			$this->ImportPage($this->Parser->config['pages_path'] . $this->Parser->config['cache_page'], '', $fullUpdate, NULL, "");
+
 			#if ($fullUpdate)
 			#	echo 'Ran full update!';
 

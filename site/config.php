@@ -5,6 +5,7 @@ function GetConfig()
 	'name' => "HolyLib Wiki", 
 	'front_page' => 'gmod.md',
 	'missing_page' => 'missing.md',
+	'cache_page' => 'cache.md',
 	'pages_path' => 'pages/',
 	'issues_url' => 'https://github.com/RaphaelIT7/gmod-holylib/issues/',
 	'code_language' => 'lua', // lua or c++
