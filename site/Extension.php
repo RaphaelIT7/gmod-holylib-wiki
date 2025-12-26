@@ -39,18 +39,15 @@
 		function FindFile($file, $title = null) {
 			$file = $this->SafeLink($file);
 			$file = strtolower($file);
-			$file = str_replace('.', '_', $file);
+			# $file = str_replace('.', '_', $file);
 
 			if ($this->config['xampp'])
-			{
 				$file = str_replace('/:', ':', $file); // Apache hates it
-			}
 
 			$file = str_replace(':', '_', $file);
 
-			if (isset($title) && isset($this->fileCache[$title])) {
+			if (isset($title) && isset($this->fileCache[$title]))
 				return $this->fileCache[$title];
-			}
 
 			if (!isset($title) && isset($this->fileCache[$file]))
 			{
@@ -65,9 +62,8 @@
 					$shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
 					$path = $shortpath  . $file . '.md';
 
-					if (!file_exists($shortpath)) {
+					if (!file_exists($shortpath))
 						continue;
-					}
 
 					$files = array_diff(scandir($shortpath), array('..', '.'));
 					foreach($files as $file2) {
@@ -78,9 +74,8 @@
 								if ($title)
 								{
 									$content = $this->OpenFile($filePath);
-									if ($title != $this->PageTitle($content, true)) {
+									if ($title != $this->PageTitle($content, true))
 										continue;
-									}
 
 									$this->fileCache[$title] = $filePath;
 								}
@@ -94,9 +89,8 @@
 					if (file_exists($path))
 					{
 						$filec = $this->OpenFile($path);
-						if (preg_match('/<alias>(.*?)<\/alias>/', $filec, $matches)) {
+						if (preg_match('/<alias>(.*?)<\/alias>/', $filec, $matches))
 							$path = $shortpath  . $matches[1] . '.md';
-						}
 
 						$this->fileCache[$file] = $path;
 						return $path;
@@ -173,7 +167,7 @@
 
 		function SafeLink($url) {
 			$url = str_replace('*', '', $url); // Removes all *
-			$url = str_replace(' ', '_', $url); // Removes all *
+			$url = str_replace(' ', '_', $url); // Replace all spaces with _
 			# $url = strtolower($url);
 			$url = str_replace(['../', './'], '', $url);
 			$url = preg_replace('/[^a-zA-Z0-9_\-.:]/', '', $url);

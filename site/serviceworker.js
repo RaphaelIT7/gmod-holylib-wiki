@@ -15,6 +15,46 @@ self.addEventListener('activate', event => {
 			console.error('Error caching /cache page in background:', err);
 		}
 	})();
+
+	(async () => {
+		try {
+			const cache = await caches.open('wiki');
+			let oldETag = null;
+			const stored = await cache.match('__etag');
+			if (stored)
+				oldETag = await stored.text();
+
+			const response = await fetch('/', {
+				method: 'HEAD',
+				cache: 'no-store'
+			});
+
+			if (response.ok)
+			{
+				newETag = response.headers.get('ETag');
+				if (oldETag && newETag && oldETag !== newETag)
+				{
+					console.log('Wiki updated, nuking cache');
+
+					const keys = await caches.keys();
+					await Promise.all(keys.map(k => caches.delete(k)));
+
+					const dbs = await indexedDB.databases();
+					await Promise.all(
+						dbs.map(db => new Promise(resolve => {
+							const req = indexedDB.deleteDatabase(db.name);
+							req.onsuccess = req.onerror = req.onblocked = () => resolve();
+						}))
+					);
+				}
+
+				if (newETag)
+					await cache.put('__etag', new Response(newETag, {headers: {'Content-Type': 'text/plain'}}));
+			}
+		} catch (err) {
+			console.error('Error fetching ETAG header in background:', err);
+		}
+	})();
 });
 
 function openDB() {
