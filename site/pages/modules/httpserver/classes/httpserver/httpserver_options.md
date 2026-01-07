@@ -2,6 +2,7 @@
 	<description>
 		Adds the given Options path to the HttpServer.
 		<added version="0.7"></added>
+		<changed version="0.8">The `response` argument inside the callback was removed as all <page>HttpResponse</page> functions were merged into the <page>HttpRequest</page></changed>
 	</description>
 	<realm>Server</realm>
 	<args>
@@ -10,7 +11,6 @@
 			the callback is called when a new request is received.
 			<callback>
 				<arg name="request" type="HttpRequest">The incoming request</arg>
-				<arg name="response" type="HttpResponse">The respone to use</arg>
 			</callback>
 		</arg>
 		<arg name="ipWhitelist" type="boolean" default="false">
