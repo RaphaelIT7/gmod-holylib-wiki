@@ -446,6 +446,48 @@
 			return null;
 		}
 
+		protected function getArgLink($argName, $isRecursed = false)
+		{
+			$isArgList = false;
+			$origArgName = $argName;
+			$argFile = $this->FindFile($argName);
+			if ($isRecursed == false && $argFile != null)
+			{
+				$content = $this->OpenFile($argFile);
+				if ($content != null)
+				{
+					if (preg_match('/<arglist>\s*(.*?)\s*<\/arglist>/s', $content, $matches)) {
+						$argName = $matches[1];
+						$isArgList = true;
+					}
+				}
+			}
+
+			$result = '';
+			if ($isArgList)
+			{
+				$result .= '<a class="link-page exists" href="/' . $this->SafeLink($origArgName) . '">' . $origArgName . '</a>(';
+			}
+
+			$argParts = explode('|', $argName);
+			$totalParts = count($argParts);
+			foreach ($argParts as $index => $argPart)
+			{
+				$result .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+				if($index !== $totalParts - 1)
+				{
+					$result .= ' or ';
+				}
+			}
+
+			if ($isArgList)
+			{
+				$result .= ')';
+			}
+
+			return $result;
+		}
+
 		protected function buildFunction($func)
 		{
 			$html = '<div class="function ' . $func['type'] . ' ' . $func['realm'] . '">';
@@ -472,7 +514,7 @@
 							$totalParts = count($argParts);
 							foreach ($argParts as $index => $argPart)
 							{
-								$args .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								$args .= $this->getArgLink($argPart);
 								if($index !== $totalParts - 1)
 								{
 									$args .= ' or ';
@@ -498,7 +540,7 @@
 							$totalParts = count($retParts);
 							foreach ($retParts as $index => $retPart)
 							{
-								$rets .= '<a class="link-page ' . ($this->FindFile($retPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($retPart) . '">' . $retPart . '</a>';
+								$rets .= $this->getArgLink($retPart);
 								if($index !== $totalParts - 1)
 								{
 									$rets .= ' or ';
@@ -560,7 +602,7 @@
 							$totalParts = count($argParts);
 							foreach ($argParts as $index => $argPart)
 							{
-								$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								$html .= $this->getArgLink($argPart);
 								if($index === $totalParts - 1)
 								{
 									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
@@ -593,7 +635,7 @@
 							$totalParts = count($argParts);
 							foreach ($argParts as $index => $argPart)
 							{
-								$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								$html .= $this->getArgLink($argPart);
 								if($index === $totalParts - 1)
 								{
 									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
@@ -1125,6 +1167,27 @@
 			return $html;
 		}
 
+		protected function buildArgsList($text)
+		{
+			$html = '<div class="function">';
+				$html .= '<p>This argument accepts the following types:</p>'; 
+				$html .= '<div class="function_line">';
+					$argParts = explode('|', $text);
+					$totalParts = count($argParts);
+					foreach ($argParts as $index => $argPart)
+					{
+						$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+						if($index !== $totalParts - 1)
+						{
+							$html .= ' or ';
+						}
+					}
+				$html .= '</div>';
+			$html .= '</div>';
+
+			return $html;
+		}
+
 		function getRealm($realm) 
 		{
 			$realm = trim($realm);
@@ -1363,6 +1426,13 @@
 				'/<page(?:\s+text="([^"]*)")?>([^<]+)<\/page>/', 
 				function ($match){	
 					return $this->buildPageURL($match[2], $match[1]);
+				}
+			);
+
+			$replaceCall(
+				'/<arglist>([\s\S]*?)<\/arglist>/',
+				function ($match) {
+					return $this->BuildArgsList($match[1]);
 				}
 			);
 

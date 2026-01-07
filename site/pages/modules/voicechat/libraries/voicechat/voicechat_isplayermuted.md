@@ -1,6 +1,6 @@
-<function name="LastPlayerTalked" parent="voicechat" type="libraryfunc">
+<function name="IsPlayerMuted" parent="voicechat" type="libraryfunc">
 	<description>
-		Returns the last time the given player has talked.
+		Returns `true` if the given player was muted using <page>voicechat.SetPlayerMuted</page>
 		<added version="0.8"></added>
 		<changed version="0.8">
 			The `ply` argument was changed from previously accepting only <page>Player</page> to now accepting all <page>ClientArg</page>
@@ -8,9 +8,9 @@
 	</description>
 	<realm>Server</realm>
 	<args>
-		<arg name="ply" type="ClientArg">The Player that we should get the value from.</arg>
+		<arg name="ply" type="ClientArg"></arg>
 	</args>
 	<rets>
-		<ret name="lastTalked" type="number">Returns the last time they talked</ret>
+		<ret name="muted" type="boolean"></ret>
 	</rets>
 </function>
