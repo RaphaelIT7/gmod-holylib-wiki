@@ -494,7 +494,16 @@
 								$rets .= ', ';
 							}
 
-							$rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
+							$retParts = explode('|', $ret['type']);
+							$totalParts = count($retParts);
+							foreach ($retParts as $index => $retPart)
+							{
+								$rets .= '<a class="link-page ' . ($this->FindFile($retPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($retPart) . '">' . $retPart . '</a>';
+								if($index !== $totalParts - 1)
+								{
+									$rets .= ' or ';
+								}
+							}
 
 							#if (isset($ret['default']) && $ret['default'] !== '')
 							#{
@@ -580,8 +589,18 @@
 						$i = $i + 1;
 						$html .='<div>';
 							$html .= '<span class="numbertag">' . $i . '</span>';
-							$html .= '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
-							$html .= '<span class="name"> ' . $arg['name'] . '</span>';
+							$argParts = explode('|', $arg['type']);
+							$totalParts = count($argParts);
+							foreach ($argParts as $index => $argPart)
+							{
+								$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+								if($index === $totalParts - 1)
+								{
+									$html .= '<span class="name"> ' . $arg['name'] . '</span>';
+								} else {
+									$html .= ' or ';
+								}
+							}
 							if(isset($arg['default']) && $arg['default'] != '') {
 								$html .= '<span class="default"> = ' . $arg['default'] . '</span>';
 							}
