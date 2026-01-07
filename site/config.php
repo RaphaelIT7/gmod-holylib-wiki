@@ -604,6 +604,17 @@ function GetConfig()
 				),
 			),
 		),
+		array(
+			'name' => 'luagc', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/luagc/libraries',
+					'tags' => 'true',
+				),
+			),
+		)
 	)
 	);
 }
