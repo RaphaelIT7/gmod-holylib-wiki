@@ -37,7 +37,7 @@
 				return false;
 			}
 
-			$file = $this->Parser->OpenFile($page);
+			$file = FileSystem::OpenFile($page);
 
 			$title = $this->Parser->PageTitle($file, true);
 			$tags = $this->Parser->GetTags($file);

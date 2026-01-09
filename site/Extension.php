@@ -1,6 +1,7 @@
 <?php
 	include('Parsedown.php');
 	include('utils.php');
+	include('filesystem.php');
 
 	$function = array();
 
@@ -35,70 +36,6 @@
 		#
 		# Utilities
 		#
-		private $fileCache = array();
-		function FindFile($file, $title = null) {
-			$file = $this->SafeLink($file);
-			$file = strtolower($file);
-			# $file = str_replace('.', '_', $file);
-
-			if ($this->config['xampp'])
-				$file = str_replace('/:', ':', $file); // Apache hates it
-
-			$file = str_replace(':', '_', $file);
-
-			if (isset($title) && isset($this->fileCache[$title]))
-				return $this->fileCache[$title];
-
-			if (!isset($title) && isset($this->fileCache[$file]))
-			{
-				return $this->fileCache[$file];
-				//echo "<p>Cache hit " . $file . "</p>";
-			} else {
-				//echo "<p>Cache miss " . $file . "</p>";
-			}
-
-			foreach($this->categories as &$category) {
-				foreach ($category['categories'] as &$chapter) {
-					$shortpath = $this->config['pages_path'] . $chapter['path'] . '/';
-					$path = $shortpath  . $file . '.md';
-
-					if (!file_exists($shortpath))
-						continue;
-
-					$files = array_diff(scandir($shortpath), array('..', '.'));
-					foreach($files as $file2) {
-						if (is_dir($shortpath . $file2)) {
-							$filePath = $shortpath . $file2 . '/' . $file . '.md';
-							if (file_exists($filePath))
-							{
-								if ($title)
-								{
-									$content = $this->OpenFile($filePath);
-									if ($title != $this->PageTitle($content, true))
-										continue;
-
-									$this->fileCache[$title] = $filePath;
-								}
-
-								$this->fileCache[$file] = $filePath;
-								return $filePath;
-							}
-						}
-					}
-
-					if (file_exists($path))
-					{
-						$filec = $this->OpenFile($path);
-						if (preg_match('/<alias>(.*?)<\/alias>/', $filec, $matches))
-							$path = $shortpath  . $matches[1] . '.md';
-
-						$this->fileCache[$file] = $path;
-						return $path;
-					}
-				}
-			}
-		}
-
 		// Unlike the other function, this one guesses the page so it could return wrong results.
 		function FindFileMatch($file, $match) {
 			$file = $this->SafeLink($file);
@@ -131,7 +68,7 @@
 									$filePath = $shortpath . $file2 . '/' . $file3;
 									if (!str_contains($filePath, $match))
 									{
-										$content = $this->OpenFile($filePath);
+										$content = Filesystem::OpenFile($filePath);
 										if (!str_contains($this->PageTitle($content, true), $match)) {
 											continue;
 										}
@@ -147,7 +84,7 @@
 								$filePath = $shortpath . $file2;
 								if (!str_contains($filePath, $match))
 								{
-									$content = $this->OpenFile($filePath);
+									$content = Filesystem::OpenFile($filePath);
 									if (!str_contains($this->PageTitle($content, true), $match)) {
 										continue;
 									}
@@ -178,32 +115,6 @@
 			}
 
 			return $url;
-		}
-
-		function OpenFile($path) {
-			$path = strtolower($path);
-
-			if ($this->config['xampp'])
-			{
-				$path = str_replace('/:', ':', $path); // Apache hates it
-			}
-
-			if (!file_exists($path)) {
-				return null;
-			}
-
-			return file_get_contents($path);
-		}
-
-		function FileExists($path) {
-			$path = strtolower($path);
-
-			if ($this->config['xampp'])
-			{
-				$path = str_replace('/:', ':', $path); // Apache hates it
-			}
-
-			return file_exists($path);
 		}
 
 		function PageTitle($text, $fullName = NULL)
@@ -438,9 +349,9 @@
 
 		protected function findParent($file)
 		{
-			$content = $this->OpenFile($file);
+			$content = Filesystem::OpenFile($file);
 			if (preg_match('/parent="([^"]*)"/s', $content, $matches)) {
-				return $this->FindFile($matches[1]);
+				return FileSystem::FindFile($matches[1]);
 			}
 
 			return null;
@@ -450,10 +361,10 @@
 		{
 			$isArgList = false;
 			$origArgName = $argName;
-			$argFile = $this->FindFile($argName);
+			$argFile = FileSystem::FindFile($argName);
 			if ($isRecursed == false && $argFile != null)
 			{
-				$content = $this->OpenFile($argFile);
+				$content = Filesystem::OpenFile($argFile);
 				if ($content != null)
 				{
 					if (preg_match('/<arglist>\s*(.*?)\s*<\/arglist>/s', $content, $matches)) {
@@ -473,7 +384,7 @@
 			$totalParts = count($argParts);
 			foreach ($argParts as $index => $argPart)
 			{
-				$result .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+				$result .= '<a class="link-page ' . (FileSystem::FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
 				if($index !== $totalParts - 1)
 				{
 					$result .= ' or ';
@@ -497,7 +408,7 @@
 
 					if(isset($func['parent']) && strlen($func['parent']) > 0)
 					{
-						$func['parent'] = '<a class="link-page ' . ($this->FindFile($func['parent']) != null ? 'exists' : 'missing') . '" href="/' . $func['parent'] . '">' . $func['parent'] . '</a>';
+						$func['parent'] = '<a class="link-page ' . (FileSystem::FindFile($func['parent']) != null ? 'exists' : 'missing') . '" href="/' . $func['parent'] . '">' . $func['parent'] . '</a>';
 					}
 
 					$func['args'] = isset($func['args']) ? $func['args'] : array();
@@ -674,14 +585,14 @@
 				$html .= '<div class="members">';
 					$html .= '<h1>Methods</h1>';
 					$html .= '<div class="section">';
-						$path = $this->FindFile($type['name'], $type['name']);
+						$path = FileSystem::FindFile($type['name'], $type['name']);
 						if (isset($path) && $path != '') {
 							$fileName = substr($path, strripos($path, '/') + 1, strlen($path) - strripos($path, '/') - 4);
 							$mainDir = !strripos($path, $fileName . "/" . $fileName);
 							$path = substr($path, 0, strripos($path, '/'));
 							$files = array_diff(scandir($path), array('..', '.', strtolower($type['name']) . '.md'));
 							foreach($files as &$page2) {
-								$file = $this->OpenFile($path . '/' . $page2 . ($mainDir ? ("/" . $page2) : ''));
+								$file = Filesystem::OpenFile($path . '/' . $page2 . ($mainDir ? ("/" . $page2) : ''));
 								if (!$file) {
 									continue;
 								}
@@ -706,7 +617,7 @@
 													$args .= ',';
 												}
 
-												$args .= ' ' . '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
+												$args .= ' ' . '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
 
 												if (isset($arg['default']) && $arg['default'] !== '')
 												{
@@ -721,7 +632,7 @@
 													$rets .= ',';
 												}
 
-												$rets .= ' ' . '<a class="link-page ' . ($this->FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
+												$rets .= ' ' . '<a class="link-page ' . (FileSystem::FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
 											}
 
 											$html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
@@ -752,7 +663,7 @@
 				$html .= '<div class="section">';
 					foreach ($structure['fields'] as $field) {
 						$html .='<div class="parameter">';
-							$html .= '<a class="link-page ' . ($this->FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
+							$html .= '<a class="link-page ' . (FileSystem::FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
 							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . $this->SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
 							$html .= '<div class="description numbertagindent">';
 								$html .= $this->text($field['desc']);
@@ -781,7 +692,7 @@
 				$html .= '<div class="section">';
 					foreach ($enums['items'] as $field) {
 						$html .='<div class="parameter">';
-							$html .= '<a class="link-page ' . ($this->FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
+							$html .= '<a class="link-page ' . (FileSystem::FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
 							$html .= '<strong> ' . $field['name'] . '</strong>';
 							$html .= '<div class="description numbertagindent">';
 								$html .= $this->text($field['desc']);
@@ -921,11 +832,11 @@
 
 		protected function buildPageURL($page, $name)
 		{
-			$file = $this->FindFile($page);
+			$file = FileSystem::FindFile($page);
 			$html = '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="';
 			$html .= "/" . $this->SafeLink($page);
 			$html .= '">';
-				$html .= isset($name) && $name != '' ? $name : (isset($file) ? $this->PageTitle($this->OpenFile($file), true) : $this->SafeLink($page));
+				$html .= isset($name) && $name != '' ? $name : (isset($file) ? $this->PageTitle(Filesystem::OpenFile($file), true) : $this->SafeLink($page));
 			$html .= '</a>';
 
 			return $html;
@@ -937,11 +848,11 @@
 				return '';
 			}
 
-			$file = $this->FindFile($page);
+			$file = FileSystem::FindFile($page);
 
 			$html = '<div class="ambig">';
 				$html .= '<div class="target">';
-					$html .= '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="' . $page . '">' . (isset($file) ? $this->PageTitle($this->OpenFile($file), true) : $page) . '</a>';
+					$html .= '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="' . $page . '">' . (isset($file) ? $this->PageTitle(Filesystem::OpenFile($file), true) : $page) . '</a>';
 				$html .= '</div>';
 				$html .= '<div class="desc">';
 					$html .= $text;
@@ -996,7 +907,7 @@
 					'/(?<=\s)([a-zA-Z0-9_]+(?:[.:][a-zA-Z0-9_]+)+)/', // Matches any "classname.function(" or "classname:function("
 					function($match) {
 						$name = $match[1];
-						$functionFile = $this->FindFile($name);
+						$functionFile = FileSystem::FindFile($name);
 						$parentFile = null; // the class/library file
 
 						$pos = stripos($name, ":");
@@ -1011,7 +922,7 @@
 							$functionFile = $this->FindFileMatch(substr($name, $pos + 1), substr($name, 0, $pos));
 						}
 
-						$parentFile = $this->FindFile(substr($name, 0, $pos));
+						$parentFile = FileSystem::FindFile(substr($name, 0, $pos));
 						if (!isset($parentFile) && $functionFile)
 						{
 							# If we found the function page, then we can figure out the parent
@@ -1024,14 +935,14 @@
 							if ($parentFile)
 							{
 								$output = '<span class="className">';
-									$output .= '<a href="/' . $this->PageAddress($this->OpenFile($parentFile)) . '">' . substr($name, 0, $pos) . '</a>';
+									$output .= '<a href="/' . $this->PageAddress(Filesystem::OpenFile($parentFile)) . '">' . substr($name, 0, $pos) . '</a>';
 								$output .= '</span>';
 							} else {
 								$output = substr($name, 0, $pos);
 							}
 							$output .= substr($name, $pos, 1);
 							$output .= '<span class="method">';
-								$output .= '<a href="/' . $this->PageAddress($this->OpenFile($functionFile)) . '">' . substr($name, $pos + 1) . '</a>';
+								$output .= '<a href="/' . $this->PageAddress(Filesystem::OpenFile($functionFile)) . '">' . substr($name, $pos + 1) . '</a>';
 							$output .= '</span>';
 
 							return $output;
@@ -1101,7 +1012,7 @@
 					$idx = $idx + 1;
 					$html .= '<div>';
 						$html .= '<span class="numbertag">' . $idx . '</span>';
-						$html .= '<a class="link-page ' . ($this->FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
+						$html .= '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
 						$html .= '<strong> ' . $arg['name'] . '</strong>';
 						$html .= ' - ' . $this->text($arg['desc']);
 					$html .= '</div>';
@@ -1176,7 +1087,7 @@
 					$totalParts = count($argParts);
 					foreach ($argParts as $index => $argPart)
 					{
-						$html .= '<a class="link-page ' . ($this->FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+						$html .= '<a class="link-page ' . (FileSystem::FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
 						if($index !== $totalParts - 1)
 						{
 							$html .= ' or ';

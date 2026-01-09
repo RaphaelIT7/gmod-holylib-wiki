@@ -62,6 +62,8 @@
 	$Parsedown->config = $config;
 	$Parsedown->categories = $categories;
 
+	FileSystem::Init($Parsedown);
+
 	$Importer = new Importer();
 	$Importer->Init($MySQL, $Parsedown);
 	$Importer->ImportEverything(); # I want to remove this later. Maybe having a cron job run it every minute would be better than every request?
