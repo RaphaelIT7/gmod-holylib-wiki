@@ -3,6 +3,7 @@
 		Opens the given file from the given game path.
 		<added version="0.4"></added>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="fileName" type="string">file to open</arg>

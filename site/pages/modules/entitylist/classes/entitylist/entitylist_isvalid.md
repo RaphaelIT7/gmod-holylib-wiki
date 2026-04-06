@@ -3,6 +3,7 @@
 		Returns weather this object is valid or not.
 		<added version="0.7"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<rets>
 		<ret name="valid" type="boolean">Returns `true` if this object is valid</ret>

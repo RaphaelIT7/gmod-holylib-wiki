@@ -3,6 +3,7 @@
 		Returns the number of VoiceData it stores.  
 		<added version="0.7"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<rets>
 		<ret name="count" type="number">The number of stored VoiceData</ret>

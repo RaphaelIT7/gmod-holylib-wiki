@@ -3,6 +3,7 @@
 		Returns the relative path of the given file/folder.
 		<added version="0.4"></added>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="filePath" type="string">the file/folder path to use</arg>

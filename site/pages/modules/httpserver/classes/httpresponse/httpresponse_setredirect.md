@@ -3,6 +3,7 @@
 		Redirects one to the given URL and returns the given code.
 		<added version="0.7"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="url" type="string">url to redirect to</arg>

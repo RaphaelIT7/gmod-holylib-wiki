@@ -3,6 +3,7 @@
 		Reads a file async and calls the callback with the contents.
 		<added version="0.4"></added>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="fileName" type="string">file to read</arg>

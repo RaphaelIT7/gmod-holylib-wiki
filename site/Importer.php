@@ -31,20 +31,26 @@
 				return false;
 			}
 
+			$isUsingSQLValue = false;
 			$lastChanged = filemtime($page);
 			$sqlPage = $this->MySQL->GetFullPageByFile($page);
 			if (isset($sqlPage) && $sqlPage['fileTime'] == $lastChanged && !$fullUpdate) { # file wasn't updated
-				return false;
+				if (!str_contains($sqlPage['markup'], '<sqlvalue>'))
+					return false;
+
+				$isUsingSQLValue = true;
 			}
 
 			$file = FileSystem::OpenFile($page);
+			$html = $this->Parser->text($file);
+			if ($isUsingSQLValue && $html === $sqlPage['html'])
+				return;
 
 			$title = $this->Parser->PageTitle($file, true);
 			$tags = $this->Parser->GetTags($file);
 			$address = isset($addressOverride) ? $addressOverride : $this->Parser->PageAddress($file);
 			$createdTime = isset($sqlPage) ? $sqlPage['createdTime'] : '';
 			$markup = $file;
-			$html = $this->Parser->text($file);
 			$description = $this->Parser->description($file);
 			$views = isset($sqlPage) ? $sqlPage['views'] : 0;
 			$updated = 'Unknown';
@@ -54,9 +60,6 @@
 			$fileTime = $lastChanged;
 			$filePath = $page;
 			$updateCount = isset($sqlPage) ? ($html !== $sqlPage['html'] ? ($sqlPage['updateCount'] + 1) : $sqlPage['updateCount']) : 0; # If were in a fullUpdate, then we only raise the updateCount if our HTML content actually changed.
-			if (!$fullUpdate) {
-				echo '<p>' . $filePath . '</p>'; # Debugging which files update.
-			}
 
 			$this->MySQL->AddFilePageOrUpdate($title, $tags, $address, $createdTime, $markup, $html, $description, $views, $updated, $revisionId, $category, $searchTags, $fileTime, $filePath, $updateCount);
 
@@ -66,11 +69,11 @@
 
 			#$this->ImportPage($categoryFilePath, $category, true);
 
-			if (!$fullUpdate)
+			if (!$fullUpdate && !$isUsingSQLValue)
 			{
 				# echo 'Making full update! (' . $filePath . ')';
 				$this->ImportEverything(true);
-				echo '<p>Triggered full update ' . $filePath . ' (' . (isset($sqlPage) ? 'true' : 'false') . ', ' . $lastChanged . ')';
+				# echo '<p>Triggered full update ' . $filePath . ' (' . (isset($sqlPage) ? 'true' : 'false') . ', ' . $lastChanged . ')';
 				return true;
 			}
 		}

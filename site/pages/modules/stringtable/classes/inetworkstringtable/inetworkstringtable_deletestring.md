@@ -6,6 +6,7 @@
 			It will also delete precache data if you delete strings from tables like `modelprecache` and such.
 		</note>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="index" type="number">The index to delete</arg>

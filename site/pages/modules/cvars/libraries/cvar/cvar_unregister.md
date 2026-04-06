@@ -3,6 +3,7 @@
 		Unregisters the given convar / concommand.
 		<added version="0.6"></added>	
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="convarName" type="string">The ConVar / ConCommand to unregister</arg>

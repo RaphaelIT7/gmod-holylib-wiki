@@ -4,6 +4,7 @@
 		<changed version="0.8">Fixed this function throwing a error when called on a NULL channel instead of returning false</changed>
 		<added version="0.4"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<rets>
 		<ret name="" type="boolean"></ret>

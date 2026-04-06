@@ -61,6 +61,7 @@
 	$Parsedown = new Extension();
 	$Parsedown->config = $config;
 	$Parsedown->categories = $categories;
+	$Parsedown->sql = $MySQL;
 
 	FileSystem::Init($Parsedown);
 
@@ -87,6 +88,25 @@
 		echo(json_encode(array(
 			'status' => 'ok',
 		)));
+		return;
+	}
+
+	if (strcmp($currentPage, "api/set_perf_results") == 0 && $_SERVER['REQUEST_METHOD'] === 'POST')
+	{
+		header("Content-Type: application/json");
+		$headers = getallheaders();
+		$authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : '';
+		$verifyAuth = $MySQL->GetSQLValue('perfResultAuthToken') ?? '';
+		if ($verifyAuth !== $authHeader)
+		{
+			http_response_code(403);
+			return;
+		}
+
+		$body = file_get_contents('php://input');
+		$MySQL->SetSQLValue('perfResults', $body);
+		http_response_code(200);
+		echo $MySQL->GetSQLValue('perfResults');
 		return;
 	}
 

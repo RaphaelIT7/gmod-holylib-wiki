@@ -4,6 +4,7 @@
 		Should be the same as `GetConVar("hostname"):GetString()`
 		<added version="0.7"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<rets>
 		<ret name="name" type="string"></ret>

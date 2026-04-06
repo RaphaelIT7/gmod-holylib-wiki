@@ -3,6 +3,7 @@
 		Sets the value of the given ConVar even if it's blocked behind cheats.
 		<added version="0.4"></added>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="convarName" type="string">The ConVar to set the value on</arg>

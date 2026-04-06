@@ -2,6 +2,7 @@
 	<description>
 		Sets the new compressed voice data.<br>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="data" type="string">The compressed voice data.</arg>

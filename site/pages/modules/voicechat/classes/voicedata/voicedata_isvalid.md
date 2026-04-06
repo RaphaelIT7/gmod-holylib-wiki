@@ -2,6 +2,7 @@
 	<description>
 		Returns whether this VoiceData is valid.
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<rets>
 		<ret name="valid" type="boolean">Returns `true` if this VoiceData is valid.</ret>

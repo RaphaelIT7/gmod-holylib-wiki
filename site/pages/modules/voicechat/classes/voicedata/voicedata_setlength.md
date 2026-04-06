@@ -5,6 +5,7 @@
 			You should be careful when using this.
 		</note>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="length" type="number">The new length</arg>

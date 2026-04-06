@@ -6,3 +6,6 @@ There are plans to improve safety by locking things behind the `-holylib_allowun
 If there are any functions that should be locked behind it, please let me know as I might miss them.<br>
 On Linux unsafe code is allowed by default, on windows it is blocked as were on a client and do not want to risk anything.<br>
 You can disable unsafe code on linux using `-holylib_denyunsafe`<br>
+
+# Unsafe functions
+If a function is marked as unsafe, it will throw a Lua error if unsafe functions are not enabled!

@@ -8,6 +8,7 @@
 		</note>
 		<added version="0.5"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 </function>
 

@@ -3,9 +3,8 @@
 		Returns `true` if the CPhysPolySoup is still valid.
 		<added version="0.7"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
-	<args>
-	</args>
 	<rets>
 		<ret name="" type="boolean"></ret>
 	</rets>

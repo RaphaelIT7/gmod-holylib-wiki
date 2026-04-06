@@ -3,6 +3,7 @@
 		Removes the given folder from the given gamepath.
 		<added version="0.4"></added> 
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="folderPath" type="string">path to the given folder</arg>

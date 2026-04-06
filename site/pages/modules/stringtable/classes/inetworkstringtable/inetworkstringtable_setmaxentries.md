@@ -11,6 +11,7 @@
 			`networkvars` -> Limited by the internal net messages gmod uses. (Mainly NW2's networking)
 		</note>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="maxStrings" type="number">The new max string limit. **This needs to be to the power of 2!**</arg>

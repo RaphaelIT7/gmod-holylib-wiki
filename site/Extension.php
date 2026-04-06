@@ -9,6 +9,7 @@
 	{
 		private $baseImagePath = '';
 		public $config;
+		public $sql;
 		public $categories;
 		protected $lua_keywords = array('and', 'break', 'do', 'else', 'elseif', 'end', 'false', 'for', 'function', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat', 'return', 'then', 'true', 'until', 'while', 'continue');
 		protected $lua_operators = array('&&', '!=', '==', '>=', '<=', '||', '#', '+', '-', '*', '/', '%', '^', '~=', '<', '>', '..');
@@ -489,6 +490,24 @@
 							$html .= ' ' . $pageVersion;
 						$html .= '</a>';
 					}
+
+					if (isset($func['jit']))
+					{
+						$html .= '<a title="This function has JIT support" href="/HolyLib_LuaJIT">';
+							$html .= '<i class="mdi mdi-speedometer">';
+							$html .= '</i>';
+							$html .= ' JIT since ' . $func['jit'];
+						$html .= '</a>';
+					}
+
+					if (isset($func['unsafe']))
+					{
+						$html .= '<a title="This function is unsafe" href="/Safety">';
+							$html .= '<i class="mdi mdi-alert">';
+							$html .= '</i>';
+							$html .= ' Unsafe';
+						$html .= '</a>';
+					}
 				$html .= '</div>';
 				
 				if (isset($func['desc']))
@@ -882,6 +901,14 @@
 			return $html;
 		}
 
+		protected function buildSQLValue($text, $preView)
+		{
+			if ($preView)
+				return '';
+
+			return $this->sql->GetSQLValue($text) ?? '';
+		}
+
 		protected function processCode($code)
 		{
 			if ($this->config['code_language'] == 'lua') {
@@ -1019,6 +1046,22 @@
 				}
 			$html .= '</div>';
 
+			$html .= '<div class="callback_args">';
+				$html .= 'Function return argument(s): ';
+				$args = $this->getStuff($text, 'callback', 'ret');
+				$idx = 0;
+				foreach($args as $arg)
+				{
+					$idx = $idx + 1;
+					$html .= '<div>';
+						$html .= '<span class="numbertag">' . $idx . '</span>';
+						$html .= '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>';
+						$html .= '<strong> ' . $arg['name'] . '</strong>';
+						$html .= ' - ' . $this->text($arg['desc']);
+					$html .= '</div>';
+				}
+			$html .= '</div>';
+
 			return $html;
 		}
 
@@ -1040,6 +1083,28 @@
 			$html .= '<div class="section">';
 				$html .= 'This was recently added in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).';
 				$html .= '<p>' . $this->text($text) . '</p>';
+			$html .= '</div>';
+
+			return $html;
+		}
+
+		protected function buildJIT($text, $version, $preView)
+		{
+			$version = (double)$version;
+			if ($preView || $version == 0 || $version < $this->config['version']) { // If 0 then it failed to cast.
+				return '';
+			}
+
+			$html = '<h1>';
+				$html .= 'Recently Added JIT Supported';
+				$html .= '<a class="anchor" href="#recentlyadded">';
+					$html .= '<i class="mdi mdi-link-variant"></i>';
+				$html .= '</a>';
+				$html .= '<a name="recentlyadded" class="anchor_offset"></a>';
+			$html .= '</h1>';
+
+			$html .= '<div class="section">';
+				$html .= 'This function was recently changed to have JIT support in version (<strong>' . $version . ($version == $this->config['next_version'] ? ' - DEV' : '') . '</strong>).';
 			$html .= '</div>';
 
 			return $html;
@@ -1293,6 +1358,13 @@
 			);
 
 			$replaceCall(
+				'/<sqlvalue>([\s\S]*?)<\/sqlvalue>/',
+				function ($match) use ($preView) {
+					return parent::text($this->buildSQLValue($match[1], $preView));
+				}
+			);
+
+			$replaceCall(
 				'/<added\s+version="([^"]+)">([\s\S]*?)<\/added>/',
 				function ($match) use ($preView) {
 					return $this->buildAdded($match[2], $match[1], $preView);
@@ -1357,6 +1429,14 @@
 					$function['sourceText'] = $sourceText;
 
 					$textContent = $matches[4];
+
+					if (preg_match('/<jit\s+version="([^"]+)">/s', $textContent, $matches)) {
+						$function['jit'] = trim($matches[1]);
+					}
+
+					if (preg_match('/<unsafe\s+version="([^"]+)">/s', $textContent, $matches)) {
+						$function['unsafe'] = trim($matches[1]);
+					}
 
 					if (preg_match('/<description>\s*(.*?)\s*<\/description>/s', $textContent, $matches)) {
 						$function['desc'] = trim($matches[1]);
@@ -1502,7 +1582,7 @@
 				$markup = str_replace(array_keys($handledElements), array_values($handledElements), $markup);
 			}
 
-			$markup = preg_replace('!^<p>(.*?)</p>$!i', '$1', $markup);
+			#$markup = preg_replace('!^<p>(.*?)</p>$!i', '$1', $markup);
 			#$text = preg_replace('/(?<!^#)\s{2}$/m', '<br>', $text); // Add <br> tag at the end of lines with two spaces
 
 			return $markup;

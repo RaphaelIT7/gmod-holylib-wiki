@@ -7,6 +7,7 @@
 			Generally, only use it when you **KNOW** what your doing.
 		</warning>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="table" type="INetworkStringTable">The table to set it on</arg>

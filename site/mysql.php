@@ -418,6 +418,33 @@
 			return $pages;
 		}
 
+		public function SetSQLValue($key, $value) {
+			if ($this->GetSQLValue($key) === null)
+			{
+				$stmt = $this->conn->prepare("INSERT INTO sqlvalues (keyName, value) VALUES (?, ?)");
+				$stmt->bind_param("ss", $key, $value);
+				$stmt->execute();
+				$stmt->close();
+			} else {
+				$stmt = $this->conn->prepare("UPDATE sqlvalues SET value=? WHERE keyName=?");
+				$stmt->bind_param("ss", $value, $key);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function GetSQLValue($key) {
+			$stmt = $this->conn->prepare("SELECT value FROM sqlvalues WHERE keyName = ? LIMIT 1");
+			$stmt->bind_param("s", $key);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			if ($row = $result->fetch_assoc()) {
+				return $row['value'];
+			} else {
+				return null;
+			}
+		}
+
 		public function Init() {
 			$this->Connect();
 			$this->Query("CREATE DATABASE IF NOT EXISTS " . $this->db);
@@ -430,7 +457,7 @@
 				createdTime VARCHAR(32),
 				updateCount INT DEFAULT 0,
 				markup TEXT,
-				html TEXT,
+				html LONGTEXT,
 				description TEXT,
 				views BIGINT DEFAULT 0,
 				updated VARCHAR(32),
@@ -456,6 +483,11 @@
 				runnumber VARCHAR(32),
 				fileTime BIGINT,
 				filePath VARCHAR(255)
+			);");
+
+			$this->Query("CREATE TABLE IF NOT EXISTS sqlvalues (
+				keyName VARCHAR(32),
+				value LONGTEXT
 			);");
 		}
 	}

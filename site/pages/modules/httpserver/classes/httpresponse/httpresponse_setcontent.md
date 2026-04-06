@@ -3,6 +3,7 @@
 		Sets the content for the response.
 		<added version="0.7"></added>
 	</description>
+	<jit version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="content" type="string">the content to set</arg>

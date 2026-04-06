@@ -614,6 +614,63 @@ function GetConfig()
 					'tags' => 'true',
 				),
 			),
+		),
+		array(
+			'name' => 'gmoddatapack', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/gmoddatapack/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'modules/gmoddatapack/hooks',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/gmoddatapack/convars',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'crashhandler', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/crashhandler/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'modules/crashhandler/hooks',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/crashhandler/convars',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'unholylib', 
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/unholylib/libraries',
+					'tags' => 'true',
+				),
+			),
 		)
 	)
 	);

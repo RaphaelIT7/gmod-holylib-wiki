@@ -2,6 +2,7 @@
 	<description>
 		Sets the userdata for the given index.
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="index" type="number">the index to set the userdata on</arg>

@@ -5,6 +5,7 @@
 			This should only be used on precache stringtables.
 		</note>
 	</description>
+	<unsafe version="0.8">
 	<realm>Server</realm>
 	<args>
 		<arg name="index" type="number">the index to set the userdata on</arg>
