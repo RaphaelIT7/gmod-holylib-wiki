@@ -362,7 +362,13 @@
 		{
 			$isArgList = false;
 			$origArgName = $argName;
+			$foundTab = strrpos($argName, '<');
+			if ($foundTab !== false) {
+				$argName = substr($argName, 0, $foundTab);
+			}
+
 			$argFile = FileSystem::FindFile($argName);
+			$argName = $origArgName;
 			if ($isRecursed == false && $argFile != null)
 			{
 				$content = Filesystem::OpenFile($argFile);
@@ -385,7 +391,14 @@
 			$totalParts = count($argParts);
 			foreach ($argParts as $index => $argPart)
 			{
-				$result .= '<a class="link-page ' . (FileSystem::FindFile($argPart) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($argPart) . '">' . $argPart . '</a>';
+				// If the argument is something like table<IGModAudioChannel> then we must ignore the < > when looking up the file
+				$foundTab = strrpos($argPart, '<');
+				$linkArg = $argPart;
+				if ($foundTab !== false) {
+					$linkArg = substr($argPart, 0, $foundTab);
+				}
+
+				$result .= '<a class="link-page ' . (FileSystem::FindFile($linkArg) != null ? 'exists' : 'missing') . '" href="/' . $this->SafeLink($linkArg) . '">' . htmlspecialchars($argPart, ENT_QUOTES, 'UTF-8') . '</a>';
 				if($index !== $totalParts - 1)
 				{
 					$result .= ' or ';
@@ -398,6 +411,39 @@
 			}
 
 			return $result;
+		}
+
+		protected function buildTypeList($types)
+		{
+			$typeList = '';
+			if (!empty($types['type'])) {
+				$types = array($types);
+			}
+
+			foreach ($types as $type) {
+				if (!str_ends_with($typeList, ',') && $typeList !== '')
+				{
+					$typeList .= ', ';
+				}
+
+				$typePart = explode('|', $type['type']);
+				$totalParts = count($typePart);
+				foreach ($typePart as $index => $typePart)
+				{
+					$typeList .= $this->getArgLink($typePart);
+					if($index !== $totalParts - 1)
+					{
+						$typeList .= ' or ';
+					}
+				}
+
+				#if (isset($ret['default']) && $ret['default'] !== '')
+				#{
+				#	$typeList .= ' = ' . $ret['default'];
+				#}
+			}
+
+			return $typeList;
 		}
 
 		protected function buildFunction($func)
@@ -441,29 +487,7 @@
 							}
 						}
 
-						$rets = '';
-						foreach ($func['rets'] as $ret) {
-							if (!str_ends_with($rets, ',') && $rets !== '')
-							{
-								$rets .= ', ';
-							}
-
-							$retParts = explode('|', $ret['type']);
-							$totalParts = count($retParts);
-							foreach ($retParts as $index => $retPart)
-							{
-								$rets .= $this->getArgLink($retPart);
-								if($index !== $totalParts - 1)
-								{
-									$rets .= ' or ';
-								}
-							}
-
-							#if (isset($ret['default']) && $ret['default'] !== '')
-							#{
-							#	$rets .= ' = ' . $ret['default'];
-							#}
-						}
+						$rets = $this->buildTypeList($func['rets']);
 
 						$html .= $rets . ' ' . $this->getFunctionName($func) . '( ' . $args .' )';
 					} else {
@@ -631,12 +655,23 @@
 										if (sizeof($func['args']) != 0 || sizeof($func['rets']) != 0) {
 											$args = '';
 											foreach ($func['args'] as $arg) {
-												if (!str_ends_with($args, ',') && $args !== '')
+												if (!str_ends_with($args, ', ') && $args !== '')
 												{
-													$args .= ',';
+													$args .= ', ';
 												}
 
-												$args .= ' ' . '<a class="link-page ' . (FileSystem::FindFile($arg['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($arg['type']) . '">' . $arg['type'] . '</a>' . ' ' . $arg['name'];
+												$argParts = explode('|', $arg['type']);
+												$totalParts = count($argParts);
+												foreach ($argParts as $index => $argPart)
+												{
+													$args .= $this->getArgLink($argPart);
+													if($index !== $totalParts - 1)
+													{
+														$args .= ' or ';
+													}
+												}
+
+												$args .= ' ' . $arg['name'];
 
 												if (isset($arg['default']) && $arg['default'] !== '')
 												{
@@ -644,17 +679,8 @@
 												}
 											}
 
-											$rets = '';
-											foreach ($func['rets'] as $ret) {
-												if (!str_ends_with($rets, ',') && $rets !== '')
-												{
-													$rets .= ',';
-												}
-
-												$rets .= ' ' . '<a class="link-page ' . (FileSystem::FindFile($ret['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($ret['type']) . '">' . $ret['type'] . '</a>';
-											}
-
-											$html .= $rets . ' ' . $this->getFunctionName($func) . '(' . $args .' )';
+											$rets = $this->buildTypeList($func['rets']);
+											$html .= $rets . ' ' . $this->getFunctionName($func) . '( ' . $args .' )';
 										} else {
 											$html .= $this->getFunctionName($func) . "()";
 										}
@@ -682,7 +708,7 @@
 				$html .= '<div class="section">';
 					foreach ($structure['fields'] as $field) {
 						$html .='<div class="parameter">';
-							$html .= '<a class="link-page ' . (FileSystem::FindFile($field['type']) != null ? 'exists' : 'missing') . '" href="' . $this->SafeLink($field['type']) . '">' . $field['type'] . '</a>';
+							$html .= $this->buildTypeList($field);
 							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . $this->SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
 							$html .= '<div class="description numbertagindent">';
 								$html .= $this->text($field['desc']);
@@ -831,7 +857,19 @@
 		{
 			$html = '<div class="internal">';
 				$html .= '<div class="inner">';
-					$html .= $text;
+					$html .= 'This is used internally - although you\'re able to use it you probably shouldn\'t.<br>' . $text;
+				$html .= '</div>';
+			$html .= '</div>';
+
+			return $html;
+		}
+
+		protected function buildUnused($text, $preView)
+		{
+			$html = '<div class="internal">';
+				$html .= '<div class="inner">';
+					$html .= 'This function is currently not used in the game mode, and it\'s unknown if it works or if it\'s broken.';
+					$html .= '<br>' . $text;
 				$html .= '</div>';
 			$html .= '</div>';
 
@@ -1143,6 +1181,11 @@
 			return $html;
 		}
 
+		protected function buildLink($text, $url, $preView)
+		{
+			return '<a target="_blank" rel="noopener noreferrer" href=' . $url . '>' . $text . '</a>';
+		}
+
 		protected function buildArgsList($text)
 		{
 			$html = '<div class="function">';
@@ -1323,6 +1366,13 @@
 			);
 
 			$replaceCall(
+				'/<unused>([\s\S]*?)<\/unused>/',
+				function ($match) use ($preView) {
+					return $this->buildUnused($match[1], $preView);
+				}
+			);
+
+			$replaceCall(
 				'/<key>([\s\S]*?)<\/key>/',
 				function ($match) {
 					return $this->buildKey(strtolower($match[1]));
@@ -1382,6 +1432,13 @@
 				'/<changed\s+version="([^"]+)">([\s\S]*?)<\/changed>/',
 				function ($match) use ($preView) {
 					return $this->buildChanged($match[2], $match[1], $preView);
+				}
+			);
+
+			$replaceCall(
+				'/<link\s+url="([^"]+)">([\s\S]*?)<\/link>/',
+				function ($match) use ($preView) {
+					return $this->buildLink($match[2], $match[1], $preView);
 				}
 			);
 

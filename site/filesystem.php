@@ -1,6 +1,12 @@
 <?php
 	class Filesystem
 	{
+		/*
+			ToDo:
+				We must change the search system entirely
+				Maybe a first pass that reads titles and such- so that the second content pass works without issues
+		*/
+
 		private static $fileCache = array();
 		private static $fileContentCache = array();
 		private static $folderContentCache = array();
@@ -13,10 +19,11 @@
 			self::$config = GetConfig();
 		}
 
-		public static function FindFile($file, $title = null)
+		public static function FindFile($file, $title = null, $secondPass = false)
 		{
 			$file = self::$parser->SafeLink($file);
 			$file = strtolower($file);
+			$originalFile = $file;
 			# $file = str_replace('.', '_', $file);
 
 			if (self::$config['xampp'])
@@ -78,6 +85,23 @@
 					}
 				}
 			}
+
+			if (!$secondPass) {
+				$lastDot = strrpos($originalFile, '.');
+				$lastColon = strrpos($originalFile, ':');
+
+				$lastPos = max(
+					$lastDot !== false ? $lastDot : -1,
+					$lastColon !== false ? $lastColon : -1
+				);
+
+				if ($lastPos !== -1) {
+					$originalFile = substr($originalFile, $lastPos + 1);
+					return FileSystem::FindFile($originalFile, $title, true);
+				}
+			}
+
+			return null;
 		}
 
 		function NukeCache()
