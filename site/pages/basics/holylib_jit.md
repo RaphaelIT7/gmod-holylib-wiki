@@ -35,5 +35,18 @@ There are more changes than it just being an newer JIT version<br>
 \- [+] Compile unpack() given constant start and end indices (See https://github.com/LuaJIT/LuaJIT/pull/910)<br>
 \- [+] Experimentally implemented `Reduce method overhead in loops by specializing to metatables` (See https://github.com/LuaJIT/LuaJIT/pull/899)<br>
 \- [+] Added JIT support for userdata meta- & usertable access<br>
+\- [+] Made `newproxy` JITd & added new `IR_UDNEW` opcode<br>
+\- [+] Implement `LUAJIT_ENABLE_CHECKHOOK` as a runtime toggle (See: https://github.com/RaphaelIT7/gmod-holylib/issues/151)<br>
+\- [+] Implemented a custom external trace recorder API allowing HolyLib to make C functions recordable without recompiling JIT.<br>
 \- [#] Made `cdata` return the type as `LUA_TUSERDATA` so that we can more easily allow FFI -> C calls without needing to hook 10 functions (& the TypeID also conflicted with gmod)<br>
 \- [#] Improved `GMODLUA_GetUserType` to directly do it's stuff without using the Lua stack<br>
+\- [#] Fixed `table.insert` trying to shift values when inserting into negatives, causing performance issues<br>
+\- [#] Reduced `GCudata`, `GCtrace`, `GCproto`, `global_State` sizes saving memory.<br>
+
+## Using JIT with StarFall
+In newer JIT versions [debug.sethook](https://wiki.facepunch.com/gmod/debug.sethook) no longer will stop JIT meaning the whole CPU usage checks will fail as LuaJIT may trace a loop and run it, then while the debug hook that SF uses would never be called.<br>
+LuaJIT has a flag for this.<br>
+`LUAJIT_ENABLE_CHECKHOOK` is a normal JIT compile time flag that forces LuaJIT to include mask checking to trigger debug hook calls from inside JIT code.<br>
+BUT this usually means that JITd code- specifically loops will have a slight overhead, which could be noticeable in large/hot loops but not massive, especially since for GMods cases loops won't just be simple.<br>
+Since many servers may not use SF HolyLib has this flag **NOT** enabled by default, BUT since some servers may need it for SF- HolyLib's JIT version exposes two functions to toggle the flag at runtime.<br>
+<page> jit.enablecheckhook</page> and <page>jit.disablecheckhook</page> enable and disable the hook- these will **ALSO** flush all JIT code to avoid issues, so they are meant to **NOT** be constantly toggled but instead rarely changed / for example only once enabled at startup and left enabled the entire time.<br>
