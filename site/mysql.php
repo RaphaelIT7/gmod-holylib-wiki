@@ -7,6 +7,7 @@
 		private $conn;
 
 		private function Connect() {
+			mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 			if (str_contains($_SERVER['SERVER_SOFTWARE'], "Apache"))
 			{
 				$this->password = '';
@@ -107,8 +108,12 @@
 			if (!isset($exists)) {
 				$stmt = $this->conn->prepare("INSERT INTO pages (title, tags, address, createdTime, updateCount, markup, html, description, views, updated, revisionId, category, searchTags, fileTime, filePath) 
 				VALUES (?, ?, ?, ?, $updateCount, ?, ?, ?, $views, ?, $revisionId, ?, ?, $fileTime, ?)");
-				$stmt->bind_param("sssssssssss", $title, $tags, $address, $createdTime, $markup, $html, $description, $updated, $category, $searchTags, $filePath);
-				$stmt->execute();
+				if (!$stmt->bind_param("sssssssssss", $title, $tags, $address, $createdTime, $markup, $html, $description, $updated, $category, $searchTags, $filePath)) {
+					throw new Exception("Error binding parameters for file page insertion.");
+				}
+				if (!$stmt->execute()) {
+					throw new Exception("Error executing file page insertion.");
+				}
 				$stmt->close();
 			} else {
 				$stmt = null;
