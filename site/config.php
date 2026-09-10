@@ -662,12 +662,103 @@ function GetConfig()
 			),
 		),
 		array(
-			'name' => 'unholylib', 
+			'name' => 'unholylib',
 			'categories' => array(
 				array(
 					'mdi' => 'mdi-bookshelf',
 					'name' => 'Libraries',
 					'path' => 'modules/unholylib/libraries',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'autorefresh',
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/autorefresh/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'modules/autorefresh/hooks',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/autorefresh/convars',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'holylua',
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/holylua/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/holylua/convars',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-server',
+					'name' => 'Commands',
+					'path' => 'modules/holylua/commands',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'luathreads',
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/luathreads/libraries',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-book',
+					'name' => 'Classes',
+					'path' => 'modules/luathreads/classes',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-database',
+					'name' => 'ConVars',
+					'path' => 'modules/luathreads/convars',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'net',
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-bookshelf',
+					'name' => 'Libraries',
+					'path' => 'modules/net/libraries',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'networkdebugging',
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-server',
+					'name' => 'Commands',
+					'path' => 'modules/networkdebugging/commands',
 					'tags' => 'true',
 				),
 			),
