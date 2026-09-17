@@ -1,7 +1,6 @@
-<function name="GetSampleRate" parent="IGModAudioChannel" type="classfunc">
+<function name="GetSamplingRate" parent="IGModAudioChannel" type="classfunc">
 	<description>
 		Returns the samplerate of the channel.
-		<added version="0.4"></added>
 	</description>
 	<realm>Server</realm>
 	<rets>

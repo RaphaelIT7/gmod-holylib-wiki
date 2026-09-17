@@ -549,12 +549,18 @@ function GetConfig()
 			),
 		),
 		array(
-			'name' => 'networking', 
+			'name' => 'networking',
 			'categories' => array(
 				array(
 					'mdi' => 'mdi-database',
 					'name' => 'ConVars',
 					'path' => 'modules/networking/convars',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-server',
+					'name' => 'Commands',
+					'path' => 'modules/networking/commands',
 					'tags' => 'true',
 				),
 			),
@@ -594,12 +600,18 @@ function GetConfig()
 			),
 		),
 		array(
-			'name' => 'networkthreading', 
+			'name' => 'networkthreading',
 			'categories' => array(
 				array(
 					'mdi' => 'mdi-database',
 					'name' => 'ConVars',
 					'path' => 'modules/networkthreading/convars',
+					'tags' => 'true',
+				),
+				array(
+					'mdi' => 'mdi-hook',
+					'name' => 'Hooks',
+					'path' => 'modules/networkthreading/hooks',
 					'tags' => 'true',
 				),
 			),
