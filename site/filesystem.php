@@ -85,6 +85,7 @@ class Filesystem
 		}
 		catch (Exception $e)
 		{
+			trigger_error("Failed to index directory '$directory': " . $e->getMessage(), E_USER_WARNING);
 			return;
 		}
 	}
@@ -113,20 +114,32 @@ class Filesystem
 		if (preg_match('/<alias>\s*(.*?)\s*<\/alias>/is', $content, $matches))
 		{
 			$alias = self::NormalizeLookupKey($matches[1]);
-			if ($alias !== '' && !isset(self::$aliasIndex[$alias]))
-				self::$aliasIndex[$alias] = $physicalPath;
+			if ($alias !== '')
+			{
+				if (isset(self::$aliasIndex[$alias]) && self::$aliasIndex[$alias] !== $physicalPath)
+					trigger_error("Duplicate <alias>$alias</alias> in '$physicalPath' and '" . self::$aliasIndex[$alias] . "' - only the first one is reachable! This will cause conflicts!", E_USER_WARNING);
+				else
+					self::$aliasIndex[$alias] = $physicalPath;
+			}
 		}
 
 		$title = self::$parser->PageTitle($content, true);
 		if ($title !== null)
 		{
 			$titleKey = self::NormalizeTitle($title);
-			if ($titleKey !== '' && !isset(self::$titleIndex[$titleKey]))
+			if ($titleKey !== '')
 			{
-				self::$titleIndex[$titleKey] = array(
-					'file' => $physicalPath,
-					'title' => $title // Needed for title lookups, avoids us having to re-process the contents
-				);
+				if (isset(self::$titleIndex[$titleKey]) && self::$titleIndex[$titleKey]['file'] !== $physicalPath)
+				{
+					trigger_error("Duplicate page title '$title' in '$physicalPath' and '" . self::$titleIndex[$titleKey]['file'] . "' - only the first one is reachable! This will cause conflicts!", E_USER_WARNING);
+				}
+				else
+				{
+					self::$titleIndex[$titleKey] = array(
+						'file' => $physicalPath,
+						'title' => $title // Needed for title lookups, avoids us having to re-process the contents
+					);
+				}
 			}
 		}
 	}

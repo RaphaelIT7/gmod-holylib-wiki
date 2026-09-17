@@ -18,7 +18,7 @@ self.addEventListener('activate', event => {
 
 	(async () => {
 		try {
-			const cache = await caches.open('wiki');
+			let cache = await caches.open('wiki');
 			let oldETag = null;
 			const stored = await cache.match('__etag');
 			if (stored)
@@ -31,13 +31,12 @@ self.addEventListener('activate', event => {
 
 			if (response.ok)
 			{
-				newETag = response.headers.get('ETag');
+				const newETag = response.headers.get('ETag');
 				if (oldETag && newETag && oldETag !== newETag)
 				{
 					console.log('Wiki updated, nuking cache');
 
-					const keys = await caches.keys();
-					await Promise.all(keys.map(k => caches.delete(k)));
+					await caches.delete('wiki');
 
 					const dbs = await indexedDB.databases();
 					await Promise.all(
@@ -46,6 +45,8 @@ self.addEventListener('activate', event => {
 							req.onsuccess = req.onerror = req.onblocked = () => resolve();
 						}))
 					);
+
+					cache = await caches.open('wiki');
 				}
 
 				if (newETag)

@@ -1,6 +1,5 @@
 <?php
 	include('Parsedown.php');
-	include('utils.php');
 	include('filesystem.php');
 	include('LuaParser.php');
 
@@ -595,6 +594,7 @@
 				$html .= '<div class="section">';
 					foreach ($structure['fields'] as $field) {
 						$html .='<div class="parameter">';
+							$html .= '<a name="' . FileSystem::SafeLink($field['name']) . '" class="anchor_offset"></a>';
 							$html .= $this->buildTypeList($field);
 							$html .= '<a class="struct_anchor_link ' . $this->getRealmTagsByName($field['realm'], $structure['realmname']) . '" href=#' . FileSystem::SafeLink($field['name']) . '><strong> ' . $field['name'] . '</strong></a>';
 							
@@ -776,11 +776,41 @@
 
 		protected function buildPageURL($page, $name)
 		{
-			$file = FileSystem::FindFile(null, $page);
-			$html = '<a class="link-page ' . (isset($file) ? 'exists' : 'missing') . '" href="';
-			$html .= "/" . FileSystem::SafeLink($page);
+			// We allow linking to a specific field/item on a page like <page>EFFECT#FuelSpeed</page>
+			// But we only care for the part before the # to resolve the page
+			$pageName = $page;
+			$fragment = null;
+			$hashPos = strpos($page, '#');
+			if ($hashPos !== false)
+			{
+				$pageName = substr($page, 0, $hashPos);
+				$fragment = substr($page, $hashPos + 1);
+			}
+
+			$file = FileSystem::FindFile(null, $pageName);
+			$exists = isset($file);
+
+			// If a fragment was given, also check that it actually exists as a field/item on that page.
+			if ($exists && $fragment !== null && $fragment !== '')
+			{
+				$content = Filesystem::OpenFile($file);
+				if ($content === false || !preg_match('/(?:name|key)="' . preg_quote($fragment, '/') . '"/', $content))
+					$exists = false;
+			}
+
+			$html = '<a class="link-page ' . ($exists ? 'exists' : 'missing') . '" href="';
+			$html .= "/" . FileSystem::SafeLink($pageName);
+			if ($fragment !== null && $fragment !== '')
+				$html .= '#' . htmlspecialchars($fragment, ENT_QUOTES, 'UTF-8');
 			$html .= '">';
-				$html .= isset($name) && $name != '' ? $name : (isset($file) ? Filesystem::GetTitleFromEntry($file) : FileSystem::SafeLink($page));
+				if (isset($name) && $name != '')
+					$html .= $name;
+				else
+				{
+					$html .= isset($file) ? Filesystem::GetTitleFromEntry($file) : FileSystem::SafeLink($pageName);
+					if ($fragment !== null && $fragment !== '')
+						$html .= '.' . $fragment;
+				}
 			$html .= '</a>';
 
 			return $html;
