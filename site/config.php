@@ -10,7 +10,7 @@ function GetConfig()
 	'issues_url' => 'https://github.com/RaphaelIT7/gmod-holylib/issues/',
 	'code_language' => 'lua', // lua or c++
 	'icon' => '',
-	'version' => 0.8,
+	'version' => 0.8, 
 	'next_version' => 0.9,
 	'description' => 'Welcome to the HolyLib Wiki.&#xA;Here you will find a lot of documentation about HolyLib.&#xA;',
 	'xampp' => str_contains($_SERVER['SERVER_SOFTWARE'], "Apache"),
@@ -92,6 +92,18 @@ function GetConfig()
 					'mdi' => 'mdi-server',
 					'name' => 'Commands',
 					'path' => 'commands',
+					'tags' => 'true',
+				),
+			),
+		),
+		array(
+			'name' => 'CORE', 
+			'hidden' => true, // We need this for the importer to accept it but we don't need it in the sidebar as it's own category. It'll show in the global category though
+			'categories' => array(
+				array(
+					'mdi' => 'mdi-code-braces',
+					'name' => 'Globals',
+					'path' => 'modules/_core/globals',
 					'tags' => 'true',
 				),
 			),

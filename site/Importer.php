@@ -282,6 +282,9 @@
 		{
 			$html = '';
 			foreach ($this->Parser->categories as &$category) {
+				if (isset($category['hidden']) && $category['hidden'] === true)
+					continue;
+
 				$html .= '<div class="sectionheader">' . $category['name'] . '</div>';
 				$html .= '<div class="section">';
 
